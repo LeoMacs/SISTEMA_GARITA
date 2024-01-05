@@ -1,0 +1,110 @@
+﻿@{
+    Layout = null;
+
+    if (Session["nombre"] != null)
+    {
+    <script> window.location.href = '@Url.Action("Inicio", "Home")'; </script>
+    }
+}
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/general.css" rel="stylesheet" />
+    <link href="~/Content/MisEstilos.css" rel="stylesheet" />
+    <style>
+        body {
+            background-image: url("imagenes/fondoAzul.jpg");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            height: 100%;
+            width: 100%;
+            background-color:transparent;
+        }
+    </style>
+    @*    background="~/imagenes/fondoAzul.jpg" style="background-repeat: no-repeat;"*@
+
+
+
+
+</head>
+<body ng-controller="myController">
+    @* *************************************************************** *@
+
+    <div class="container table-responsive" style="width: 50%; margin-top: 10%; background-color: red;">
+        @* ***********CABECERA *@
+        <form role="form" novalidate>
+            <div>
+                <legend class="text-center header">
+                    <h3 style="color: white"><strong>INICIO DE SESIÓN </strong></h3>
+                </legend>
+            </div>
+            @* ***********CUERPO *@
+            <div class="col-md-12 table-responsive">
+                <div class="col-xs-4 table-responsive">
+                    <br />
+                    <br />
+                    <div class=" contenidoCentrado" style="margin: 0%;">
+                        <img src="~/imagenes/AgunsaLogo.png" style="width: 95%; height: 95%" />
+                    </div>
+
+                </div>
+
+                <div class="col-xs-8 table-responsive ">
+                    <div class="form-group form-inline row">
+                        <label class=" labelEstilo" for="sucursal">Sucursal:</label>
+                        <select class="form-control oscuro" id="codsuc">
+                            <option disabled="disabled" style="font-weight: bold">SELECCIONE LA SUCURSAL:</option>
+                            <option ng-repeat="s in sucursales" value="{{s.codsuc}}">{{s.descripcion}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group form-inline row">
+                        <label class=" labelEstilo" for="cuenta">Cuenta:</label>
+                        <input type="text" class="form-control oscuro" ng-model="usuario.cuenta" id="cuenta" placeholder="Ingrese su cuenta" />
+                    </div>
+                    <div class="form-group form-inline row">
+                        <label class=" labelEstilo" for="clave">Contraseña:</label>
+                        <input type="password" class="form-control oscuro" ng-model="usuario.clave" id="clave" placeholder="Ingrese su contraseña" />
+                    </div>
+                    <br />
+                    <div class="form-group form-inline letra contenidoCentrado row">
+                        <button type="button" ng-click="login()" class="btn btn-primary btn-lg btnSize">Iniciar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+
+    @* **************************************************************************** *@
+    <br />
+    <footer style="text-align: center">
+        <p style="font-weight: bold; color: black">&copy; @DateTime.Now.Year - Sistema web creado en IMUDESA</p>
+    </footer>
+
+    @*------jQuery library ------*@
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.es.js"></script>
+    @*------Controlador----------*@
+    <script src="~/Scripts/AngularController/UsuarioController.js"></script>
+    @*------Extras ------*@
+    <script src="~/Scripts/utilGeneral.js"></script>
+    @* ****************************************************************************** *@
+
+</body>
+</html>

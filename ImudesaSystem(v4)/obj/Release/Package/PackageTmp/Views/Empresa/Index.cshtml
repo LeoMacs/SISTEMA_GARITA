@@ -1,0 +1,76 @@
+﻿
+
+@{
+    ViewBag.Title = "Panel de Empresas";
+}
+
+
+<div ng-app="app" ng-controller="myController">
+    <div>
+        <p>{{nombre}}</p>
+        <div style="text-align: center">
+            <h1><strong>Panel de Empresas </strong></h1>
+        </div>
+        <br />
+        <br />
+
+        <button style="float: right;  margin-bottom: 10px;margin-left:0px" class="btn btn-primary btnCircular " onclick="window.location='/Empresa/CreateEmpresa'"><i class="glyphicon glyphicon-plus"></i>Agregar Empresa</button>
+
+        <div class="form-inline " style="margin-left:20px">
+
+            <label class=" col-form-label" style="color: black" for="filtro">Palabra Clave:</label>
+            <input type="text" class=" form-control" name="filtro" id="filtro" value="" />
+
+        </div>
+
+
+        <div class="container">
+            <table class="table table-bordered table-responsive-xl" id="tablaDatos">
+                <thead style="color: white; background-color: red">
+                    <tr>
+                        <th style="text-align: center">NOMBRE</th>
+                        <th style="text-align: center">Descripcion</th>
+                        <th style="text-align: center">PERSONAL</th>
+                        <th style="text-align: center">SCTR</th>
+                        <th style="text-align: center">EDITAR</th>
+                        <th style="text-align: center">ELIMINAR</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align: center">
+
+
+                    <tr ng-repeat="e in empresas">
+
+                        <td style="color: #0026ff; font-weight: bold">
+                            {{e.nombre}}
+                        </td>
+
+
+                        <td>
+                            {{e.descripcion}}
+                        </td>
+
+                        <td>
+                            <a class="btn btn-primary" href="/Empresa/PersonalEmpresa">
+                                <img src="https://png.icons8.com/metro/50/000000/workers-male.png" style="height: 20px; width: 20px;" />
+                            </a>
+                        </td>
+                        @* <td><a class="btn btn-primary" href="VerSCTR?idempresa=@empresa.idempresa"><i class="glyphicon glyphicon-plus-sign"></i></a></td>*@
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#verSctr"><i class="glyphicon glyphicon-plus-sign"></i></button>
+
+                        </td>
+
+
+                        <td><a href="" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
+                        <td><a class="btn btnEliminar"><i style="color: white" class="glyphicon glyphicon-trash"></i></a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+<script src="~/Scripts/AngularController/empresaController.js"></script>

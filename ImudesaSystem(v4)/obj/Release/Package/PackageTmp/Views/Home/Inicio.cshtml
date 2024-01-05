@@ -1,0 +1,135 @@
+﻿
+@{
+    Layout = null;
+    if (Session["nombre"] == null)
+    {
+        <script> window.location.href='@Url.Action("Login", "Home")'; </script>
+    }
+}
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    @*************************REFERENCIAS STYLE************************@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/general.css" rel="stylesheet" />
+    <link href="~/Content/MisEstilos.css" rel="stylesheet" />
+    @******************************************************************@
+    @******************************************************************@
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/gzGlRUbQJdUXAe6moCDN0PpoRuhQBWOzLulcfcqcz_0owsZX92ds_NVAV6Z3VcHHLLMRzg=s134" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="StyleSheet" href="~/Estilos/general.css" type="text/css">
+    <style>
+        body {
+            background-image: url("https://laftp.files.wordpress.com/2011/04/dsc_7296.jpg");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-color: #464646;
+        }
+    </style>
+    @******************************************************************@
+    <title>Menú de Opciones</title>
+</head>
+<body ng-controller="myController">
+
+    <br />
+    <br />
+    <br />
+    <div class="contenidoCentrado">
+        <img src="/Imagenes/AgunsaLogo.png" style="width: 400px; height: 80px" />
+    </div>
+
+    <br />
+
+    <div class="container centered">
+        <div class="thumbnail col-md-12 " style="padding-left: 10px; margin-bottom: 0px;">
+            <div class="hero-unit2">
+                <div class="contenidoCentrado">
+                    <h1 class="titulo">MÓDULOS DEL SISTEMA</h1>
+                </div>
+            </div>
+            <br>
+
+
+
+
+            @* ********************************************************************** *@
+            @* ********************************************************************** *@
+            <div class="contenidoCentrado">
+                @*<div class="col-md-6" style="padding-left: 0px; margin-top: 10px">
+                    <a class="btn btn-primary" style="width: 500px; height: 100px" href="/Home/PanelUsuarios"><i class="fa fa-users fa-5x"></i></a>
+                    <div class=""><strong>GESTIÓN DE USUARIOS</strong></div>
+                </div>*@
+
+
+                <div class="col-md-6" style="padding-left: 0px; margin-top: 10px">
+                    <button  type="button" ng-click="habilitarBotones(1)" class="btn btn-primary" style="width: 500px; height: 100px" ><i class="fa fa-address-book fa-5x"></i></button>
+                    <div class="letra">GESTIÓN DE CITAS</div>
+                </div>
+
+                 <div class="col-md-6" style="padding-left: 0px; margin-top: 10px">
+                    <button type="button" ng-click="habilitarBotones(2)" class="btn btn-primary" style="width: 500px; height: 100px" ><i class="material-icons fa-5x">directions_walk</i></button>
+                    <div class="letra">GESTIÓN DE VISITANTES</div>
+                </div>
+
+            </div>
+
+            <br />
+            <br />
+
+
+            <div class="contenidoCentrado">
+
+               
+
+                <div class="col-md-6" style="padding-left: 0px; margin-top: 10px">
+                    <button type="button" ng-click="habilitarBotones(3)" class="btn btn-primary" style="width: 500px; height: 100px" ><i class="fa fa-check-square-o fa-5x"></i></button>
+                    <div class="letra">GESTIÓN DE ASISTENCIAS DE TRABAJADORES</div>
+                </div>
+
+                <div class="col-md-6" style="padding-left: 0px; margin-top: 10px">
+                    <button type="button" ng-click="habilitarBotones(4)" class="btn btn-primary" style="width: 500px; height: 100px"><i class="fa fa-truck fa-5x"></i></button>
+                    <div class="letra">GESTIÓN DE VEHÍCULOS</div>
+                </div>
+
+            </div>
+
+
+
+
+            @* ********************************************************************** *@
+            @* ********************************************************************** *@
+            <br />
+            <br />
+
+        </div>
+    </div>
+
+
+    @****************REFERENCIAS S**********CRIPTS *********************@
+    @*****------jQuery library ------*@
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    @*------Controlador----------*@
+    @*------Controlador----------*@
+    <script src="~/Scripts/AngularController/menuController.js"></script>
+    @*------Extras ------*@
+    <script src="~/Scripts/utilGeneral.js"></script>
+    @*********************************************************@
+</body>
+
+
+</html>

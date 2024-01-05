@@ -1,0 +1,267 @@
+﻿@{
+    ViewBag.Title = ">Panel de Trabajadores";
+    Layout = "~/Views/Shared/_Layout-Trabajador.cshtml";
+    string espacio = " ";
+}
+
+<!DOCTYPE html>
+
+<div ng-app="app">
+
+
+    <div ng-controller="myController">
+
+
+        <div>
+            <div>
+                <div style="text-align: center">
+                    <h1><strong>Panel de Trabajadores </strong></h1>
+                </div>
+                <br />
+                <br />
+
+
+                <div class="form-inline container table-responsive">
+
+                    <label class=" col-form-label" style="color: black" for="filtro">Palabra Clave:</label>
+                    <input type="text" class=" form-control" name="filtro" id="filtro" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+                    <button id="buttonAdd" style="float: right; margin-bottom: 0px; margin-left: 0px" class="btn btn-primary btnCircular " ng-click="pushRegMod1()" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-plus"></i>Agregar Trabajador</button>
+                </div>
+
+
+                <div class="container">
+                    <div class="form-inline letra">
+                        <label>Total de registros:</label>
+                        <input value="{{numtrabajadores}}" readonly="true" style="width: 50px; height: 25px; text-align: center; font-weight: bold; color: blue; font-size: 18px" />
+                    </div>
+                    <table class="table table-bordered table-responsive-xl" id="tablaDatos">
+                        <thead style="color: white; background-color: red">
+                            <tr>
+                                <th style="text-align: center">Nombre</th>
+                                <th style="text-align: center">Dni</th>
+                                <th style="text-align: center">Cargo</th>
+                                <th style="text-align: center">Área</th>
+                                <th style="text-align: center">Empresa</th>
+                                <th style="text-align: center">Situación</th>
+                                <th style="text-align: center">EDITAR</th>
+                                <th style="text-align: center">ELIMINAR</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: center">
+
+
+                            <tr ng-repeat="t in trabajadores">
+
+                                <td style="text-align: initial; color: #0026ff; font-weight: bold">{{t.nombre}}
+                                </td>
+
+
+                                <td style="font-weight: bold">{{t.dni}}
+                                </td>
+
+                                <td style="font-weight: bold">{{t.cargo}}
+
+                                </td>
+                                <td style="font-weight: bold">{{t.area}}
+                                </td>
+
+                                <td style="font-weight: bold">{{t.empresa}}
+
+                                </td>
+
+                                <td style="font-weight: bold; color: {{t.colorEstado}}">{{t.estado}}
+                                </td>
+
+                                <td>
+                                    <button type="button" ng-disabled="{{t.noedit}}"  class="btn btn-primary" ng-click="pushRegMod2(t)" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-pencil"></i></button>
+                                </td>
+                                <td>
+                                    <button type="button" ng-disabled="{{t.nodelete}}"  class="btn btnEliminar" ng-click="pushAnular(t)" data-toggle="modal" data-target="#modalDel"><i class="glyphicon glyphicon-trash" style="color: white"></i></button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <div style="float: right; margin-right: 0px">
+                        <button id="buttonExport" ng-click="reporteTrabajadores()" class="btn btn-primary" style="float: right; margin-right: 0px"><i style="font-size: 20px; color: green; font-weight: bold" class="fa fa-file-excel-o"></i>@espacio Descargar</button>
+
+                    </div>
+                    @* ******************************************* *@
+                    <br />
+                </div>
+
+                @*<--------------------------------Modal agregar/ actualizar trabajadores------------------------------------------>*@
+
+                @*<-- Modal -->*@
+                <div class="modal fade" id="modalInsUpd" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            @*<-- Modal Header -->*@
+                            <div class="modal-header btn-primary">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>
+                                    <span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title contenidoCentrado oscuro" id="myModalLabel">FORMULARIO DE TRABAJADOR</h4>
+                            </div>
+                            @*<-- Modal Body -->*@
+                            <div class="modal-body">
+                                <p class="statusMsg" id="mensajeValidar">{{mensaje}}</p>
+                                <form role="form">
+                                    @* ---------------------------------------------------------------------- *@
+                                    <div class="form-group">
+                                        <label for="idempresa">EMPRESA:</label>
+                                        <div class="form-inline">
+                                            <select class="form-control inputStyleMd" id="idempr">
+                                                <option disabled style="color: blue; font-weight: bold">SELECCIONE LA EMPRESA:</option>
+                                                <option ng-repeat="e in empresas" ng-selected="{{e.estado}}" value="{{e.idempresa}}">{{e.nombre}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                            <label for="dni">DNI:</label>
+                                            <div class="form-inline">
+                                                <input type="text" class="form-control inputStyleMd" maxlength="10" onkeypress='return validaNumericos(event)' ng-model="trabajador.dni" id="dni" placeholder="Ingrese el dni" />
+                                                <button type="button" class="btn btn-primary" ng-click="buscarPersona()"><i class="glyphicon glyphicon-search"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <label for="nombre">NOMBRE:</label>
+                                            <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="trabajador.nombres" id="nombre" placeholder="Ingrese el nombre" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                            <label for="nombre">APELLIDO PATERNO:</label>
+                                            <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="trabajador.apPaterno" id="apPaterno" placeholder="Ingrese el apellido Paterno" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="nombre">APELLIDO MATERNO:</label>
+                                            <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="trabajador.apMaterno" id="apMaterno" placeholder="Ingrese el apellido Materno" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                            <label for="cargo">CARGO:</label>
+                                            <input type="text" class="form-control inputStyle" ng-model="trabajador.cargo" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="idempresa">ÁREA:</label>
+                                            <div class="form-inline">
+                                                <select class="form-control inputStyleMd" id="idarea">
+                                                    <option disabled style="color: blue; font-weight: bold">SELECCIONE EL AREA:</option>
+                                                    <option ng-repeat="a in areas" ng-selected="{{a.estado}}" value="{{a.idarea}}">{{a.nombre}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                            <label for="fecIngreso">Fecha de Ingreso:</label>
+                                            <div class="form-inline">
+                                                <input type="text" class="form-control inputStyle form_datetimefiltro readonlyfec" id="fecingreso" value="{{trabajador.fecingreso}}" />
+                                                <span><i class="fa fa-calendar" style="width: 20px; height: 25px"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6" id="fec_ret">
+                                            <label for="fecRetiro">Fecha de Retiro:</label>
+                                            <div class="form-inline">
+                                                <input type="text" class="form-control inputStyle form_datetimefiltro readonlyfec" id="fecretiro" value="{{trabajador.fecretiro}}" />
+                                                <span><i class="fa fa-calendar" style="width: 20px; height: 25px"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group form-inline" style="font-size: 20px" id="esta_trab">
+                                        <label style="font-size: 15px" for="area">EN ACTIVIDAD:</label>
+
+                                        <div class="switch-field">
+                                            <input type="radio" id="sw_lang_left" class="sw_lang_left" name="activo" value="1" style="display: none" />
+                                            <label for="sw_lang_left" style="font-size: 17px">SÍ</label>
+
+                                            <input type="radio" id="sw_lang_right" class="sw_lang_right" name="activo" value="0" style="display: none" />
+                                            <label for="sw_lang_right" style="font-size: 17px">NO</label>
+                                        </div>
+                                    </div>
+
+
+                                    @* ----------------------------------------------------------------------- *@
+                                </form>
+                            </div>
+                            @*<-- Modal Footer -->*@
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">CERRAR</button>
+                                <button type="submit" class="btn btn-primary submitBtn btnSize" ng-click="insupd_trabajador(trabajador)">{{btntext}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* fin de agregar/actualizar *@
+
+
+                @*<--------------------------------Modal anular trabajador------------------------------------------>*@
+
+                <div class="modal fade" id="modalDel" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            @***************Modal Header************@
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>
+                                    <span class="sr-only">Close</span>
+                                </button>
+                                <h4 style="text-align: start; color: red" class="modal-title letra">ANULACIÓN DE TRABAJADOR  </h4>
+                            </div>
+
+                            @*****************Modal Body************@
+                            <div class="modal-body">
+                                <div class="letra">
+                                    Estás seguro de anular al trabajador  
+                            <label style="color: red">{{trabajador.nombre}}</label>
+                                    con DNI
+                            <label style="color: red">{{trabajador.dni}}</label>?
+
+                                </div>
+                                @*Modal Footer*@
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-primary btnSize" ng-click="deletetrabajador()">Aceptar</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+        @*------jQuery library ------*@
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/angular.min.js"></script>
+        <script src="~/Scripts/moment.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.es.js"></script>
+        @*------Controlador----------*@
+        <script src="~/Scripts/AngularController/trabajadorAngular.js"></script>
+        @*------Extras ------*@
+        <script src="~/Scripts/utilGeneral.js"></script>
+
+    </div>
+</div>

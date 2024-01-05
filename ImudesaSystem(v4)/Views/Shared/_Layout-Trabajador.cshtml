@@ -1,0 +1,115 @@
+﻿@{
+   
+    if (Session["nombre"] == null)
+    {
+    <script> window.location.href = '@Url.Action("Login", "Home")'; </script>
+    }
+
+}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+@*    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+@*    <link href="~/Content/general.css" rel="stylesheet" />*@
+    <link href="~/Content/MisEstilos.css" rel="stylesheet" />
+    @******************************************************************@
+
+</head>
+<body>
+    @*<-------------INICIO MENÚ DE BARRAS------------------------->*@
+    <div>
+        <div class="head table-responsive">
+            <div class="wrapper">
+                <div class="logo" style="margin-top: 5px">
+                    <a title="Agunsa" class="logo">
+                        <img class="imgLogo" src="/Imagenes/AgunsaLogo.png" />
+                    </a>
+                </div>
+                <nav>
+
+                    <a class="btn btn-lg" href="/Home/Inicio" title="Menú Inicio" style="margin: 1px">
+                        <img src="../../Imagenes/black_hogar.png" style="height: 35px; width: 35px;"></a>
+                    </a>
+                    <a style="margin-top: 10px; margin-right: 1px; color: white; font-size: 13px;">Usuario: @Session["nombre"]</a>
+                    <a style="margin-top: 10px; margin-right: 1px; color: white; font-size: 13px;">Perfil:@Session["area"]</a>
+
+                    <a class="btn btn-lg" href="/Asistencia/PanelAsistenciaDelDia" title="Panel de Asistencias del día" style="margin: 1px">
+                        <img src="../../Imagenes/black_checkmark.png" style="height: 35px; width: 35px;"></a>
+                    </a>
+
+                    <a class="btn btn-lg" href="/Asistencia/RegistroAsistencias" title="Registro de asistencias guardadas" style="margin: 1px">
+                        <img src="../../Imagenes/black_list.png" style="height: 35px; width: 35px;"></a>
+                    </a>
+
+                    <a class="btn btn-lg" href="/Empresa/PanelEmpresas" title="Panel de Empresas" style="margin: 1px">
+                        <img src="../../Imagenes/black_empresa.png" style="height: 35px; width: 35px;">
+                    </a>
+
+                    <a class="btn btn-lg" href="/Seguro/PanelSeguros" title="Panel de SCTR" style="margin: 1px">
+                        <img src="../../Imagenes/black_sctr.png" style="height: 35px; width: 35px;">
+                    </a>
+
+                    <a class="btn btn-lg" href="/Trabajador/PanelTrabajadores" title="Panel de Trabajadores" style="margin: 1px">
+                        <img src="../../Imagenes/black_workers.png" style="height: 35px; width: 35px;">
+                    </a>
+
+                    <a class="btn btn-lg" href="/Indeseados/PanelListaNegra" title="Panel Lista Negra" style="margin: 1px">
+                        <img src="../../Imagenes/indeseados.png" style="height: 35px; width: 35px;">
+                    </a>
+
+                    <a class="btn btn-lg" title="Cerrar Sesión" onclick="cerrarSesion();" style="margin: 1px">
+                        <img src="../../Imagenes/black_logout.png" style="height: 35px; width: 35px;">
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+    @*<------------------------------------------------->*@
+
+
+    @*<----------------FIN MENÚ DE BARRAS--------------------------------->*@
+
+
+    @*<--------------------INICIO CONTENIDO---------------------->*@
+    <div class="container body-content">
+        @RenderBody()
+
+
+
+        @*<----------------INICIO FOOTER------------------------>*@
+        <hr />
+        <footer style="text-align: center">
+            <p class="letra">&copy; @DateTime.Now.Year - Sistema web creado en IMUDESA</p>
+        </footer>
+        <hr />
+        @*<----------------FIN FOOTER--------------------------->*@
+
+    </div>
+    @*<---------------------FIN CONTENIDO---------------------->*@
+    @* ****************INICIO RECURSOS JS************* *@
+
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+    function cerrarSesion() {
+        var opcion = confirm("¿Esta seguro de Cerrar Sesión?");
+        if (opcion) {
+            location.href = "/Home/cerrarSesion";
+
+        }
+
+    }
+</script>

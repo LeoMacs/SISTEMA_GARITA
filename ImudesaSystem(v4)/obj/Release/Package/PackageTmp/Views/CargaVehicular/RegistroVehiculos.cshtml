@@ -1,0 +1,407 @@
+﻿@{
+    ViewBag.Title = "RegistroVehiculos";
+    Layout = "~/Views/Shared/Layout-Vehiculo.cshtml";
+
+    string fechaActual = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+    string fechaActualf = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+
+    String espacio = " ";
+
+    //DateTime servidorForaneo = DateTime.Now.AddHours(2);
+    //var horaActual = servidorForaneo.ToString("HH:mm");
+    var horaActual = System.DateTime.Now.ToString("HH:mm");
+    var data = ViewBag.Message; 
+}
+
+<div ng-app="app">
+
+    @*<title>Registro de Todas las visitas</title>*@
+
+    <div ng-controller="myController">
+
+
+
+        <div class="container formEstilo">
+            @* col-lg-n:toma el tamaño de n columnas// offset-lg-n:desplaza n columnas en la pantalla*@
+            <form method="post">
+                <div class="header">
+                    <h3 style="text-align: center; font-family: sans-serif; color: white; font-weight: bold;">BÚSQUEDA DE CARGAS VEHICULARES POR FILTROS</h3>
+                    <hr />
+                </div>
+
+                <div>
+                    @*<--********COLUMNA 1*************-->
+                *@
+
+                    <div class="table-responsive-xl">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class=" labelEstilo" for="fechai"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Desde:</label>
+                                <div class="form-inline">
+                                    <input type="text" class="form-control inputStyleCal form_datetimefiltro readonlyfec" id="fechadesde" placeholder="ingrese fecha" />
+                                    <span style="color: white"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="labelEstilo" for="fechaf"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Hasta:</label>
+                                <div class="form-inline">
+                                    <input type="text" class="form-control inputStyleCal form_datetimefiltro readonlyfec" id="fechahasta" placeholder="Ingrese fecha" />
+                                    <span style="color: white"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="labelEstilo" for="dni"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Dni:</label>
+                                <input type="text" class="form-control oscuro" maxlength="10" ng-model="entidad.dni" id="dni" placeholder="Ingrese el dni" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class=" labelEstilo" for="nombre"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Nombre:</label>
+                                <input type="text" class="form-control oscuro" ng-model="entidad.nombre" id="nombre" placeholder="Ingrese el nombre" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class=" labelEstilo" for="licencia"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Licencia:</label>
+                                <input type="text" class="form-control oscuro" ng-model="entidad.licencia" id="licencia" placeholder="Ingrese la licencia" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="labelEstilo" for="placa"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Placa: </label>
+                                <input type="text" class="form-control oscuro" ng-model="entidad.placa" id="placa" placeholder="Ingrese la placa" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class=" labelEstilo" for="proviene"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Proviene de:</label>
+                                <input type="text" class="form-control oscuro" ng-model="entidad.proviene" id="proviene" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="labelEstilo" for="destino"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Destino: </label>
+                                <input type="text" class="form-control oscuro" ng-model="entidad.destino" id="destino" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="form-inline contenidoCentrado">
+                    <button class="btn btn-primary" style="width: 200px; height: 40px; font-weight: bold;" id="filtrar" ng-click="filtrarxCampos()"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;BUSCAR</button>
+                </div>
+                <br />
+            </form>
+        </div>
+
+
+        @*<--***********************TABLA DE DATOS ************************-->*@
+        <div>
+            <div style="text-align: center">
+                <h2 style="font-weight: bold;">RESULTADO DE BÚSQUEDA</h2>
+            </div>
+
+            <div class="container">
+
+                <div class="form-inline letra">
+                    <label>Total de registros:</label>
+                    <input value="{{numcargas}}" readonly="true" style="width: 50px; height: 25px; text-align: center; font-weight: bold; color: blue; font-size: 18px" />
+                    <a ng-click="reporteFiltros()" class="btn btn-primary" style="float: right; margin-right: 0px"><i style="font-size: 20px; color: green; font-weight: bold" class="fa fa-file-excel-o"></i>@espacio Descargar</a>
+
+                </div>
+
+                <table class="table table-bordered table-responsive-xl" id="tablaDatos">
+                    <thead style="color: white; background-color: red">
+                        <tr>
+                            <th style="text-align: center">Fecha</th>
+                            <th style="text-align: center">Hora entrada</th>
+                            <th style="text-align: center">Hora Salida</th>
+                            <th style="text-align: center">Nombre</th>
+                            <th style="text-align: center">Dni</th>
+                            <th style="text-align: center">Licencia</th>
+                            <th style="text-align: center">Placa</th>
+                            <th style="text-align: center">Empresa Proveniente</th>
+                            <th style="text-align: center">Empresa Destino</th>
+                            <th style="text-align: center">Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center" id="TablaBody">
+
+                        <tr ng-repeat="c in cargasfiltradas">
+
+                            <td style="font-weight: bold">
+                                {{c.fecha}}
+                            </td>
+                            <td style="color: green; font-weight: bold; font-size: 18px">
+                                {{c.horaentrada}}
+                            </td>
+
+                            <td style="color: red; font-weight: bold">
+                                {{c.horasalida}}
+                            </td>
+
+                            <td style="color: blue; font-weight: bold">
+                                {{c.persona}}
+                            </td>
+
+                            <td style="color: blue; font-weight: bold">
+                                {{c.dni}}
+                            </td>
+
+                            <td style="color: blue; font-weight: bold">
+                                {{c.licencia}}
+                            </td>
+                            <td style="font-weight: bold">
+                                {{c.placa}}
+                            </td>
+
+                            <td style="font-weight: bold">
+                                {{c.empresa_proveniente}}
+                            </td>
+
+                            <td style="font-weight: bold">
+                                {{c.empresa_dtno}}
+                            </td>
+                           
+                           <td>
+                               <button  class="btn btn-primary" ng-click="pushRegMod2(c)" data-toggle="modal" data-target="#modalver">
+                                   <i class="glyphicon glyphicon-search"></i>
+                               </button>
+                           </td>
+                        
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* *********************************************************************+ *@
+
+
+
+
+        @* ************************************************************************** *@
+       @*<-- Modal -->*@
+        <div class="modal fade" id="modalver" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @*<-- Modal Header -->*@
+                    <div class="modal-header btn-primary">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title contenidoCentrado oscuro">FORMULARIO DE CARGA VEHICULAR</h4>
+                    </div>
+                    @*<--FIN Modal Header -->*@
+
+                    @*<-- Modal Body -->*@
+                    <div class="modal-body">
+                        <form role="form" novalidate>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="fecha">FECHA:</label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control inputStyleCal oscuro " style="width: 60%;text-align: center;font-size:130%;color: blue" id="fecha" ng-model="vehiculo.fecha" ng-readonly="true"/>
+                                        <span><i class="fa fa-calendar" style="width: 20%;"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label for="horaingreso">HORA DE ENTRADA:</label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control inputStyleCal oscuro" style="width: 60%; text-align: center;font-size:130%;color: blue" id="horaingreso" ng-model="vehiculo.horaentrada" ng-readonly="true"/>
+                                        <span><i class="fa fa-clock-o" style="width:20%;"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                          
+                            @* ******************************************************************************* *@
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="empresa_proveniente">EMPRESA PROVENIENTE:</label>
+                                    <input type="text" class="form-control inputStyle oscuro" onkeyup="mayusculas(this);" id="empresa_proveniente" ng-model="vehiculo.empresa_proveniente" ng-readonly="true" />
+                                </div>
+                                <div class="col-sm-6 ">
+                                    <label for="cliente">EMPRESA DESTINO:</label>
+                                    <select class="form-control inputStyle oscuro" id="idempresa" ng-readonly="true">
+                                        <option disabled style="color: blue; font-weight: bold">SELECCIONE LA EMPRESA:</option>
+                                        <option  ng-repeat="e in empresas" value="{{e.idempresa}}"  >{{e.nombre}} </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            @* ********************************************************************************* *@
+                            <div>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <h5 class="letraSubtitulo">DATOS DEL CONDUCTOR</h5>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="dni">DNI:</label>
+                                        <div class="form-inline">
+                                            <input type="text" class="form-control inputStyleMd" maxlength="10"  ng-model="vehiculo.dni" id="dni" placeholder="Ingrese el dni" ng-readonly="true" />
+                                            <button type="button" class="btn btn-primary" ng-click="buscarPersona()"><i class="glyphicon glyphicon-search"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label for="nombre">NOMBRE:</label>
+                                        <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="vehiculo.nombres" id="nombre" placeholder="Ingrese el nombre" ng-readonly="true"/>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="nombre">APELLIDO PATERNO:</label>
+                                        <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="vehiculo.apPaterno" id="apPaterno" placeholder="Ingrese el apellido Paterno" ng-readonly="true" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="nombre">APELLIDO MATERNO:</label>
+                                        <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="vehiculo.apMaterno" id="apMaterno" placeholder="Ingrese el apellido Materno" ng-readonly="true" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="codlicencia">LICENCIA:</label>
+                                        <input type="text" class="form-control  inputStyle"  onkeyup="mayusculas(this);" maxlength="10" style="font-size: 16px" id="codlicencia" ng-model="vehiculo.licencia" ng-readonly="true" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            @* ******************************************************************************* *@
+                            <div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <h5 class="letraSubtitulo">DATOS DEL VEHÍCULO Y CARGA</h5>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="codplaca">PLACA:</label>
+                                        <input type="text" class="form-control  inputStyle"  onkeyup="mayusculas(this);" maxlength="8" style="font-size: 16px; width: 150px;" id="codplaca" ng-model="vehiculo.placa" ng-readonly="true" />
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-inline">
+                                            <input type="checkbox" class="custom-control-input" id="bunidad">
+                                            <label class="custom-control-label" for="bunidad">Es unidad</label>
+                                        </div>
+                                        <div class="form-inline">
+                                            <input type="checkbox" class="custom-control-input" id="bcarreta">
+                                            <label class="custom-control-label" for="bcarreta">Con carreta</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="numcontenedor">N°. CONTENEDOR:</label>
+                                        <input type="text" class="form-control  inputStyle"  onkeyup="mayusculas(this);" maxlength="14" style="font-size: 16px; width: 80%" id="numcontenedor" ng-model="vehiculo.numContenedor" ng-readonly="true"/>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="codcarreta">CÓDIGO DE CARRETA:</label>
+                                        <input type="text" class="form-control  inputStyle"  onkeyup="mayusculas(this);" maxlength="14" style="font-size: 16px; width: 80%" id="codcarreta" ng-model="vehiculo.codcarreta" ng-readonly="true" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6 form-inline">
+                                        <label for="tipo" class=" control-label text-right">TIPO:</label>
+                                        <div class="input-group">
+                                            <div class="radioBtn btn-group">
+                                                <a class="btn btn-primary btn-md active letra" id="20" data-toggle="tipo" id="20" data-title="20">20</a>
+                                                <a class="btn btn-primary btn-md notActive letra" id="40" data-toggle="tipo" data-title="40">40</a>
+                                                <a class="btn btn-primary btn-md notActive letra" id="RF" data-toggle="tipo" data-title="RF">RF</a>
+                                            </div>
+                                            <input type="hidden" name="tipo" id="tipo">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 form-inline">
+                                        <label for="estadCarga" class=" control-label text-right">ESTADO:</label>
+                                        <div class="input-group">
+                                            <div class="radioBtn btn-group">
+                                                <a class="btn btn-primary btn-md active letra" id="V" data-toggle="estadCarga" data-title="V">VACÍO</a>
+                                                <a class="btn btn-primary btn-md notActive letra" id="LL" data-toggle="estadCarga" data-title="LL">LLENO</a>
+                                            </div>
+                                            <input type="hidden" name="estadCarga" id="estadCarga">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12  form-inline">
+                                        <label for="guiainf">PRECINTO/GUIA:</label>
+                                        <input type="text" class="form-control inputStyle"  onkeyup="mayusculas(this);"  id="guiainf" ng-model="vehiculo.precintoGuia" style="font-weight: bold; width: 60%" ng-readonly="true"/>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            @* ******************************************************************************* *@
+
+                            @*<--********FIN contenedor*************-->*@
+                        </form>
+                    </div>
+                    @*<--FIN  Modal Body -->*@
+
+                    @*<-- Modal Footer -->*@
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">CERRAR</button>
+                    </div>
+                    @*<-- FIN Modal Footer -->*@
+
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+        @* ****************************************************************************************************** *@
+       
+
+
+        @* ********************************************************************* *@
+        @* ********************************************************************* *@
+
+
+
+
+
+
+
+
+        @* *********************************************************************************** *@
+        @* *********************************************************************************** *@
+        @*------jQuery library ------*@
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/angular.min.js"></script>
+        <script src="~/Scripts/moment.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.es.js"></script>
+        @*------Controlador----------*@
+        <script src="~/Scripts/AngularController/vehiculoController.js"></script>
+        @*------Extras ------*@
+        <script src="~/Scripts/utilGeneral.js"></script>
+        @* *********************************************************************************** *@
+        @* *********************************************************************************** *@
+
+    </div>
+
+
+
+
+</div>

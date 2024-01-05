@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ImudesaGaritaModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="acceso" EntityType="ImudesaGaritaModel.acceso" />
+    <EntitySet Name="asistencia" EntityType="ImudesaGaritaModel.asistencia" />
+    <EntitySet Name="cita" EntityType="ImudesaGaritaModel.cita" />
+    <EntitySet Name="empresa" EntityType="ImudesaGaritaModel.empresa" />
+    <EntitySet Name="indeseado" EntityType="ImudesaGaritaModel.indeseado" />
+    <EntitySet Name="modulo" EntityType="ImudesaGaritaModel.modulo" />
+    <EntitySet Name="perfil" EntityType="ImudesaGaritaModel.perfil" />
+    <EntitySet Name="seguro" EntityType="ImudesaGaritaModel.seguro" />
+    <EntitySet Name="sucursal" EntityType="ImudesaGaritaModel.sucursal" />
+    <EntitySet Name="tbprueba" EntityType="ImudesaGaritaModel.tbprueba" />
+    <EntitySet Name="trabajador" EntityType="ImudesaGaritaModel.trabajador" />
+    <EntitySet Name="trabajadorAuditoria" EntityType="ImudesaGaritaModel.trabajadorAuditoria" />
+    <EntitySet Name="usuario" EntityType="ImudesaGaritaModel.usuario" />
+    <EntitySet Name="visitante" EntityType="ImudesaGaritaModel.visitante" />
+    <EntitySet Name="cargaVehicular" EntityType="ImudesaGaritaModel.cargaVehicular" />
+  </EntityContainer>
+  <EntityType Name="acceso">
+    <Key>
+      <PropertyRef Name="idusuario" />
+    </Key>
+    <Property Name="idacceso" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+    <Property Name="idusuario" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="idmodulo" Type="Int32" />
+    <Property Name="codopcion" Type="String" MaxLength="4" Unicode="false" FixedLength="false" />
+    <Property Name="ver" Type="Int32" />
+    <Property Name="grabar" Type="Int32" />
+    <Property Name="anular" Type="Int32" />
+    <Property Name="fecregistro" Type="DateTime" Precision="3" />
+    <Property Name="fecmodificacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="asistencia">
+    <Key>
+      <PropertyRef Name="idasistencia" />
+    </Key>
+    <Property Name="idasistencia" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="horainicio" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="horasalida" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="idtrabajador" Type="Int32" Nullable="false" />
+    <Property Name="empresa" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="fecregistro" Type="DateTime" Precision="3" />
+    <Property Name="fecmodificacion" Type="DateTime" Precision="3" />
+    <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+    <Property Type="String" Name="userRegistro" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="userModificacion" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="cita">
+    <Key>
+      <PropertyRef Name="idcita" />
+    </Key>
+    <Property Name="idcita" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="hora" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="dni" Type="Int32" Nullable="false" />
+    <Property Name="destino" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="encargada" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="empresa_proveniente" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="observacion" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="idcitador" Type="Int32" Nullable="false" />
+    <Property Name="estado" Type="Int32" Nullable="false" />
+    <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+    <Property Name="fechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Type="String" Name="userRegistro" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="mostrar" Nullable="false" />
+    <Property Type="Int32" Name="atendida" Nullable="false" />
+  </EntityType>
+  <EntityType Name="empresa">
+    <Key>
+      <PropertyRef Name="idempresa" />
+    </Key>
+    <Property Name="idempresa" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="descripcion" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="usucreacion" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="feccreacion" Type="DateTime" Precision="0" />
+    <Property Name="usumodificacion" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="fecmodificacion" Type="DateTime" Precision="0" />
+    <Property Name="conSeguro" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="false" />
+    <Property Name="ruc" Type="String" MaxLength="13" Unicode="false" FixedLength="false" />
+    <Property Name="codsuc" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="indeseado">
+    <Key>
+      <PropertyRef Name="idindeseado" />
+      <PropertyRef Name="nombre" />
+      <PropertyRef Name="apellido" />
+      <PropertyRef Name="dni" />
+      <PropertyRef Name="fechaRegistro" />
+      <PropertyRef Name="observacion" />
+      <PropertyRef Name="userRegistro" />
+    </Key>
+    <Property Name="idindeseado" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="apellido" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="dni" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="cargo" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="empresa" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="fechaRegistro" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="observacion" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Type="String" Name="userRegistro" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="modulo">
+    <Key>
+      <PropertyRef Name="idmodulo" />
+      <PropertyRef Name="descripcion" />
+    </Key>
+    <Property Name="idmodulo" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="descripcion" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="perfil">
+    <Key>
+      <PropertyRef Name="idperfil" />
+      <PropertyRef Name="descripcion" />
+    </Key>
+    <Property Name="idperfil" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="descripcion" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="true" />
+  </EntityType>
+  <EntityType Name="seguro">
+    <Key>
+      <PropertyRef Name="idseguro" />
+    </Key>
+    <Property Name="idseguro" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="nrosalud" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="nropoliza" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="fechainicio" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="fechafin" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="idempresa" Type="Int32" Nullable="false" />
+    <Property Name="flagactivo" Type="Int32" Nullable="false" />
+    <Property Name="usucreacion" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="feccreacion" Type="DateTime" Precision="3" />
+    <Property Name="usumodificacion" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="fecmodificacion" Type="DateTime" Precision="3" />
+    <Property Name="codsuc" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="sucursal">
+    <Key>
+      <PropertyRef Name="codsuc" />
+      <PropertyRef Name="descripcion" />
+      <PropertyRef Name="estado" />
+    </Key>
+    <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+    <Property Name="descripcion" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="direccion" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="estado" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbprueba">
+    <Key>
+      <PropertyRef Name="idprueba" />
+    </Key>
+    <Property Name="idprueba" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="fecd" Type="DateTime" Precision="0" />
+    <Property Name="fecdt" Type="DateTime" Precision="3" />
+    <Property Name="nomusu" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="trabajador">
+    <Key>
+      <PropertyRef Name="idtrabajador" />
+    </Key>
+    <Property Name="idtrabajador" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="dni" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="cargo" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="area" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="habilitado" Type="Int32" Nullable="false" />
+    <Property Name="idempresa" Type="Int32" Nullable="false" />
+    <Property Name="usuregistro" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="fecregistro" Type="DateTime" Precision="3" />
+    <Property Name="usumodificacion" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="fecmodificacion" Type="DateTime" Precision="3" />
+    <Property Name="fecretiro" Type="DateTime" Precision="0" />
+    <Property Name="fecingreso" Type="DateTime" Precision="0" />
+    <Property Name="conSeguro" Type="String" MaxLength="2" Unicode="false" FixedLength="false" />
+    <Property Name="rutaimage" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="trabajadorAuditoria">
+    <Key>
+      <PropertyRef Name="idtrabaud" />
+    </Key>
+    <Property Name="idtrabaud" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="dni" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="cargo" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="area" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="idempresa" Type="Int32" Nullable="false" />
+    <Property Name="idtrabajador" Type="Int32" Nullable="false" />
+    <Property Name="feccreacion" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="idusuario" />
+      <PropertyRef Name="cuenta" />
+      <PropertyRef Name="clave" />
+      <PropertyRef Name="tipocuenta" />
+      <PropertyRef Name="activo" />
+      <PropertyRef Name="idperfil" />
+      <PropertyRef Name="codsuc" />
+    </Key>
+    <Property Name="idusuario" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="cuenta" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="clave" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="tipocuenta" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="activo" Type="Int32" Nullable="false" />
+    <Property Name="fecregistro" Type="DateTime" Precision="3" />
+    <Property Name="nombreusuario" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="idperfil" Type="Int32" Nullable="false" />
+    <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="visitante">
+    <Key>
+      <PropertyRef Name="idvisitante" />
+      <PropertyRef Name="fecha" />
+      <PropertyRef Name="horaentrada" />
+      <PropertyRef Name="nombre" />
+      <PropertyRef Name="destino" />
+      <PropertyRef Name="encargado" />
+      <PropertyRef Name="empresa_proveniente" />
+      <PropertyRef Name="codsuc" />
+      <PropertyRef Name="userRegistro" />
+    </Key>
+    <Property Name="idvisitante" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="horaentrada" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="horasalida" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="dni" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="destino" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="encargado" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="empresa_proveniente" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="observacion" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="nroasignado" Type="Int32" />
+    <Property Name="fechaRegistro" Type="DateTime" Precision="3" />
+    <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+    <Property Type="String" Name="userRegistro" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="cargaVehicular">
+    <Key>
+      <PropertyRef Name="idcargavehiculo" />
+    </Key>
+    <Property Type="Int32" Name="idcargavehiculo" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="DateTime" Name="fecha" Precision="0" />
+    <Property Type="String" Name="horaentrada" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="horasalida" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="empresa_proveniente" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="idcliente" />
+    <Property Type="String" Name="nomConductor" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="docCondutor" MaxLength="9" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="licConductor" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="placaVehiculo" MaxLength="7" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="bunidad" />
+    <Property Type="Int32" Name="bcarreta" />
+    <Property Type="String" Name="codcarreta" MaxLength="7" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="numContenedor" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="tipoContenedor" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="estadContenedor" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="guiainf" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="estado" />
+    <Property Type="String" Name="codsuc" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="fecRegistro" Precision="3" />
+    <Property Type="String" Name="userRegistro" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

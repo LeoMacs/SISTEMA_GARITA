@@ -1,0 +1,343 @@
+﻿@using ImudesaSystem_v4_.Models
+@{
+    ViewBag.Title = "PanelCitas";
+    Layout = "~/Views/Shared/_Layout-Cita.cshtml";
+
+    string fechaActual = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+    string fechaActualf = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+
+    String espacio = " ";
+
+    //DateTime servidorForaneo = DateTime.Now.AddHours(2);
+    //var horaActual = servidorForaneo.ToString("HH:mm");
+    var horaActual = System.DateTime.Now.ToString("HH:mm");
+    var data = ViewBag.Message; 
+
+
+    
+    
+}
+
+
+
+<!DOCTYPE html>
+
+<div ng-app="app">
+
+
+    <div ng-controller="myController">
+
+
+        <div  class="wrapper contenidoCentrado">
+            <h1 class="letra">Panel de Citas Programadas</h1>
+            <h1 style="color: red;"><strong>Hoy: @fechaActual</strong></h1>
+        </div>
+
+        <br />
+
+
+
+        <div class="form-inline container table-responsive">
+            <label class=" col-form-label" style="color: black" for="filtro">Palabra Clave:</label>
+            <input type="text" class=" form-control" name="filtro" id="filtro" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+            <button id="buttonAdd"  style="float: right; margin-bottom: 0px; margin-left: 0px" class="btn btn-primary btnCircular " ng-click="pushIns()" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-plus"></i>Agregar Cita</button>
+        </div>
+
+
+        <div class="container ">
+             <div class="form-inline letra">
+                <label >Total de citas:</label>
+                <input  value="{{numcitashoy}}" readonly="true" style="width:50px;height:25px;text-align:center;font-weight:bold;color: blue; font-size: 18px"/>
+            </div>
+            <table class="table table-bordered table-responsive-xl" id="tablaDatos">
+                <thead style="color: white; background-color: red">
+                    <tr>
+                        <th style="text-align: center" hidden>Fecha</th>
+                        <th style="text-align: center">Hora</th>
+                        <th style="text-align: center">Nombre del citado</th>
+                        <th style="text-align: center">Dni</th>
+                        <th style="text-align: center">Responsable del citado</th>
+                        <th style="text-align: center">Destino</th>
+                        <th style="text-align: center">Empresa Proveniente</th>
+                        <th style="text-align: center">Observación</th>
+                        <th style="text-align: center">Creado por:</th>
+                        <th style="text-align: center">Modificado por:</th>
+                        <th class="hidenSeguridad" style="text-align: center">Editar</th>
+                      @*  <th class="hidenSeguridad" style="text-align: center">Ocultar</th>*@
+                        <th class="hidenSeguridad" style="text-align: center">Anular</th>
+                        <th class="hidenArea" style="text-align: center">Confirmar Visita</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align: center">
+
+
+                    <tr ng-repeat="c in citas">
+                        <td hidden>{{c.fecha}}
+                        </td>
+
+                        <td style="font-weight: bold">{{c.hora}}</td>
+                        <td style="color: #329415; font-weight: bold">{{c.persona}}</td>
+                        <td style="color: #4800ff; font-weight: bold">{{c.dni}}</td>
+                        <td style="color: #4800ff; font-weight: bold">{{c.encargado}}</td>
+                        <td style="color: #0094ff; font-weight: bold">{{c.destino}} </td>
+                        <td style="color: #0094ff; font-weight: bold">{{c.empresa_proveniente}}</td>
+                        <td style="font-weight: bold">{{c.observacion}}</td>
+                        <td style="font-weight: bold">{{c.creador}}</td>
+                        <td style="font-weight: bold">{{c.modificador}}</td>
+                        <td ><button ng-disabled="{{c.noedit}}" class="btn btn-primary" ng-click="pushUpd(c)" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-pencil"></i></button></td>
+@*                        <td ><button ng-disabled="{{c.isdisabledarea}}" class="btn btn-primary" ng-click="pushOcultar(c)" data-toggle="modal" data-target="#modalOcultar"><i class="fa fa-eye-slash" style="color: white"></i></button></td>*@
+                        <td ><button  ng-disabled="{{c.nodelete}}"class="btn btnEliminar" ng-click="pushAnular(c)" data-toggle="modal" data-target="#modalDel"><i class="fa fa-times " style="color: white"></i></button></td>
+                        <td ><button ng-disabled="{{c.noconfirm}}" class="btn btnAceptar" ng-click="pushConfirmar(c)" data-toggle="modal" data-target="#modalConfirmar"><i class="fa fa-check-square-o" style="color: white"></i></button></td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+            <button id="buttonExport" ng-click="reporteDelDia()" class="btn btn-primary" style="float: right; margin-right: 0px"><i style="font-size: 20px; color: green; font-weight: bold" class="fa fa-file-excel-o"></i>@espacio Descargar</button>
+        </div>
+        <br />
+
+
+
+
+        @* ********************************************************************************************** *@
+        @*<--------------------------------Modal INSUPD cita------------------------------------------>*@
+        @*<-- Modal -->*@
+        <div class="modal fade" id="modalInsUpd" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @*<-- Modal Header -->*@
+                    <div class="modal-header btn-primary">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title contenidoCentrado oscuro">FORMULARIO DE CITA</h4>
+                    </div>
+                    @*<-- Modal Body -->*@
+                    <div class="modal-body">
+                        <form role="form" novalidate>
+
+                            <div class="form-group">
+                                <label for="fecha">FECHA:</label>
+                                <div class="form-inline">
+                                    <input type="text" class="form-control inputStyle  form_datetimefiltro readonlyfec" id="fecha" value="{{citaTemp.fecha}}" />
+                                    <span><i class="fa fa-calendar" style="width: 20px; height: 25px"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hora">HORA:</label>
+                                <div class="form-inline ">
+                                    <input type="time" class="form-control inputStyle" style="font-size: 20px" id="hora" value="{{citaTemp.hora}}" />
+                                    <span><i class="fa fa-clock-o" style="width: 16px; height: 25px"></i></span>
+                                </div>
+                            </div>
+
+                             <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="dni">DNI:</label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control inputStyleMd" maxlength="10" onkeypress='return validaNumericos(event)' ng-model="citaTemp.dni" id="dni" placeholder="Ingrese el dni" />
+                                        <button type="button" class="btn btn-primary" ng-click="buscarPersona()"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label for="nombre">NOMBRE:</label>
+                                    <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="citaTemp.nombres"  placeholder="Ingrese el nombre" />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="nombre">APELLIDO PATERNO:</label>
+                                    <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="citaTemp.apPaterno"  placeholder="Ingrese el apellido Paterno" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="nombre">APELLIDO MATERNO:</label>
+                                    <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="citaTemp.apMaterno"  placeholder="Ingrese el apellido Materno" />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="encargada">RESPONSABLE DEL CITADO:</label>
+                                <input type="text" class="form-control inputStyle" id="encargada" ng-model="citaTemp.encargado" style="font-weight: bold" />
+                            </div>
+
+                             <div class="form-group">
+                                    <label for="cliente">EMPRESA DESTINO:</label>
+                                    <select class="form-control inputStyle oscuro" id="idempresa" >
+                                        <option disabled style="color: blue; font-weight: bold">SELECCIONE LA EMPRESA:</option>
+                                        <option  ng-repeat="e in empresas" value="{{e.idempresa}}"  >{{e.nombre}} </option>
+                                    </select>
+                                </div>
+
+                            <div class="form-group">
+                                <label for="empresa_proveniente">EMPRESA PROVENIENTE:</label>
+                                <input type="text" class="form-control inputStyle" id="empresa_proveniente" ng-model="citaTemp.empresa_proveniente" style="font-weight: bold" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="observacion">OBSERVACIÓN:</label>
+                                <textarea aria-multiline="true" class="form-control inputStyle" id="observacion" ng-model="citaTemp.observacion" style="font-weight: bold"></textarea>
+                            </div>
+
+                        </form>
+                    </div>
+                    @*<-- Modal Footer -->*@
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">CERRAR</button>
+                        <button type="submit" class="btn btn-primary submitBtn btnSize" ng-click="InsUpdcita(citaTemp)">{{btntext}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+      
+        @* ************************************************************************************************ *@
+        @*<--------------------------------Modal anular cita------------------------------------------>*@
+
+        <div class="modal fade" id="modalDel" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @***************Modal Header************@
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 style="text-align: start; color: red" class="modal-title letra">ANULACIÓN DE CITA  </h4>
+                    </div>
+
+                    @*****************Modal Body************@
+                    <div class="modal-body">
+                        <div class="letra">
+                            Estás seguro de anular la cita programada de 
+                            <label style="color: red">{{citaTemp.persona}}</label>
+                            con DNI
+                            <label style="color: red">{{citaTemp.dni}}</label>?
+
+                        </div>
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary btnSize" ng-click="deletecita()">Aceptar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+
+        @* ************************************************************************************************ *@
+        @*<--------------------------------Modal confirmar cita------------------------------------------>*@
+
+        <div class="modal fade" id="modalConfirmar" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @***************Modal Header************@
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 style="text-align: start; color: blue" class="modal-title letra">CONFIRMACIÓN DE ASISTENCIA DE CITA</h4>
+                    </div>
+
+                    @*****************Modal Body************@
+                    <div class="modal-body">
+                        <div class="letra">
+                            Estás seguro de confirmar la asistencia a la cita programada de 
+                            <label style="color: red">{{citaTemp.persona}}</label>
+                            con DNI
+                            <label style="color: red">{{citaTemp.dni}}</label>?
+                        </div>
+
+                       @* <div class=" letra">
+                            HORA DE INGRESO:<label for="hora" style="font-size: 18px; color: blue">@espacio {{cita.hora}}</label>
+                        </div>*@
+
+                        <div class="form-inline">
+                            <label for="dni">INGRESE EL N° ASIGNADO:</label>
+                            <input type="text" class="form-control inputStyle" ng-model="citaTemp.nroasignado" maxlength="2" onkeypress='return validaNumericos(event)' style="width: 80px; font-weight: bold; text-align: center; font-size: 20px" />
+                        </div>
+                        <br />
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary btnSize" ng-click="confirmarAsistencia()">Aceptar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+         
+        @*<--------------------------------Modal ocultar cita------------------------------------------>*@
+
+        <div class="modal fade" id="modalOcultar" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    @***************Modal Header************@
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 style="text-align: start; color: blue" class="modal-title letra">CUADRO DE CONFIRMACIÓN  </h4>
+                    </div>
+
+                    @*****************Modal Body************@
+                    <div class="modal-body">
+                        <div class="letra">
+                            Estás seguro de ocultar la cita de 
+                            <label style="color: red">{{cita_mod.nombre}}</label>
+                            con DNI
+                            <label style="color: red">{{cita_mod.dni}}</label>?
+                        </div>
+                        <div style="color: gray; font-weight: bold">La cita ya no se podrá visualizar en este panel.</div>
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary btnSize" ng-click="ocultarcita()">Aceptar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+
+        @* *********************************************************************************** *@
+        @* *********************************************************************************** *@
+
+
+
+        @*------jQuery library ------*@
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/angular.min.js"></script>
+        <script src="~/Scripts/moment.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.es.js"></script>
+        @*------Controlador----------*@
+        <script src="~/Scripts/AngularController/citaAngular.js"></script>
+        @*------Extras ------*@
+        <script src="~/Scripts/utilGeneral.js"></script>
+
+    </div>
+
+</div>
+

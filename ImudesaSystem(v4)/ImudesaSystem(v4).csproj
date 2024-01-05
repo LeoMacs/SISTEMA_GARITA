@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{084FC197-5606-444C-B8EB-C494335C49C0}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ImudesaSystem_v4_</RootNamespace>
+    <AssemblyName>ImudesaSystem%28v4%29</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Providers">
+      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.1.2\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AsistenciaController.cs" />
+    <Compile Include="Controllers\CitaController.cs" />
+    <Compile Include="Controllers\EmpresaController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IndeseadosController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
+    <Compile Include="Controllers\SeguroController.cs" />
+    <Compile Include="Controllers\TrabajadorController.cs" />
+    <Compile Include="Controllers\CargaVehicularController.cs" />
+    <Compile Include="Controllers\VisitanteController.cs" />
+    <Compile Include="Esquemas\Imudesa_DS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Imudesa_DS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clases\acceso.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clases\area.cs" />
+    <Compile Include="Models\Clases\asistencia.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\asistencia_mantenimiento.cs" />
+    <Compile Include="Models\Clases\cargaVehicular.cs" />
+    <Compile Include="Models\Clases\seguros.cs" />
+    <Compile Include="Models\Clases\trabajador.cs" />
+    <Compile Include="Models\Mantenimiento\cita_mantenimiento.cs" />
+    <Compile Include="Models\Clases\cita.cs" />
+    <Compile Include="Models\Clases\empresa.cs" />
+    <Compile Include="Models\Clases\indeseado.cs" />
+    <Compile Include="Models\Clases\movimientoPersona.cs" />
+    <Compile Include="Models\Mantenimiento\movimiento_mantenimiento.cs" />
+    <Compile Include="Models\Clases\usuario.cs" />
+    <Compile Include="Models\Mantenimiento\vehiculo_mantenimiento.cs" />
+    <Compile Include="Models\Mantenimiento\empresa_mantenimiento.cs" />
+    <Compile Include="Models\Clases\EntidadBusqueda.cs" />
+    <Compile Include="Models\Clases\Entidades.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Entidades.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clases\Entidades.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clases\Entidades.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Entidades.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Mantenimiento\indeseado_mantenimiento.cs" />
+    <Compile Include="Models\Clases\modulo.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clases\perfil.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clases\seguro.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\seguro_mantenimiento.cs" />
+    <Compile Include="Models\Clases\sucursal.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clases\tbprueba.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clases\trabajadorAuditoria.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Mantenimiento\trabajador_mantenimiento.cs" />
+    <Compile Include="Models\Mantenimiento\usuario_mantenimiento.cs" />
+    <Compile Include="Models\varGlobales.cs" />
+    <Compile Include="Models\varTemporales.cs" />
+    <Compile Include="Models\Clases\visitante.cs">
+      <DependentUpon>Entidades.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\visitante_mantenimiento.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\datepicker.css" />
+    <Content Include="Content\MisEstilos.css" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="imagenes\black_address-book.png" />
+    <Content Include="imagenes\AGUNSAfondo.jpg" />
+    <Content Include="imagenes\AgunsaLogo.png" />
+    <Content Include="imagenes\black_ojo.png" />
+    <Content Include="imagenes\black_plus.png" />
+    <Content Include="imagenes\black_WorkerCheck.png" />
+    <Content Include="imagenes\cancel.png" />
+    <Content Include="imagenes\black_empresa.png" />
+    <Content Include="imagenes\black_checkmark.png" />
+    <Content Include="imagenes\excel.png" />
+    <Content Include="imagenes\fondoAzul.jpg" />
+    <Content Include="imagenes\fondoImupesa.jpg" />
+    <Content Include="imagenes\fondoImupesa2.jpg" />
+    <Content Include="imagenes\black_hogar.png" />
+    <Content Include="imagenes\indeseados.png" />
+    <Content Include="imagenes\black_list.png" />
+    <Content Include="imagenes\logoImudesa.jpg" />
+    <Content Include="imagenes\logoImudesa_SINFONDO.jpg" />
+    <Content Include="imagenes\logoImudesa_SINFONDOMOD.png" />
+    <Content Include="imagenes\LogoSistema.png" />
+    <Content Include="imagenes\black_logout.png" />
+    <Content Include="imagenes\black_walk.png" />
+    <Content Include="imagenes\black_truck.png" />
+    <Content Include="imagenes\lupaBuscar.png" />
+    <Content Include="imagenes\pencilEdit.png" />
+    <Content Include="imagenes\people.png" />
+    <Content Include="imagenes\plus.png" />
+    <Content Include="imagenes\black_sctr.png" />
+    <Content Include="imagenes\trash.png" />
+    <Content Include="imagenes\black_turn-off.png" />
+    <Content Include="imagenes\black_workers.png" />
+    <Content Include="Models\Clases\Entidades.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Entidades.edmx</DependentUpon>
+      <LastGenOutput>Entidades.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Clases\Entidades.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Entidades.edmx</DependentUpon>
+      <LastGenOutput>Entidades.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\angular.min.js.map" />
+    <EntityDeploy Include="Models\Clases\Entidades.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Entidades.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Clases\Entidades.edmx.diagram">
+      <DependentUpon>Entidades.edmx</DependentUpon>
+    </Content>
+    <Content Include="Esquemas\Imudesa_DS.xsc">
+      <DependentUpon>Imudesa_DS.xsd</DependentUpon>
+    </Content>
+    <None Include="Esquemas\Imudesa_DS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Imudesa_DS.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Esquemas\Imudesa_DS.xss">
+      <DependentUpon>Imudesa_DS.xsd</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\webGarita.pubxml" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\AngularController\asistenciaController.js" />
+    <Content Include="Scripts\AngularController\citaAngular.js" />
+    <Content Include="Scripts\AngularController\vehiculoAngular.js" />
+    <Content Include="Scripts\AngularController\empresaAngular.js" />
+    <Content Include="Scripts\AngularController\indeseadoAngular.js" />
+    <Content Include="Scripts\AngularController\menuController.js" />
+    <Content Include="Scripts\AngularController\seguroController.js" />
+    <Content Include="Scripts\AngularController\trabajadorAngular.js" />
+    <Content Include="Scripts\AngularController\usuarioController.js" />
+    <Content Include="Scripts\AngularController\visitanteAngular.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.es.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\header.js" />
+    <Content Include="Scripts\jquery-1.8.2.js" />
+    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-2.2.0.debug.js" />
+    <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\tablas.js" />
+    <Content Include="Scripts\utilGeneral.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Layout-Trabajador.cshtml" />
+    <Content Include="Views\Shared\_Layout-Visita.cshtml" />
+    <Content Include="Views\Asistencia\panelAsistenciaDelDia.cshtml" />
+    <Content Include="Views\Asistencia\RegistroAsistencias.cshtml" />
+    <Content Include="Views\Empresa\Index.cshtml" />
+    <Content Include="Views\Empresa\panelEmpresas.cshtml" />
+    <Content Include="Views\Home\Inicio.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Indeseados\panelListaNegra.cshtml" />
+    <Content Include="Views\Seguro\PanelSeguros.cshtml" />
+    <Content Include="Views\Trabajador\PanelTrabajadores.cshtml" />
+    <Content Include="Views\Visitante\PanelVisitantes.cshtml" />
+    <Content Include="Views\Visitante\RegistroVisitas.cshtml" />
+    <Content Include="Views\Cita\PanelCitas.cshtml" />
+    <Content Include="Views\Cita\RegistroCitas.cshtml" />
+    <Content Include="Views\Shared\_Layout-Cita.cshtml" />
+    <Content Include="Views\Shared\_Layout-Vehiculo.cshtml" />
+    <Content Include="Views\CargaVehicular\PanelVehiculos.cshtml" />
+    <Content Include="Views\CargaVehicular\HistorialVehiculos.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Reportes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_AsistenciasFiltradas.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_Empresas.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_CargaVehicular.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_CitasProgramadasHoy.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_CitasxFiltros.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_CargasFiltradas.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_Indeseados.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_Seguros.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_TrabajadoresGarita.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_CargasHoy.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\ReportListarVisitasxFiltro.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_VisitasDelDia.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_VisitasFiltradas.rdlc" />
+    <EmbeddedResource Include="Plantillas\DiseñoReportes\Report_AsistenciasDelDia.rdlc" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>33096</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:19126/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

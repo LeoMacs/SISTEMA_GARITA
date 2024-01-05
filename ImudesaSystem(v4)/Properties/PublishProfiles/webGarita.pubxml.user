@@ -1,0 +1,359 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Este archivo es utilizado por el proceso de paquete/publicación de nuestro proyecto Web. Puede personalizar el comportamiento de este proceso
+editando este archivo MSBuild. Para conocer más acerca de esto, visite http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
+    <LastUsedPlatform>Any CPU</LastUsedPlatform>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>08/13/2019 20:13:45</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>08/13/2019 20:13:32</publishTime>
+    </File>
+    <File Include="bin/es/EntityFramework.resources.dll">
+      <publishTime>08/13/2019 20:13:49</publishTime>
+    </File>
+    <File Include="bin/es/System.Net.Http.Formatting.resources.dll">
+      <publishTime>08/13/2019 20:13:47</publishTime>
+    </File>
+    <File Include="bin/es/System.Web.Http.resources.dll">
+      <publishTime>08/13/2019 20:13:47</publishTime>
+    </File>
+    <File Include="bin/es/System.Web.Http.WebHost.resources.dll">
+      <publishTime>08/13/2019 20:13:47</publishTime>
+    </File>
+    <File Include="bin/es/System.Web.Mvc.resources.dll">
+      <publishTime>08/13/2019 20:13:46</publishTime>
+    </File>
+    <File Include="bin/es/System.Web.Optimization.resources.dll">
+      <publishTime>08/13/2019 20:13:48</publishTime>
+    </File>
+    <File Include="bin/es/System.Web.Providers.resources.dll">
+      <publishTime>08/13/2019 20:13:48</publishTime>
+    </File>
+    <File Include="bin/es/System.Web.Razor.resources.dll">
+      <publishTime>08/13/2019 20:13:46</publishTime>
+    </File>
+    <File Include="bin/es/System.Web.WebPages.Deployment.resources.dll">
+      <publishTime>08/13/2019 20:13:46</publishTime>
+    </File>
+    <File Include="bin/es/System.Web.WebPages.Razor.resources.dll">
+      <publishTime>08/13/2019 20:13:46</publishTime>
+    </File>
+    <File Include="bin/es/System.Web.WebPages.resources.dll">
+      <publishTime>08/13/2019 20:13:46</publishTime>
+    </File>
+    <File Include="bin/ImudesaSystem%28v4%29.dll">
+      <publishTime>01/31/2021 20:30:55</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>08/13/2019 20:13:41</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Mvc.FixedDisplayModes.dll">
+      <publishTime>08/13/2019 20:13:43</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>08/13/2019 20:13:42</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>08/13/2019 20:13:43</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>08/13/2019 20:13:44</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>08/13/2019 20:13:44</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>08/13/2019 20:13:43</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>08/13/2019 20:13:45</publishTime>
+    </File>
+    <File Include="bin/System.Web.Providers.dll">
+      <publishTime>08/13/2019 20:13:44</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>08/13/2019 20:13:42</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>08/13/2019 20:13:43</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>08/13/2019 20:13:43</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>08/13/2019 20:13:43</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>08/13/2019 20:13:45</publishTime>
+    </File>
+    <File Include="Content/bootstrap-datetimepicker.css">
+      <publishTime>08/13/2019 20:20:25</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>08/13/2019 20:20:25</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>08/17/2019 00:51:20</publishTime>
+    </File>
+    <File Include="Content/datepicker.css">
+      <publishTime>08/13/2019 20:20:25</publishTime>
+    </File>
+    <File Include="Content/MisEstilos.css">
+      <publishTime>09/15/2019 10:04:03</publishTime>
+    </File>
+    <File Include="Content/Site.css">
+      <publishTime>08/13/2019 20:20:25</publishTime>
+    </File>
+    <File Include="DataReportes.xsc">
+      <publishTime>09/18/2019 02:24:20</publishTime>
+    </File>
+    <File Include="DataReportes.xss">
+      <publishTime>09/18/2019 02:24:20</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>08/13/2019 20:10:30</publishTime>
+    </File>
+    <File Include="imagenes/AGUNSAfondo.jpg">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="imagenes/AgunsaLogo.png">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="imagenes/fondoAzul.jpg">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="imagenes/fondoImupesa.jpg">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="imagenes/fondoImupesa2.jpg">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="imagenes/indeseados.png">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="imagenes/logoImudesa.jpg">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="imagenes/logoImudesa_SINFONDO.jpg">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="imagenes/logoImudesa_SINFONDOMOD.png">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="imagenes/LogoSistema.png">
+      <publishTime>08/16/2019 19:45:59</publishTime>
+    </File>
+    <File Include="Models/Clases/Entidades.Context.tt">
+      <publishTime>08/24/2019 11:59:23</publishTime>
+    </File>
+    <File Include="Models/Clases/Entidades.edmx.diagram">
+      <publishTime>09/15/2019 19:17:37</publishTime>
+    </File>
+    <File Include="Models/Clases/Entidades.tt">
+      <publishTime>08/24/2019 11:59:23</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>08/13/2019 20:13:49</publishTime>
+    </File>
+    <File Include="Scripts/angular-mocks.js">
+      <publishTime>08/13/2019 20:21:12</publishTime>
+    </File>
+    <File Include="Scripts/angular.js">
+      <publishTime>08/13/2019 20:21:11</publishTime>
+    </File>
+    <File Include="Scripts/angular.min.js">
+      <publishTime>08/13/2019 20:21:12</publishTime>
+    </File>
+    <File Include="Scripts/angular.min.js.map">
+      <publishTime>08/13/2019 20:21:12</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/asistenciaController.js">
+      <publishTime>09/13/2019 05:19:59</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/citaController.js">
+      <publishTime>09/18/2019 02:09:02</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/empresaController.js">
+      <publishTime>09/01/2019 16:26:21</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/indeseadoController.js">
+      <publishTime>10/23/2020 23:32:59</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/menuController.js">
+      <publishTime>09/16/2019 20:09:36</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/seguroController.js">
+      <publishTime>09/01/2019 16:47:08</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/trabajadorController.js">
+      <publishTime>09/13/2019 05:20:13</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/usuarioController.js">
+      <publishTime>10/07/2020 08:15:49</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/vehiculoController.js">
+      <publishTime>11/11/2020 23:15:02</publishTime>
+    </File>
+    <File Include="Scripts/AngularController/visitanteController.js">
+      <publishTime>10/28/2020 19:27:43</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap-datepicker.js">
+      <publishTime>08/13/2019 20:21:12</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap-datetimepicker.es.js">
+      <publishTime>08/13/2019 20:21:12</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap-datetimepicker.min.js">
+      <publishTime>08/13/2019 20:21:12</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>08/13/2019 20:21:12</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>08/13/2019 20:21:12</publishTime>
+    </File>
+    <File Include="Scripts/header.js">
+      <publishTime>08/13/2019 20:21:12</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.8.2.js">
+      <publishTime>08/13/2019 20:13:37</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.8.2.min.js">
+      <publishTime>08/13/2019 20:13:37</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.3.1.js">
+      <publishTime>08/13/2019 20:21:17</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.3.1.min.js">
+      <publishTime>08/13/2019 20:21:17</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.8.24.js">
+      <publishTime>08/13/2019 20:13:39</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.8.24.min.js">
+      <publishTime>08/13/2019 20:13:39</publishTime>
+    </File>
+    <File Include="Scripts/jquery.unobtrusive-ajax.js">
+      <publishTime>08/13/2019 20:13:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery.unobtrusive-ajax.min.js">
+      <publishTime>08/13/2019 20:13:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.js">
+      <publishTime>08/13/2019 20:21:17</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.min.js">
+      <publishTime>08/13/2019 20:21:17</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.js">
+      <publishTime>08/13/2019 20:13:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.min.js">
+      <publishTime>08/13/2019 20:13:40</publishTime>
+    </File>
+    <File Include="Scripts/knockout-2.2.0.debug.js">
+      <publishTime>08/13/2019 20:13:46</publishTime>
+    </File>
+    <File Include="Scripts/knockout-2.2.0.js">
+      <publishTime>08/13/2019 20:13:45</publishTime>
+    </File>
+    <File Include="Scripts/modernizr-2.6.2.js">
+      <publishTime>08/13/2019 20:13:41</publishTime>
+    </File>
+    <File Include="Scripts/moment-with-locales.min.js">
+      <publishTime>08/13/2019 20:21:17</publishTime>
+    </File>
+    <File Include="Scripts/moment.min.js">
+      <publishTime>08/13/2019 20:21:17</publishTime>
+    </File>
+    <File Include="Scripts/tablas.js">
+      <publishTime>08/13/2019 20:21:17</publishTime>
+    </File>
+    <File Include="Scripts/utilGeneral.js">
+      <publishTime>10/11/2020 02:58:48</publishTime>
+    </File>
+    <File Include="Scripts/_references.js">
+      <publishTime>08/13/2019 20:13:41</publishTime>
+    </File>
+    <File Include="Views/Asistencia/panelAsistenciaDelDia.cshtml">
+      <publishTime>09/01/2019 13:23:19</publishTime>
+    </File>
+    <File Include="Views/Asistencia/RegistroAsistencias.cshtml">
+      <publishTime>09/01/2019 15:20:24</publishTime>
+    </File>
+    <File Include="Views/CargaVehicular/PanelVehiculos.cshtml">
+      <publishTime>11/01/2020 21:59:17</publishTime>
+    </File>
+    <File Include="Views/CargaVehicular/RegistroVehiculos.cshtml">
+      <publishTime>11/03/2020 20:35:36</publishTime>
+    </File>
+    <File Include="Views/Cita/PanelCitas.cshtml">
+      <publishTime>09/28/2019 12:07:24</publishTime>
+    </File>
+    <File Include="Views/Cita/RegistroCitas.cshtml">
+      <publishTime>09/13/2019 04:34:50</publishTime>
+    </File>
+    <File Include="Views/Empresa/Index.cshtml">
+      <publishTime>08/16/2019 19:43:13</publishTime>
+    </File>
+    <File Include="Views/Empresa/panelEmpresas.cshtml">
+      <publishTime>09/01/2019 16:27:32</publishTime>
+    </File>
+    <File Include="Views/Home/Inicio.cshtml">
+      <publishTime>09/13/2019 20:17:43</publishTime>
+    </File>
+    <File Include="Views/Home/Login.cshtml">
+      <publishTime>09/25/2019 22:50:51</publishTime>
+    </File>
+    <File Include="Views/Indeseados/panelListaNegra.cshtml">
+      <publishTime>10/23/2020 23:32:12</publishTime>
+    </File>
+    <File Include="Views/Seguro/PanelSeguros.cshtml">
+      <publishTime>09/03/2019 19:56:17</publishTime>
+    </File>
+    <File Include="Views/Shared/Error.cshtml">
+      <publishTime>08/13/2019 20:10:30</publishTime>
+    </File>
+    <File Include="Views/Shared/Layout-Vehiculo.cshtml">
+      <publishTime>09/16/2019 20:08:22</publishTime>
+    </File>
+    <File Include="Views/Shared/_Layout-Cita.cshtml">
+      <publishTime>09/13/2019 05:12:49</publishTime>
+    </File>
+    <File Include="Views/Shared/_Layout-Trabajador.cshtml">
+      <publishTime>10/25/2020 10:48:48</publishTime>
+    </File>
+    <File Include="Views/Shared/_Layout-Visita.cshtml">
+      <publishTime>10/22/2020 07:53:22</publishTime>
+    </File>
+    <File Include="Views/Shared/_Layout.cshtml">
+      <publishTime>08/13/2019 20:10:30</publishTime>
+    </File>
+    <File Include="Views/Trabajador/PanelTrabajadores.cshtml">
+      <publishTime>09/01/2019 16:55:42</publishTime>
+    </File>
+    <File Include="Views/Visitante/PanelVisitantes.cshtml">
+      <publishTime>10/25/2020 08:45:50</publishTime>
+    </File>
+    <File Include="Views/Visitante/RegistroVisitas.cshtml">
+      <publishTime>11/03/2020 19:01:48</publishTime>
+    </File>
+    <File Include="Views/Web.config">
+      <publishTime>08/13/2019 20:10:30</publishTime>
+    </File>
+    <File Include="Views/_ViewStart.cshtml">
+      <publishTime>08/13/2019 20:10:30</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>01/31/2021 20:30:57</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

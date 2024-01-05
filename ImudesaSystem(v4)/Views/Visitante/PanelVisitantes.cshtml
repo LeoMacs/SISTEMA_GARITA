@@ -1,0 +1,297 @@
+﻿@{
+    ViewBag.Title = "PanelVisitantes";
+    Layout = "~/Views/Shared/_Layout-Visita.cshtml";
+
+
+    string fechaActual = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+    string fechaActualf = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+
+    String espacio = " ";
+
+    //DateTime servidorForaneo = DateTime.Now.AddHours(2);
+    //var horaActual = servidorForaneo.ToString("HH:mm");
+
+    //var horaActual = System.DateTime.Now.ToString("HH:mm");
+}
+
+
+<div ng-app="app">
+    <div ng-controller="myController">
+        @* ************************************************** *@
+        @* ************************************************** *@
+        <div style="text-align: center">
+            <h1 class="oscuro">Panel de Visitantes </h1>
+            <h1 style="color: red;"><strong>Hoy: @fechaActual</strong></h1>
+        </div>
+        <br />
+        <br />
+
+
+        <div class="form-inline container">
+            <label class=" col-form-label" style="color: black" for="filtro">Palabra Clave:</label>
+            <input type="text" class=" form-control inputStyle" name="filtro" id="filtro" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+
+            <button id="buttonAdd" style ="float: right; margin-bottom: 0px" class="btn btn-primary btnCircular form-inline" ng-click="pushRegMod1()" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-plus"></i>Agregar Visita</button>
+
+        </div>
+
+        <div class="container">
+            <div class="form-inline letra">
+                <label>Total de visitas:</label>
+                <input value="{{numvisitashoy}}" readonly="true" style="width: 50px; height: 25px; text-align: center; font-weight: bold; color: blue; font-size: 18px" />
+            </div>
+            <table class="table table-bordered table-responsive-xl" id="tablaDatos">
+                <thead style="color: white; background-color: red">
+                    <tr>
+                        <th style="text-align: center" hidden>Fecha</th>
+                        <th style="text-align: center">Hora de Entrada</th>
+                        <th style="text-align: center">Hora de Salida</th>
+                        <th style="text-align: center">Nombre</th>
+                        <th style="text-align: center">Dni</th>
+                        <th style="text-align: center">Destino</th>
+                        <th style="text-align: center">Encargado</th>
+                        <th style="text-align: center">Empresa Proveniente</th>
+                        <th style="text-align: center">Nro Asignado</th>
+                        <th style="text-align: center">Editar</th>
+                        <th style="text-align: center" >Eliminar</th>
+                        <th style="text-align: center">Marcar Salida</th>
+
+
+                    </tr>
+                </thead>
+                <tbody style="text-align: center">
+
+                    <tr ng-repeat="v in visitas">
+
+                        <td style="font-weight: bold" hidden>{{v.fecha}}
+                        </td>
+                        <td style="color: green; font-weight: bold; font-size: 18px">{{v.horaentrada}}
+                        </td>
+                        <td style="color: red; font-weight: bold; font-size: 18px">{{v.horasalida}}
+                        </td>
+                        <td style="color: blue; font-weight: bold">{{v.persona}}
+                        </td>
+                        <td style="color: blue; font-weight: bold">{{v.dni}}
+                        </td>
+                        <td style="font-weight: bold">{{v.destino}}
+                        </td>
+
+                        <td style="font-weight: bold">{{v.encargado}}
+
+                        </td>
+                        <td style="color: blue; font-weight: bold">{{v.empresa_proveniente}}
+                        </td>
+
+                        <td style="color: blue; font-weight: bold; font-size: 25px">{{v.nroasignado}}
+                        </td>
+
+
+                        <td><button ng-disabled="{{v.noedit}}" class="btn btn-primary" ng-click="pushRegMod2(v)" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-pencil"></i></button></td>
+                        <td><button ng-disabled="{{v.nodelete}}" class="btn btnEliminar" ng-click="pushEliminar(v)" data-toggle="modal" data-target="#modalDelete"><i class="glyphicon glyphicon-trash" style="color: white"></i></button></td>
+                        @* ********************************************* *@
+                        <td style="font-family: Calibri">
+                            <button ng-disabled="{{v.sisalida}}" class="btn btn-success" ng-click="pushConfirmarSalida(v)" data-toggle="modal" data-target="#modalSalida"><i style="color: white">REGISTRAR</i></button>                           
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            @* ******************************************* *@
+            <div style="float: right; margin-right: 0px">
+                <button id="buttonExport"  class="btn btn-primary" ng-click="reporteDelDia()" style="float: right; margin-right: 0px"><i style="font-size: 20px; color: green; font-weight: bold" class="fa fa-file-excel-o"></i>@espacio Descargar</button>
+            </div>
+            @* ******************************************* *@
+            <br />
+        </div>
+
+
+        @*--------------------------------------------------------------*@
+        @*--------------------INS UPD visitante---------------------------*@
+        @*<-- Modal -->*@
+        <div class="modal fade" id="modalInsUpd" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @*<-- Modal Header -->*@
+                    <div class="modal-header btn-primary">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title contenidoCentrado oscuro">FORMULARIO DE VISITANTE</h4>
+                    </div>
+                    @*<-- Modal Body -->*@
+                    <div class="modal-body">
+                        <p class="statusMsg" id="mensajeValidar">{{mensaje}}</p>
+                        <form role="form" novalidate>
+                            <div class="form-group row ">
+                                <div class="col-sm-6">
+                                    <label for="fecha">FECHA:</label>
+                                    <input type="text" class="form-control inputStyle oscuro" style="width: 200px" ng-model="visita.fecha" ng-readonly="true" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="hora">HORA DE ENTRADA:</label>
+                                    <input type="text" class="form-control inputStyle oscuro" style="width: 200px" ng-model="visita.horaentrada" ng-readonly="true" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="dni">DNI:</label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control inputStyleMd" maxlength="10" onkeypress='return validaNumericos(event)' ng-model="visita.dni" id="dni" placeholder="Ingrese el dni" />
+                                        <button type="button" class="btn btn-primary" ng-click="buscarPersona()"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label for="nombre">NOMBRE:</label>
+                                    <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="visita.nombres" id="nombre" placeholder="Ingrese el nombre" />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="nombre">APELLIDO PATERNO:</label>
+                                    <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="visita.apPaterno" id="apPaterno" placeholder="Ingrese el apellido Paterno" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="nombre">APELLIDO MATERNO:</label>
+                                    <input type="text" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="visita.apMaterno" id="apMaterno" placeholder="Ingrese el apellido Materno" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="destino">DESTINO:</label>
+                                    <input type="text" class="form-control inputStyle " onkeyup="mayusculas(this);" ng-model="visita.destino" id="destino" placeholder="Ingrese el destino" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="encargado">ENCARGADO:</label>
+                                    <input type="text" class="form-control inputStyle " onkeyup="mayusculas(this);" ng-model="visita.encargado" id="encargado" placeholder="Ingrese el encargado" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="empresa_proveniente">EMPRESA PROVENIENTE:</label>
+                                    <input type="text" class="form-control inputStyle " onkeyup="mayusculas(this);" ng-model="visita.empresa_proveniente" id="empresa_proveniente" placeholder="Ingrese el proveedor" />
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="numero">NÚMERO ASIGNADO:</label>
+                                    <input type="text" class="form-control inputStyleSm" maxlength="4" onkeypress='return validaNumericos(event)' ng-model="visita.nroasignado" id="numero" placeholder="N°" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="empresa_proveniente">OBSERVACIÓN:</label>
+                                <input type="text" class="form-control inputStyle " onkeyup="mayusculas(this);" ng-model="visita.observacion" id="observacion" placeholder="Ingrese observación" />
+                            </div>
+
+                        </form>
+                    </div>
+                    @*<-- Modal Footer -->*@
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">CERRAR</button>
+                        <button type="submit" class="btn btn-primary submitBtn btnSize" ng-click="insupd_visita(visita)">{{btntext}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*----------------------------End Agregar------------------------------*@@*--------------------------------------------------------------*@
+
+
+
+
+
+        @* ************************************************************************************************ *@
+        @*<--------------------------------Modal Registrar Salida------------------------------------------>*@
+
+        <div class="modal fade" id="modalSalida" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @***************Modal Header************@
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h2 style="text-align: start; color: blue" class="modal-title">CONFIRMACIÓN DE SALIDA  </h2>
+                    </div>
+
+                    @*****************Modal Body************@
+                    <div class="modal-body">
+                        <div>
+                            Estás seguro de registrar la salida de 
+                            <label style="color: red">{{visita.persona}}</label>?
+
+                        </div>
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary btnSize" ng-click="marcarsalida()">Aceptar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+        
+        @* ************************************************************************************************ *@
+        @*<--------------------------------Modal anular visita------------------------------------------>*@
+
+        <div class="modal fade" id="modalDelete" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @***************Modal Header************@
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h2 style="text-align: start; color: blue" class="modal-title">CONFIRMACIÓN DE ANULACIÓN DE VISITA  </h2>
+                    </div>
+
+                    @*****************Modal Body************@
+                    <div class="modal-body">
+                        <div>
+                            Estás seguro de anular la visita de  
+                            <label style="color: red">{{visita.persona}}</label>
+                              con DNI
+                            <label style="color: red">{{visita.dni}}</label>?
+                        </div>
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary btnSize" ng-click="deletevisita()">Aceptar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+
+        @*---------------------------------------------------------------------*@
+        @* ****************INICIO RECURSOS JS************* *@
+        @*------jQuery library ------*@
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/angular.min.js"></script>
+        <script src="~/Scripts/moment.min.js"></script>
+        @*------Controlador----------*@
+        <script src="~/Scripts/AngularController/visitanteAngular.js"></script>
+        @*------Extras ------*@
+        <script src="~/Scripts/utilGeneral.js"></script>
+
+
+        @* ****************FIN RECURSOS JS**************** *@
+        @* **************************************************** *@
+        @* **************************************************** *@
+
+    </div>
+</div>

@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ImudesaGaritaModel1StoreContainer" CdmEntityContainer="ImudesaGaritaEntities1">
+    <EntitySetMapping Name="acceso">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.acceso">
+        <MappingFragment StoreEntitySet="acceso">
+          <ScalarProperty Name="idacceso" ColumnName="idacceso" />
+          <ScalarProperty Name="idusuario" ColumnName="idusuario" />
+          <ScalarProperty Name="idmodulo" ColumnName="idmodulo" />
+          <ScalarProperty Name="codopcion" ColumnName="codopcion" />
+          <ScalarProperty Name="ver" ColumnName="ver" />
+          <ScalarProperty Name="grabar" ColumnName="grabar" />
+          <ScalarProperty Name="anular" ColumnName="anular" />
+          <ScalarProperty Name="fecregistro" ColumnName="fecregistro" />
+          <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="apcistcontrol">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.apcistcontrol">
+        <MappingFragment StoreEntitySet="apcistcontrol">
+          <ScalarProperty Name="idcontrol" ColumnName="idcontrol" />
+          <ScalarProperty Name="fechaentrada" ColumnName="fechaentrada" />
+          <ScalarProperty Name="horaentrada" ColumnName="horaentrada" />
+          <ScalarProperty Name="fechasalida" ColumnName="fechasalida" />
+          <ScalarProperty Name="horasalida" ColumnName="horasalida" />
+          <ScalarProperty Name="idtrabajador" ColumnName="idtrabajador" />
+          <ScalarProperty Name="turno" ColumnName="turno" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="apcistsedes">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.apcistsedes">
+        <MappingFragment StoreEntitySet="apcistsedes">
+          <ScalarProperty Name="idsede" ColumnName="idsede" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="apcisttrabajador">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.apcisttrabajador">
+        <MappingFragment StoreEntitySet="apcisttrabajador">
+          <ScalarProperty Name="idtrabajador" ColumnName="idtrabajador" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="apellidoPaterno" ColumnName="apellidoPaterno" />
+          <ScalarProperty Name="apellidoMaterno" ColumnName="apellidoMaterno" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="cargo" ColumnName="cargo" />
+          <ScalarProperty Name="identificador" ColumnName="identificador" />
+          <ScalarProperty Name="sede" ColumnName="sede" />
+          <ScalarProperty Name="activo" ColumnName="activo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="asistencia">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.asistencia">
+        <MappingFragment StoreEntitySet="asistencia">
+          <ScalarProperty Name="idasistencia" ColumnName="idasistencia" />
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="horainicio" ColumnName="horainicio" />
+          <ScalarProperty Name="horasalida" ColumnName="horasalida" />
+          <ScalarProperty Name="idtrabajador" ColumnName="idtrabajador" />
+          <ScalarProperty Name="empresa" ColumnName="empresa" />
+          <ScalarProperty Name="fecregistro" ColumnName="fecregistro" />
+          <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+          <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cita">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.cita">
+        <MappingFragment StoreEntitySet="cita">
+          <ScalarProperty Name="idcita" ColumnName="idcita" />
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="hora" ColumnName="hora" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="destino" ColumnName="destino" />
+          <ScalarProperty Name="encargada" ColumnName="encargada" />
+          <ScalarProperty Name="empresa_proveniente" ColumnName="empresa_proveniente" />
+          <ScalarProperty Name="observacion" ColumnName="observacion" />
+          <ScalarProperty Name="idcitador" ColumnName="idcitador" />
+          <ScalarProperty Name="estado" ColumnName="estado" />
+          <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+          <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="empresa">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.empresa">
+        <MappingFragment StoreEntitySet="empresa">
+          <ScalarProperty Name="idempresa" ColumnName="idempresa" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="usucreacion" ColumnName="usucreacion" />
+          <ScalarProperty Name="feccreacion" ColumnName="feccreacion" />
+          <ScalarProperty Name="usumodificacion" ColumnName="usumodificacion" />
+          <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+          <ScalarProperty Name="conSeguro" ColumnName="conSeguro" />
+          <ScalarProperty Name="ruc" ColumnName="ruc" />
+          <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="indeseado">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.indeseado">
+        <MappingFragment StoreEntitySet="indeseado">
+          <ScalarProperty Name="idindeseado" ColumnName="idindeseado" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="cargo" ColumnName="cargo" />
+          <ScalarProperty Name="empresa" ColumnName="empresa" />
+          <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+          <ScalarProperty Name="observacion" ColumnName="observacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="modulo">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.modulo">
+        <MappingFragment StoreEntitySet="modulo">
+          <ScalarProperty Name="idmodulo" ColumnName="idmodulo" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="perfil">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.perfil">
+        <MappingFragment StoreEntitySet="perfil">
+          <ScalarProperty Name="idperfil" ColumnName="idperfil" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="seguro">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.seguro">
+        <MappingFragment StoreEntitySet="seguro">
+          <ScalarProperty Name="idseguro" ColumnName="idseguro" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="nrosalud" ColumnName="nrosalud" />
+          <ScalarProperty Name="nropoliza" ColumnName="nropoliza" />
+          <ScalarProperty Name="fechainicio" ColumnName="fechainicio" />
+          <ScalarProperty Name="fechafin" ColumnName="fechafin" />
+          <ScalarProperty Name="idempresa" ColumnName="idempresa" />
+          <ScalarProperty Name="flagactivo" ColumnName="flagactivo" />
+          <ScalarProperty Name="usucreacion" ColumnName="usucreacion" />
+          <ScalarProperty Name="feccreacion" ColumnName="feccreacion" />
+          <ScalarProperty Name="usumodificacion" ColumnName="usumodificacion" />
+          <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+          <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbprueba">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.tbprueba">
+        <MappingFragment StoreEntitySet="tbprueba">
+          <ScalarProperty Name="idprueba" ColumnName="idprueba" />
+          <ScalarProperty Name="fecd" ColumnName="fecd" />
+          <ScalarProperty Name="fecdt" ColumnName="fecdt" />
+          <ScalarProperty Name="nomusu" ColumnName="nomusu" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="trabajador">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.trabajador">
+        <MappingFragment StoreEntitySet="trabajador">
+          <ScalarProperty Name="idtrabajador" ColumnName="idtrabajador" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="cargo" ColumnName="cargo" />
+          <ScalarProperty Name="area" ColumnName="area" />
+          <ScalarProperty Name="habilitado" ColumnName="habilitado" />
+          <ScalarProperty Name="idempresa" ColumnName="idempresa" />
+          <ScalarProperty Name="usuregistro" ColumnName="usuregistro" />
+          <ScalarProperty Name="fecregistro" ColumnName="fecregistro" />
+          <ScalarProperty Name="usumodificacion" ColumnName="usumodificacion" />
+          <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+          <ScalarProperty Name="fecretiro" ColumnName="fecretiro" />
+          <ScalarProperty Name="fecingreso" ColumnName="fecingreso" />
+          <ScalarProperty Name="conSeguro" ColumnName="conSeguro" />
+          <ScalarProperty Name="rutaimage" ColumnName="rutaimage" />
+          <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="trabajadorAuditoria">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.trabajadorAuditoria">
+        <MappingFragment StoreEntitySet="trabajadorAuditoria">
+          <ScalarProperty Name="idtrabaud" ColumnName="idtrabaud" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="cargo" ColumnName="cargo" />
+          <ScalarProperty Name="area" ColumnName="area" />
+          <ScalarProperty Name="idempresa" ColumnName="idempresa" />
+          <ScalarProperty Name="idtrabajador" ColumnName="idtrabajador" />
+          <ScalarProperty Name="feccreacion" ColumnName="feccreacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuario">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.usuario">
+        <MappingFragment StoreEntitySet="usuario">
+          <ScalarProperty Name="idusuario" ColumnName="idusuario" />
+          <ScalarProperty Name="cuenta" ColumnName="cuenta" />
+          <ScalarProperty Name="clave" ColumnName="clave" />
+          <ScalarProperty Name="tipocuenta" ColumnName="tipocuenta" />
+          <ScalarProperty Name="activo" ColumnName="activo" />
+          <ScalarProperty Name="fecregistro" ColumnName="fecregistro" />
+          <ScalarProperty Name="nombreusuario" ColumnName="nombreusuario" />
+          <ScalarProperty Name="idperfil" ColumnName="idperfil" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="visitante">
+      <EntityTypeMapping TypeName="ImudesaGaritaModel1.visitante">
+        <MappingFragment StoreEntitySet="visitante">
+          <ScalarProperty Name="idvisitante" ColumnName="idvisitante" />
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="horaentrada" ColumnName="horaentrada" />
+          <ScalarProperty Name="horasalida" ColumnName="horasalida" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="destino" ColumnName="destino" />
+          <ScalarProperty Name="encargado" ColumnName="encargado" />
+          <ScalarProperty Name="empresa_proveniente" ColumnName="empresa_proveniente" />
+          <ScalarProperty Name="observacion" ColumnName="observacion" />
+          <ScalarProperty Name="nroasignado" ColumnName="nroasignado" />
+          <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+          <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

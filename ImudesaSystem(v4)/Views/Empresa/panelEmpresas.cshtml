@@ -1,0 +1,250 @@
+﻿@{
+    ViewBag.Title = "Panel de Empresas";
+    Layout = "~/Views/Shared/_Layout-Trabajador.cshtml";
+
+}
+<!DOCTYPE html>
+
+<div ng-app="app">
+
+
+    <div ng-controller="myController">
+
+
+
+        <div>
+            <div>
+                <div style="text-align: center">
+                    <h1 class="oscuro">Panel de Empresas </h1>
+                </div>
+                <br />
+                <br />
+
+
+                <div class="form-inline container table-responsive">
+
+                    <label class=" col-form-label" style="color: black" for="filtro">Palabra Clave:</label>
+                    <input type="text" class=" form-control" name="filtro" id="filtro" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+                    <button style="float: right; margin-bottom: 10px; margin-left: 0px" class="btn btn-primary btnCircular " ng-click="pushRegMod1()" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-plus"></i>Agregar Empresa</button>
+                </div>
+
+
+                <div class="container">
+                    <div class="form-inline letra">
+                        <label>Total de empresas:</label>
+                        <input value="{{numempresas}}" readonly="true" style="width: 50px; height: 25px; text-align: center; font-weight: bold; color: blue; font-size: 18px" />
+                    </div>
+                    <table class="table table-bordered table-responsive-xl" id="tablaDatos">
+                        <thead style="color: white; background-color: red">
+                            <tr>
+                                <th style="text-align: center">RUC</th>
+                                <th style="text-align: center">NOMBRE</th>
+                                <th style="text-align: center">Descripción</th>
+                                <th style="text-align: center">PERSONAL</th>
+                                <th style="text-align: center">SCTR</th>
+                                <th style="text-align: center">EDITAR</th>
+                                @*<th style="text-align: center">ELIMINAR</th>*@
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: center">
+
+
+                            <tr ng-repeat="e in empresas">
+
+                                <td style="color: #0026ff; font-weight: bold">{{e.ruc}}
+                                </td>
+
+                                <td style="color: #0026ff; font-weight: bold">{{e.nombre}}
+                                </td>
+
+
+                                <td>{{e.descripcion}}
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-primary" ng-click="pushPersonal(e)" data-toggle="modal" data-target="#modalPersonal">
+                                        <img src="../../Imagenes/people.png" style="height: 20px; width: 20px;" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" ng-click="pushSctr(e)" data-toggle="modal" data-target="#modalSCTR"><i class="glyphicon glyphicon-plus-sign"></i></button>
+                                </td>
+
+
+                                <td>
+                                    <button type="button" class="btn btn-primary" ng-click="pushRegMod2(e)" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-pencil"></i></button>
+
+                                </td>
+                                @*<td><a class="btn btnEliminar"><i style="color: white" class="glyphicon glyphicon-trash"></i></a></td>*@
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <a ng-click="reporteempresas()" class="btn btn-primary" style="float: right;"><i style="font-size: 20px; color: green; font-weight: bold" class="fa fa-file-excel-o"></i>Descargar</a>
+
+                </div>
+
+            </div>
+            @*<--------------------------------Modal Personal de empresa------------------------------------------>*@
+            <div class="modal fade" id="modalPersonal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @*Modal Header*@
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h3 style="text-align: center" class="modal-title" id="myModalLabel">Personal de la Empresa <strong>{{nombreEmpresa}}</strong></h3>
+                        </div>
+
+                        @*Modal Body*@
+                        <div class="modal-body">
+                            <div>
+                                <div class="form-inline container table-responsive">
+
+                                    <label class=" col-form-label" style="color: black" for="filtroModal">Palabra Clave:</label>
+                                    <input type="text" class=" form-control" name="filtroModal" id="filtroModal" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+
+                                </div>
+                                <br />
+                                <div class="form-inline letra">
+                                    <label>Total de trabajadores activos:</label>
+                                    <input value="{{numtrabajadores}}" readonly="true" style="width: 50px; height: 25px; text-align: center; font-weight: bold; color: blue; font-size: 18px" />
+                                </div>
+                                <table class="table table-bordered table-responsive">
+                                    <thead style="color: white; background-color: red">
+                                        <tr>
+                                            <th style="text-align: center">Nombre</th>
+                                            <th style="text-align: center">Dni</th>
+                                            <th style="text-align: center">Cargo</th>
+                                            <th style="text-align: center">Area</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody style="text-align: center" id="tablaDatosModal">
+                                        <tr ng-repeat="t in trabajadores">
+                                            <td>{{t.nombre}}
+                                            </td>
+
+                                            <td>{{t.dni}}
+                                            </td>
+
+                                            <td>{{t.cargo}}
+                                            </td>
+                                            <td>{{t.area}}
+
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+            @*<--------------------------------Modal SCTR de empresa------------------------------------------>*@
+            <div class="modal fade" id="modalSCTR" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @*Modal Header*@
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h3 style="text-align: center" class="modal-title" id="myModalLabel">SCTR de la Empresa {{nombreEmpresa}}</h3>
+                        </div>
+
+                        @*Modal Body*@
+                        <div class="modal-body">
+                            <p>
+                                Cia Seguro:<strong> {{seguro.nombre}}</strong>
+                            </p>
+                            <p>Número de Salud:<strong>{{seguro.nrosalud}}</strong> </p>
+                            <p>Número de Póliza:<strong>{{seguro.nropoliza}}</strong> </p>
+                            <p>Fecha de Inicio:<strong>{{seguro.fechainicio}}</strong> </p>
+                            <p>Fecha de Fin:<strong>{{seguro.fechafin}}</strong> </p>
+                        </div>
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+            @*<--------------------------------Modal agregar/ actualizar empresas------------------------------------------>*@
+            @*<-- Modal -->*@
+            <div class="modal fade" id="modalInsUpd" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @*<-- Modal Header -->*@
+                        <div class="modal-header btn-primary">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title contenidoCentrado oscuro" id="myModalLabel">FORMULARIO DE EMPRESA</h4>
+                        </div>
+                        @*<-- Modal Body -->*@
+                        <div class="modal-body">
+                            <p class="statusMsg" id="mensajeValidar">{{mensaje}}</p>
+                            <form role="form" novalidate>
+
+                                 <div class="form-group">
+                                    <label for="inputName">RUC:</label>
+                                    <input type="text" class="form-control inputStyle" ng-model="empresa.ruc" ng-required="true" id="ruc" placeholder="Ingrese el RUC" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputName">Nombre:</label>
+                                    <input type="text" class="form-control inputStyle" ng-model="empresa.nombre" ng-required="true" id="nombre" placeholder="Ingrese el nombre" />
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="descripcion">Descripción:</label>
+                                    <textarea type="text" class="form-control inputStyle" ng-model="empresa.descripcion" id="descripcion" placeholder="Ingrese la descripción"></textarea>
+                                </div>
+
+                            </form>
+                        </div>
+                        @*<-- Modal Footer -->*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">CERRAR</button>
+                            <button type="submit" class="btn btn-primary submitBtn btnSize" ng-click="insupd_empresa(empresa)">{{btntext}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+            
+        </div>
+
+
+        @*------jQuery library ------*@
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/angular.min.js"></script>
+        @*------Controlador----------*@
+        <script src="~/Scripts/AngularController/empresaAngular.js"></script>
+        @*------Extras ------*@
+        <script src="~/Scripts/utilGeneral.js"></script>
+
+
+    </div>
+</div>

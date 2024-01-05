@@ -1,0 +1,232 @@
+﻿@{
+    ViewBag.Title = "Panel Asistencia de Trabajadores del Día";
+    Layout = "~/Views/Shared/_Layout-Trabajador.cshtml";
+}
+
+@{
+
+
+
+    var fechaActual = System.DateTime.Now.ToString("dd/MM/yyyy");
+
+    DateTime servidorForaneo = DateTime.Now.AddHours(2);
+    var horaActual = servidorForaneo.ToString("HH:mm");
+
+}
+
+
+
+<div ng-app="app">
+
+    <div ng-controller="myController">
+
+
+
+        <div style="text-align: center">
+            <h1><strong>Panel de Asistencias de Trabajadores</strong></h1>
+            <h1 style="color: red"><strong>Hoy: @fechaActual</strong></h1>
+        </div>
+        <br />
+        <br />
+
+
+        <div class="form-inline container table-responsive">
+
+            <label class=" col-form-label" style="color: black" for="filtro">Palabra Clave:</label>
+            <input type="text" class=" form-control" name="filtro" id="filtro" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+            <button style="float: right; margin-bottom: 0px; margin-left: 0px" class="btn btn-primary btnCircular " ng-click="pushTrabajadores()" data-toggle="modal" data-target="#modalTrabajadores"><i class="glyphicon glyphicon-plus"></i>Registrar Ingreso</button>
+
+        </div>
+
+        <div class="container">
+            <div class="form-inline letra">
+                <label >Total de asistencias:</label>
+                <input  value="{{numasistenciashoy}}" readonly="true" style="width:50px;height:25px;text-align:center;font-weight:bold;color: blue; font-size: 18px"/>
+            </div>
+            <table class="table table-bordered table-responsive-xl" id="tablaDatos">
+                <thead style="color: white; background-color: red">
+                    <tr>
+                        <th style="text-align: center">FECHA</th>
+                        <th style="text-align: center">HORA INGRESO</th>
+                        <th style="text-align: center">HORA SALIDA</th>
+                        <th style="text-align: center">NOMBRE</th>
+                        <th style="text-align: center">DNI</th>
+                        <th style="text-align: center">EMPRESA</th>
+                        <th style="text-align: center">MARCAR SALIDA</th>
+
+                    </tr>
+                </thead>
+                <tbody style="text-align: center">
+
+                    <tr ng-repeat="a in asistencias">
+                        <td style="font-weight: bold">{{a.fecha}}
+                        </td>
+                        <td style="color: green; font-weight: bold; font-size: 18px">{{a.horainicio}}
+                        </td>
+                        <td style="color: red; font-weight: bold; font-size: 18px">{{a.horasalida}}
+                        </td>
+
+                        <td style="color: #0026ff; font-weight: bold">{{a.nombre}}
+                        </td>
+                        <td style="color: #0026ff; font-weight: bold">{{a.dni}}
+                        </td>
+                        <td style="color: #0026ff; font-weight: bold">{{a.empresa}}
+
+                        </td>
+                        <td style="font-family: Calibri">
+                            <button ng-disabled="{{a.deshabilitado}}" class="btn btn-success" ng-click="pushConfirmarSalida(a)" data-toggle="modal" data-target="#modalSalida"><i style="color: white">REGISTRAR</i></button>
+                            @*<script type='text/javascript'>
+<!--    Genero: ProgramasProgramacion.com
+                                var t = "202020202020202020202020202020202020202020202020202020203c627574746f6e20206e672d64697361626c65643d227b7b612e6573746164426f746f6e7d7d2220636c6173733d2262746e2062746e2d7375636365737322206e672d636c69636b3d2270757368436f6e6669726d617253616c6964612861292220646174612d746f67676c653d226d6f64616c2220646174612d7461726765743d22236d6f64616c53616c696461223e3c69207374796c653d22636f6c6f723a20776869746522203e5245474953545241523c2f693e3c2f627574746f6e3e0d0a"; for (i = 0; i < t.length; i += 2) { document.write(String.fromCharCode(parseInt(t.substr(i, 2), 16))); }
+//-->
+                            </script>*@
+
+                            @* *********************** *@
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+            <a ng-click="reporteDelDia()" class="btn btn-primary" style="float: right; margin-right: 0px"><i style="font-size: 20px; color: green; font-weight: bold" class="fa fa-file-excel-o"></i>Descargar</a>
+
+        </div>
+
+        @* *********************************************************************************************************@
+        @*<--------------------------------Modal Trabajadores asistencia------------------------------------------>*@
+
+        <div class="modal fade" id="modalTrabajadores" role="dialog">
+            <div class="modal-dialog" style="width: 80%">
+                <div class="modal-content">
+                    @***************Modal Header************@
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h2 style="text-align: center; color: blue" class="modal-title" id="myModalLabel">LISTA DE TRABAJADORES  </h2>
+                    </div>
+
+                    @*****************Modal Body************@
+                    <div class="modal-body">
+                        <div>
+                            <div class="form-inline container table-responsive">
+
+                                <label class=" col-form-label" style="color: black" for="filtroModal">Palabra Clave:</label>
+                                <input type="text" class=" form-control" name="filtroModal" id="filtroModal" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+
+                            </div>
+                            <br />
+                            <table class="table table-bordered table-responsive">
+                                <thead style="color: white; background-color: red">
+                                    <tr>
+                                        <th style="text-align: center">FECHA</th>
+                                        <th style="text-align: center">HORA INGRESO</th>
+                                        <th style="text-align: center">NOMBRE</th>
+                                        <th style="text-align: center">DNI</th>
+                                        <th style="text-align: center">EMPRESA</th>
+                                        <th style="text-align: center">CIA SCTR</th>
+                                        <th style="text-align: center">FIN DE SCTR</th>
+                                        <th style="text-align: center">ESTADO</th>
+                                        <th style="text-align: center">MARCAR ASISTENCIA</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody style="text-align: center" id="tablaDatosModal">
+                                    <tr ng-repeat="t in trabajadores">
+                                        <td>{{t.fecha}}
+                                        </td>
+                                        <td>{{t.hora}}
+                                        </td>
+
+                                        <td class="letra">{{t.nombre}}
+                                        </td>
+                                        <td class="letra">{{t.dni}}
+                                        </td>
+                                        <td>{{t.empresa}}
+                                        </td>
+                                        <td>{{t.nombreSeguro}}
+                                        </td>
+                                        <td>{{t.fechafinal}}
+                                        </td>
+
+                                        <td style="color: {{t.colorSctr}}">{{t.estado}}
+                                        </td>
+
+                                        <td>
+                                            <button class="btn btn-success" ng-click="saveasistencia(t)"><i style="color: white" class="glyphicon glyphicon-add">REGISTRAR</i></button>
+
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    @*Modal Footer*@
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+        @* *********************************************************************************************************@
+        @*<--------------------------------Modal Registrar Salida------------------------------------------>*@
+
+        <div class="modal fade" id="modalSalida" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @***************Modal Header************@
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h2 style="text-align: start; color: blue" class="modal-title" id="myModalLabel">CONFIRMACIÓN DE SALIDA  </h2>
+                    </div>
+
+                    @*****************Modal Body************@
+                    <div class="modal-body">
+                        <div>
+                            Estás Seguro de registrar la salida de 
+                            <label style="color: red">{{asistencia.nombre}}</label>?
+
+                        </div>
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary btnSize" ng-click="savesalida()">Aceptar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+
+
+
+
+    </div>
+    @* ****************************** *@
+
+    @*------jQuery library ------*@
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.es.js"></script>
+    @*------Controlador----------*@
+    <script src="~/Scripts/AngularController/asistenciaController.js"></script>
+    @*------Extras ------*@
+    <script src="~/Scripts/utilGeneral.js"></script>
+    @* ******************************* *@
+
+
+</div>
+

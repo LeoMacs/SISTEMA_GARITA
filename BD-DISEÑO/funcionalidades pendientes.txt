@@ -1,0 +1,56 @@
+interfaz principal
+*muestre la hora y fecha de la base de datos en el panel principal
+*Corregir interfaz de usuario bootstrap en diferentes módulos
+
+
+VISITANTE
+*Limitar el acceso a su panel principal según el usuario
+*botón agregar, exportar se active por tipo de usuario (ok)
+*botón editar, eliminar, dar salida  se active por tipo de usuario (ok)
+*Agregar persona para dni nuevos,buscar persona por dni (ok)
+*pinta registro si ingresa algún indeseado, pero no registre su salida ni modifique
+
+INDESEADO
+*botón agregar, exportar se active por tipo de usuario (ok)
+*botón editar, eliminar se active por tipo de usuario (ok)
+*Agregar persona para dni nuevos,buscar persona por dni (ok)
+*Tener la opción de poder quitar de la lista de indeseados (ok)
+*El indeseado se está mostrando en la sucursal que fue registrado, 
+se debe mostrar su asistencia en la sucursal que asisitió. (OK)
+
+CITA
+*Limitar el acceso a su panel principal según el usuario
+*botón agregar se active por tipo de usuario(ok)
+*botón editar, eliminar, dar asistencia  se active por tipo de usuario
+*Agregar persona para dni nuevos,buscar persona por dni (ok)
+*Se muestre todas las citas para el administrador , sistemas y seguridad, 
+	pueden modificar todas las citas y marcar la asistencia (ok)
+*Se muestre solo las citas que ha creado un usuario diferente a los anteriores,
+	solo puede modificar sus citas y no puede agregar la asistencia (ok)
+
+CARGA VEHICULAR
+*Limitar el acceso a su panel principal según el usuario
+*botón agregar se active por tipo de usuario (OK)
+*botón editar, eliminar, dar salida  se active por tipo de usuario (OK)
+*Agregar persona para dni nuevos,buscar persona por dni (OK)
+*Datos del vehículo y carga: Si es unidad código de carreta debe estar vacía y no editable,
+ pero si es carga con carreta de debe habilitar (OK)
+*No se deben activar los 2 tipos de carga (OK)
+*Dni dato, botón en la misma línea (OK)
+*Detectar indeseados y registrar como visitante (ok)
+
+ASISTENCIA DE TRABAJADORES
+T.EMPRESA
+*botón agregar se active por tipo de usuario
+*botón editar, eliminar  se active por tipo de usuario
+-------------------
+T.SCTR
+*botón agregar se active por tipo de usuario
+*botón editar, eliminar  se active por tipo de usuario
+-------------------
+T.TRABAJADORES
+*botón agregar se active por tipo de usuario
+*botón editar, eliminar  se active por tipo de usuario
+
+
+

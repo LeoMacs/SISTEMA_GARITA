@@ -1,0 +1,375 @@
+﻿@{
+    ViewBag.Title = "Panel de Seguros";
+    Layout = "~/Views/Shared/_Layout-Trabajador.cshtml";
+
+}
+
+
+
+
+<!DOCTYPE html>
+
+<div ng-app="app">
+
+    <div ng-controller="myController">
+
+        <div>
+            <div style="text-align: center">
+                <h1><strong>Panel de Seguros</strong></h1>
+            </div>
+            <br />
+            <br />
+
+            <div class="form-inline container table-responsive">
+
+                <label class=" col-form-label" style="color: black" for="filtro">Palabra Clave:</label>
+                <input type="text" class=" form-control" name="filtro" id="filtro" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+                <button style="float: right; margin-bottom: 0px; margin-left: 0px" class="btn btn-primary btnCircular " ng-click="pushGuardar()" data-toggle="modal" data-target="#modalAdd"><i class="glyphicon glyphicon-plus"></i>Agregar SCTR</button>
+
+            </div>
+
+
+            <div class="container">
+                <div class="form-inline letra">
+                    <label>Total de seguros:</label>
+                    <input value="{{numseguros}}" readonly="true" style="width: 50px; height: 25px; text-align: center; font-weight: bold; color: blue; font-size: 18px" />
+                </div>
+                <table class="table table-bordered  table-responsive-xl" id="tablaDatos">
+                    <thead style="color: white; background-color: red">
+                        <tr>
+                            <th style="text-align: center">CIA SCTR</th>
+                            <th style="text-align: center">Empresa</th>
+                            <th style="text-align: center">Número de Salud</th>
+                            <th style="text-align: center">Número de Poliza</th>
+                            <th style="text-align: center">Fecha de Inicio</th>
+                            <th style="text-align: center">Fecha Final</th>
+                            <th style="text-align: center">Estado</th>
+                            <th style="text-align: center">Planilla</th>
+                            <th style="text-align: center">Editar</th>
+                            <th style="text-align: center">Anular</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center">
+
+
+                        <tr ng-repeat="s in seguros">
+
+                            <td style="color: #0094ff; font-weight: bold">{{s.nombre}}
+
+                            </td>
+                            <td style="color: #0026ff; font-weight: bold">{{s.empresa}}
+                            </td>
+                            <td style="font-weight: bold">{{s.nrosalud}}
+
+                            </td>
+                            <td style="font-weight: bold">{{s.nropoliza}}
+                            </td>
+                            <td style="font-weight: bold">{{s.fechainicio}}
+                            </td>
+                            <td style="font-weight: bold">{{s.fechafin}}
+                            </td>
+                            <td style="font-weight: bold; color: {{s.colorEstado}}">{{s.estado}}
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" ng-click="pushPersonal(s)" data-toggle="modal" data-target="#modalPersonal">
+                                    <img src="https://png.icons8.com/metro/50/000000/workers-male.png" style="height: 20px; width: 20px;" />
+                                </a>
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-primary" ng-click="pushEditar(s)" data-toggle="modal" data-target="#modalEdit"><i class="glyphicon glyphicon-pencil"></i></button>
+                            </td>
+                            <td>
+                                <a class="btn btnEliminar " ng-click="pushAnular(s)" data-toggle="modal" data-target="#modalAnular"><i class="glyphicon glyphicon-trash" style="color: white"></i></a>
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+                <a ng-click="reporteSeguros()" class="btn btn-primary" style="float: right;"><i style="font-size: 20px; color: green; font-weight: bold" class="fa fa-file-excel-o"></i>Descargar</a>
+
+            </div>
+
+
+            @*<--------------------------------*************************------------------------------------------>*@
+            @*<--------------------------------Modal Personal de empresa------------------------------------------>*@
+            <div class="modal fade" id="modalPersonal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @*Modal Header*@
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h3 style="text-align: center" class="modal-title" id="myModalLabel">Personal de la Empresa <strong>{{nombreEmpresa}}</strong></h3>
+                        </div>
+
+                        @*Modal Body*@
+                        <div class="modal-body">
+                            <div>
+                                <div class="form-inline container table-responsive">
+
+                                    <label class=" col-form-label" style="color: black" for="filtroModal">Palabra Clave:</label>
+                                    <input type="text" class=" form-control" name="filtroModal" id="filtroModal" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+
+                                </div>
+                                <br />
+                                <div class="form-inline letra">
+                                    <label>Total de trabajadores afiliados:</label>
+                                    <input value="{{numtrabajadores}}" readonly="true" style="width: 50px; height: 25px; text-align: center; font-weight: bold; color: blue; font-size: 18px" />
+                                </div>
+                                <table class="table table-bordered table-responsive">
+                                    <thead style="color: white; background-color: red">
+                                        <tr>
+                                            <th style="text-align: center">Nombre</th>
+                                            <th style="text-align: center">Dni</th>
+                                            <th style="text-align: center">Cargo</th>
+                                            <th style="text-align: center">Area</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="text-align: center" id="tablaDatosModal">
+                                        <tr ng-repeat="t in trabajadores">
+                                            <td>{{t.nombre}}
+                                            </td>
+
+                                            <td>{{t.dni}}
+                                            </td>
+
+                                            <td>{{t.cargo}}
+                                            </td>
+                                            <td>{{t.area}}
+
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*</-----------------------------------end modal------------------------------------------------------>*@
+            @*</-----------------------------------*********------------------------------------------------------>*@
+            @*<--------------------------------Modal agregar SCTR------------------------------------------>*@
+            @*<-- Modal -->*@
+            <div class="modal fade" id="modalAdd" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @*<-- Modal Header -->*@
+                        <div class="modal-header btn-primary">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title contenidoCentrado oscuro" >FORMULARIO DE SCTR</h4>
+                        </div>
+                        @*<-- Modal Body -->*@
+                        <div class="modal-body">
+                            <form role="form" novalidate>
+                                @* ----------------------------------------------------------------------------------------------- *@
+                                <div class="form-group">
+                                    <label for="empresa">EMPRESA:</label>
+                                    <select class="form-control inputStyle" ng-model="seguro.idempresa" id="idempresa">
+                                        <option ng-repeat="e in empresas" value="{{e.idempresa}}">{{e.nombre}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nombre">CIA SEGURO:</label>
+                                    <input type="text" class="form-control inputStyle" ng-model="seguro.nombre" ng-required="true" id="nombre" placeholder="Ingrese el nombre" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nrosalud">NÚMERO DE SALUD:</label>
+                                    <input type="text" class="form-control inputStyleMd" ng-model="seguro.nrosalud" onkeypress='return validaNumericos(event)' id="nrosalud" placeholder="Ingrese el N° de Salud" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nropoliza">NÚMERO DE PÓLIZA:</label>
+                                    <input type="text" class="form-control inputStyleMd " ng-model="seguro.nropoliza" onkeypress='return validaNumericos(event)' id="nropoliza" placeholder="Ingrese el N° de Póliza" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fechainicio">INICIO DE SCTR:</label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control inputStyleCal form_datetime readonlyfec" ng-model="seguro.fechainicio" id="fechainicio" placeholder="Ingrese la fecha de inicio de vigencia del seguro" />
+                                        <span><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="fechafin">FIN DE SCTR:</label>
+                                    <div class="form-inline ">
+                                        <input type="text" class="form-control inputStyleCal form_datetime readonlyfec" ng-model="seguro.fechafin" id="fechafin" placeholder="Ingrese la fecha de fin de vigencia del seguro" />
+                                        <span><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+
+                                @* ----------------------------------------------------------------------------------------------- *@
+                                @* ----------------------------------------------------------------------------------------------- *@
+
+                            </form>
+                        </div>
+                        @*<-- Modal Footer -->*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">CERRAR</button>
+                            <button type="submit" class="btn btn-primary submitBtn btnSize" ng-click="saveseguro()">{{btntext}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+            @*<--------------------------------Modal editar SCTR------------------------------------------>*@
+            @*<-- Modal -->*@
+            <div class="modal fade" id="modalEdit" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @*<-- Modal Header -->*@
+                        <div class="modal-header btn-primary">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title contenidoCentrado oscuro" id="myModalLabel">FORMULARIO DE SCTR</h4>
+                        </div>
+                        @*<-- Modal Body -->*@
+                        <div class="modal-body">
+                            <p class="statusMsg" id="mensajeValidar">{{mensaje}}</p>
+                            <form role="form">
+                                @* ---------------------------------------------------------------------- *@
+
+
+
+                                <div class="form-group">
+                                    <label for="empresa">EMPRESA:</label>
+                                    <input type="text" class="form-control inputStyle readonly" ng-model="seguro.empresa" id='empresa' />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nombre">CIA SEGURO:</label>
+                                    <input type="text" class="form-control inputStyle" ng-model="seguro.nombre" ng-required="true" id="nombre" placeholder="Ingrese el nombre" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nrosalud">NÚMERO DE SALUD:</label>
+                                    <input type="text" class="form-control inputStyleMd" ng-model="seguro.nrosalud" onkeypress='return validaNumericos(event)' id="nrosalud" placeholder="Ingrese el N° de Salud" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nropoliza">NÚMERO DE PÓLIZA:</label>
+                                    <input type="text" class="form-control inputStyleMd " ng-model="seguro.nropoliza" onkeypress='return validaNumericos(event)' id="nropoliza" placeholder="Ingrese el N° de Póliza" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fechainicio">INICIO DE SCTR:</label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control inputStyleCal form_datetimeDown readonlyfec" ng-model="seguro.fechainicio" id="fechainicio" placeholder="Ingrese la fecha " />
+                                        <span><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="fechafin">FIN DE SCTR:</label>
+                                    <div class="form-inline ">
+                                        <input type="text" class="form-control inputStyleCal form_datetime readonlyfec" ng-model="seguro.fechafin" id="fechafin" placeholder="Ingrese la fecha de fin de vigencia del seguro" />
+                                        <span><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+
+                                @* ----------------------------------------------------------------------- *@
+
+
+                                @* ------------------------------------------------------------------------ *@
+
+                            </form>
+                        </div>
+                        @*<-- Modal Footer -->*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">CERRAR</button>
+                            <button type="submit" class="btn btn-primary submitBtn btnSize" ng-click="updateseguro()">{{btntext}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+            @* ************************************************************************************************ *@
+            @*<--------------------------------Modal anular Seguro------------------------------------------>*@
+
+            <div class="modal fade" id="modalAnular" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @***************Modal Header************@
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h2 style="text-align: start; color: blue" class="modal-title" id="myModalLabel">CONFIRMACIÓN DE ANULACIÓN  </h2>
+                        </div>
+
+                        @*****************Modal Body************@
+                        <div class="modal-body">
+                            <div>
+                                Estás seguro de anular el seguro
+                                <label style="color: red">{{seguroanulado.nombre}}</label>
+                                de la empresa
+                                <label style="color: red">{{seguroanulado.empresa}}</label>?
+
+                            </div>
+                            @*Modal Footer*@
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-primary btnSize" ng-click="anular()">Aceptar</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+        </div>
+
+
+
+
+
+
+        @*------jQuery library ------*@
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/angular.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.es.js"></script>
+        @*------Controlador----------*@
+        <script src="~/Scripts/AngularController/seguroController.js"></script>
+        @*------Extras ------*@
+        <script src="~/Scripts/utilGeneral.js"></script>
+
+
+
+    </div>
+
+</div>
+
+
+
+

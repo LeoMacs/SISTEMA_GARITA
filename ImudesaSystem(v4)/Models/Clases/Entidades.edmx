@@ -1,0 +1,934 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ImudesaGaritaModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ImudesaGaritaModelStoreContainer">
+          <EntitySet Name="acceso" EntityType="ImudesaGaritaModel.Store.acceso" store:Type="Tables" store:Schema="dbo" store:Name="acceso">
+            <DefiningQuery>SELECT 
+      [acceso].[idacceso] AS [idacceso], 
+      [acceso].[idusuario] AS [idusuario], 
+      [acceso].[idmodulo] AS [idmodulo], 
+      [acceso].[codopcion] AS [codopcion], 
+      [acceso].[ver] AS [ver], 
+      [acceso].[grabar] AS [grabar], 
+      [acceso].[anular] AS [anular], 
+      [acceso].[fecregistro] AS [fecregistro], 
+      [acceso].[fecmodificacion] AS [fecmodificacion]
+      FROM [dbo].[acceso] AS [acceso]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="asistencia" EntityType="ImudesaGaritaModel.Store.asistencia" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="cargaVehicular" EntityType="ImudesaGaritaModel.Store.cargaVehicular" store:Type="Tables" store:Schema="dbo" store:Name="cargaVehicular">
+            <DefiningQuery>SELECT 
+      [cargaVehicular].[idcargavehiculo] AS [idcargavehiculo], 
+      [cargaVehicular].[fecha] AS [fecha], 
+      [cargaVehicular].[horaentrada] AS [horaentrada], 
+      [cargaVehicular].[horasalida] AS [horasalida], 
+      [cargaVehicular].[empresa_proveniente] AS [empresa_proveniente], 
+      [cargaVehicular].[idcliente] AS [idcliente], 
+      [cargaVehicular].[nomConductor] AS [nomConductor], 
+      [cargaVehicular].[docCondutor] AS [docCondutor], 
+      [cargaVehicular].[licConductor] AS [licConductor], 
+      [cargaVehicular].[placaVehiculo] AS [placaVehiculo], 
+      [cargaVehicular].[bunidad] AS [bunidad], 
+      [cargaVehicular].[bcarreta] AS [bcarreta], 
+      [cargaVehicular].[codcarreta] AS [codcarreta], 
+      [cargaVehicular].[numContenedor] AS [numContenedor], 
+      [cargaVehicular].[tipoContenedor] AS [tipoContenedor], 
+      [cargaVehicular].[estadContenedor] AS [estadContenedor], 
+      [cargaVehicular].[guiainf] AS [guiainf], 
+      [cargaVehicular].[estado] AS [estado], 
+      [cargaVehicular].[codsuc] AS [codsuc], 
+      [cargaVehicular].[fecRegistro] AS [fecRegistro], 
+      [cargaVehicular].[userRegistro] AS [userRegistro]
+      FROM [dbo].[cargaVehicular] AS [cargaVehicular]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="cita" EntityType="ImudesaGaritaModel.Store.cita" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="empresa" EntityType="ImudesaGaritaModel.Store.empresa" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="indeseado" EntityType="ImudesaGaritaModel.Store.indeseado" store:Type="Tables" store:Schema="dbo" store:Name="indeseado">
+            <DefiningQuery>SELECT 
+      [indeseado].[idindeseado] AS [idindeseado], 
+      [indeseado].[nombre] AS [nombre], 
+      [indeseado].[apellido] AS [apellido], 
+      [indeseado].[dni] AS [dni], 
+      [indeseado].[cargo] AS [cargo], 
+      [indeseado].[empresa] AS [empresa], 
+      [indeseado].[fechaRegistro] AS [fechaRegistro], 
+      [indeseado].[observacion] AS [observacion], 
+      [indeseado].[userRegistro] AS [userRegistro]
+      FROM [dbo].[indeseado] AS [indeseado]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="modulo" EntityType="ImudesaGaritaModel.Store.modulo" store:Type="Tables" store:Schema="dbo" store:Name="modulo">
+            <DefiningQuery>SELECT 
+      [modulo].[idmodulo] AS [idmodulo], 
+      [modulo].[descripcion] AS [descripcion]
+      FROM [dbo].[modulo] AS [modulo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="perfil" EntityType="ImudesaGaritaModel.Store.perfil" store:Type="Tables" store:Schema="dbo" store:Name="perfil">
+            <DefiningQuery>SELECT 
+      [perfil].[idperfil] AS [idperfil], 
+      [perfil].[descripcion] AS [descripcion]
+      FROM [dbo].[perfil] AS [perfil]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="seguro" EntityType="ImudesaGaritaModel.Store.seguro" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sucursal" EntityType="ImudesaGaritaModel.Store.sucursal" store:Type="Tables" store:Schema="dbo" store:Name="sucursal">
+            <DefiningQuery>SELECT 
+      [sucursal].[codsuc] AS [codsuc], 
+      [sucursal].[descripcion] AS [descripcion], 
+      [sucursal].[direccion] AS [direccion], 
+      [sucursal].[estado] AS [estado]
+      FROM [dbo].[sucursal] AS [sucursal]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tbprueba" EntityType="ImudesaGaritaModel.Store.tbprueba" store:Type="Tables" store:Schema="dbo" store:Name="tbprueba">
+            <DefiningQuery>SELECT 
+      [tbprueba].[idprueba] AS [idprueba], 
+      [tbprueba].[fecd] AS [fecd], 
+      [tbprueba].[fecdt] AS [fecdt], 
+      [tbprueba].[nomusu] AS [nomusu]
+      FROM [dbo].[tbprueba] AS [tbprueba]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="trabajador" EntityType="ImudesaGaritaModel.Store.trabajador" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="trabajadorAuditoria" EntityType="ImudesaGaritaModel.Store.trabajadorAuditoria" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="usuario" EntityType="ImudesaGaritaModel.Store.usuario" store:Type="Tables" store:Schema="dbo" store:Name="usuario">
+            <DefiningQuery>SELECT 
+      [usuario].[idusuario] AS [idusuario], 
+      [usuario].[cuenta] AS [cuenta], 
+      [usuario].[clave] AS [clave], 
+      [usuario].[tipocuenta] AS [tipocuenta], 
+      [usuario].[activo] AS [activo], 
+      [usuario].[fecregistro] AS [fecregistro], 
+      [usuario].[nombreusuario] AS [nombreusuario], 
+      [usuario].[idperfil] AS [idperfil], 
+      [usuario].[codsuc] AS [codsuc]
+      FROM [dbo].[usuario] AS [usuario]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="visitante" EntityType="ImudesaGaritaModel.Store.visitante" store:Type="Tables" store:Schema="dbo" store:Name="visitante">
+            <DefiningQuery>SELECT 
+      [visitante].[idvisitante] AS [idvisitante], 
+      [visitante].[fecha] AS [fecha], 
+      [visitante].[horaentrada] AS [horaentrada], 
+      [visitante].[horasalida] AS [horasalida], 
+      [visitante].[nombre] AS [nombre], 
+      [visitante].[dni] AS [dni], 
+      [visitante].[destino] AS [destino], 
+      [visitante].[encargado] AS [encargado], 
+      [visitante].[empresa_proveniente] AS [empresa_proveniente], 
+      [visitante].[observacion] AS [observacion], 
+      [visitante].[nroasignado] AS [nroasignado], 
+      [visitante].[fechaRegistro] AS [fechaRegistro], 
+      [visitante].[codsuc] AS [codsuc], 
+      [visitante].[userRegistro] AS [userRegistro]
+      FROM [dbo].[visitante] AS [visitante]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.acceso' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="acceso">
+          <Key>
+            <PropertyRef Name="idusuario" />
+          </Key>
+          <Property Name="idacceso" Type="nchar" MaxLength="10" />
+          <Property Name="idusuario" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idmodulo" Type="int" />
+          <Property Name="codopcion" Type="varchar" MaxLength="4" />
+          <Property Name="ver" Type="int" />
+          <Property Name="grabar" Type="int" />
+          <Property Name="anular" Type="int" />
+          <Property Name="fecregistro" Type="datetime" />
+          <Property Name="fecmodificacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="asistencia">
+          <Key>
+            <PropertyRef Name="idasistencia" />
+          </Key>
+          <Property Name="idasistencia" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="horainicio" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="horasalida" Type="varchar" MaxLength="20" />
+          <Property Name="idtrabajador" Type="int" Nullable="false" />
+          <Property Name="empresa" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="fecregistro" Type="datetime" />
+          <Property Name="fecmodificacion" Type="datetime" />
+          <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+          <Property Name="userRegistro" Type="varchar" MaxLength="20" />
+          <Property Name="userModificacion" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.cargaVehicular' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="cargaVehicular">
+          <Key>
+            <PropertyRef Name="idcargavehiculo" />
+          </Key>
+          <Property Name="idcargavehiculo" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="horaentrada" Type="varchar" MaxLength="50" />
+          <Property Name="horasalida" Type="varchar" MaxLength="50" />
+          <Property Name="empresa_proveniente" Type="varchar" MaxLength="50" />
+          <Property Name="idcliente" Type="int" />
+          <Property Name="nomConductor" Type="varchar" MaxLength="100" />
+          <Property Name="docCondutor" Type="varchar" MaxLength="9" />
+          <Property Name="licConductor" Type="varchar" MaxLength="10" />
+          <Property Name="placaVehiculo" Type="varchar" MaxLength="7" />
+          <Property Name="bunidad" Type="int" />
+          <Property Name="bcarreta" Type="int" />
+          <Property Name="codcarreta" Type="varchar" MaxLength="7" />
+          <Property Name="numContenedor" Type="varchar" MaxLength="10" />
+          <Property Name="tipoContenedor" Type="varchar" MaxLength="2" />
+          <Property Name="estadContenedor" Type="varchar" MaxLength="10" />
+          <Property Name="guiainf" Type="varchar" MaxLength="100" />
+          <Property Name="estado" Type="int" />
+          <Property Name="codsuc" Type="varchar" MaxLength="3" />
+          <Property Name="fecRegistro" Type="datetime" />
+          <Property Name="userRegistro" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="cita">
+          <Key>
+            <PropertyRef Name="idcita" />
+          </Key>
+          <Property Name="idcita" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="hora" Type="varchar" MaxLength="20" />
+          <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="dni" Type="int" Nullable="false" />
+          <Property Name="destino" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="encargada" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="empresa_proveniente" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="observacion" Type="varchar" MaxLength="200" />
+          <Property Name="idcitador" Type="int" Nullable="false" />
+          <Property Name="estado" Type="int" Nullable="false" />
+          <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+          <Property Name="fechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="userRegistro" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="mostrar" Type="int" Nullable="false" />
+          <Property Name="atendida" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="empresa">
+          <Key>
+            <PropertyRef Name="idempresa" />
+          </Key>
+          <Property Name="idempresa" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="descripcion" Type="varchar" MaxLength="200" />
+          <Property Name="usucreacion" Type="varchar" MaxLength="50" />
+          <Property Name="feccreacion" Type="date" />
+          <Property Name="usumodificacion" Type="varchar" MaxLength="50" />
+          <Property Name="fecmodificacion" Type="date" />
+          <Property Name="conSeguro" Type="varchar" Nullable="false" MaxLength="2" />
+          <Property Name="ruc" Type="varchar" MaxLength="13" />
+          <Property Name="codsuc" Type="varchar" MaxLength="3" />
+        </EntityType>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.indeseado' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="indeseado">
+          <Key>
+            <PropertyRef Name="idindeseado" />
+            <PropertyRef Name="nombre" />
+            <PropertyRef Name="apellido" />
+            <PropertyRef Name="dni" />
+            <PropertyRef Name="fechaRegistro" />
+            <PropertyRef Name="observacion" />
+            <PropertyRef Name="userRegistro" />
+          </Key>
+          <Property Name="idindeseado" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="apellido" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="dni" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="cargo" Type="varchar" MaxLength="50" />
+          <Property Name="empresa" Type="varchar" MaxLength="50" />
+          <Property Name="fechaRegistro" Type="date" Nullable="false" />
+          <Property Name="observacion" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="userRegistro" Type="varchar" Nullable="false" MaxLength="20" />
+        </EntityType>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.modulo' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="modulo">
+          <Key>
+            <PropertyRef Name="idmodulo" />
+            <PropertyRef Name="descripcion" />
+          </Key>
+          <Property Name="idmodulo" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="varchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.perfil' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="perfil">
+          <Key>
+            <PropertyRef Name="idperfil" />
+            <PropertyRef Name="descripcion" />
+          </Key>
+          <Property Name="idperfil" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="nchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="seguro">
+          <Key>
+            <PropertyRef Name="idseguro" />
+          </Key>
+          <Property Name="idseguro" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="nrosalud" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="nropoliza" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="fechainicio" Type="date" Nullable="false" />
+          <Property Name="fechafin" Type="date" Nullable="false" />
+          <Property Name="idempresa" Type="int" Nullable="false" />
+          <Property Name="flagactivo" Type="int" Nullable="false" />
+          <Property Name="usucreacion" Type="varchar" MaxLength="20" />
+          <Property Name="feccreacion" Type="datetime" />
+          <Property Name="usumodificacion" Type="varchar" MaxLength="20" />
+          <Property Name="fecmodificacion" Type="datetime" />
+          <Property Name="codsuc" Type="varchar" MaxLength="3" />
+        </EntityType>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.sucursal' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="sucursal">
+          <Key>
+            <PropertyRef Name="codsuc" />
+            <PropertyRef Name="descripcion" />
+            <PropertyRef Name="estado" />
+          </Key>
+          <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+          <Property Name="descripcion" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="direccion" Type="varchar" MaxLength="200" />
+          <Property Name="estado" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.tbprueba' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="tbprueba">
+          <Key>
+            <PropertyRef Name="idprueba" />
+          </Key>
+          <Property Name="idprueba" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="fecd" Type="date" />
+          <Property Name="fecdt" Type="datetime" />
+          <Property Name="nomusu" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="trabajador">
+          <Key>
+            <PropertyRef Name="idtrabajador" />
+          </Key>
+          <Property Name="idtrabajador" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="dni" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="cargo" Type="varchar" MaxLength="100" />
+          <Property Name="area" Type="varchar" MaxLength="100" />
+          <Property Name="habilitado" Type="int" Nullable="false" />
+          <Property Name="idempresa" Type="int" Nullable="false" />
+          <Property Name="usuregistro" Type="varchar" MaxLength="20" />
+          <Property Name="fecregistro" Type="datetime" />
+          <Property Name="usumodificacion" Type="varchar" MaxLength="20" />
+          <Property Name="fecmodificacion" Type="datetime" />
+          <Property Name="fecretiro" Type="date" />
+          <Property Name="fecingreso" Type="date" />
+          <Property Name="conSeguro" Type="varchar" MaxLength="2" />
+          <Property Name="rutaimage" Type="varchar" MaxLength="200" />
+          <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+        </EntityType>
+        <EntityType Name="trabajadorAuditoria">
+          <Key>
+            <PropertyRef Name="idtrabaud" />
+          </Key>
+          <Property Name="idtrabaud" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="dni" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="cargo" Type="varchar" MaxLength="100" />
+          <Property Name="area" Type="varchar" MaxLength="100" />
+          <Property Name="idempresa" Type="int" Nullable="false" />
+          <Property Name="idtrabajador" Type="int" Nullable="false" />
+          <Property Name="feccreacion" Type="datetime" />
+        </EntityType>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.usuario' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="idusuario" />
+            <PropertyRef Name="cuenta" />
+            <PropertyRef Name="clave" />
+            <PropertyRef Name="tipocuenta" />
+            <PropertyRef Name="activo" />
+            <PropertyRef Name="idperfil" />
+            <PropertyRef Name="codsuc" />
+          </Key>
+          <Property Name="idusuario" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="cuenta" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="clave" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="tipocuenta" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="activo" Type="int" Nullable="false" />
+          <Property Name="fecregistro" Type="datetime" />
+          <Property Name="nombreusuario" Type="varchar" MaxLength="50" />
+          <Property Name="idperfil" Type="int" Nullable="false" />
+          <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+        </EntityType>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.visitante' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="visitante">
+          <Key>
+            <PropertyRef Name="idvisitante" />
+            <PropertyRef Name="fecha" />
+            <PropertyRef Name="horaentrada" />
+            <PropertyRef Name="nombre" />
+            <PropertyRef Name="destino" />
+            <PropertyRef Name="encargado" />
+            <PropertyRef Name="empresa_proveniente" />
+            <PropertyRef Name="codsuc" />
+            <PropertyRef Name="userRegistro" />
+          </Key>
+          <Property Name="idvisitante" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="horaentrada" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="horasalida" Type="varchar" MaxLength="50" />
+          <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="dni" Type="varchar" MaxLength="10" />
+          <Property Name="destino" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="encargado" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="empresa_proveniente" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="observacion" Type="varchar" MaxLength="200" />
+          <Property Name="nroasignado" Type="int" />
+          <Property Name="fechaRegistro" Type="datetime" />
+          <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+          <Property Name="userRegistro" Type="varchar" Nullable="false" MaxLength="20" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ImudesaGaritaModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="acceso" EntityType="ImudesaGaritaModel.acceso" />
+          <EntitySet Name="asistencia" EntityType="ImudesaGaritaModel.asistencia" />
+          <EntitySet Name="cita" EntityType="ImudesaGaritaModel.cita" />
+          <EntitySet Name="empresa" EntityType="ImudesaGaritaModel.empresa" />
+          <EntitySet Name="indeseado" EntityType="ImudesaGaritaModel.indeseado" />
+          <EntitySet Name="modulo" EntityType="ImudesaGaritaModel.modulo" />
+          <EntitySet Name="perfil" EntityType="ImudesaGaritaModel.perfil" />
+          <EntitySet Name="seguro" EntityType="ImudesaGaritaModel.seguro" />
+          <EntitySet Name="sucursal" EntityType="ImudesaGaritaModel.sucursal" />
+          <EntitySet Name="tbprueba" EntityType="ImudesaGaritaModel.tbprueba" />
+          <EntitySet Name="trabajador" EntityType="ImudesaGaritaModel.trabajador" />
+          <EntitySet Name="trabajadorAuditoria" EntityType="ImudesaGaritaModel.trabajadorAuditoria" />
+          <EntitySet Name="usuario" EntityType="ImudesaGaritaModel.usuario" />
+          <EntitySet Name="visitante" EntityType="ImudesaGaritaModel.visitante" />
+          <EntitySet Name="cargaVehicular" EntityType="ImudesaGaritaModel.cargaVehicular" />
+        </EntityContainer>
+        <EntityType Name="acceso">
+          <Key>
+            <PropertyRef Name="idusuario" />
+          </Key>
+          <Property Name="idacceso" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="idusuario" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="idmodulo" Type="Int32" />
+          <Property Name="codopcion" Type="String" MaxLength="4" Unicode="false" FixedLength="false" />
+          <Property Name="ver" Type="Int32" />
+          <Property Name="grabar" Type="Int32" />
+          <Property Name="anular" Type="Int32" />
+          <Property Name="fecregistro" Type="DateTime" Precision="3" />
+          <Property Name="fecmodificacion" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="asistencia">
+          <Key>
+            <PropertyRef Name="idasistencia" />
+          </Key>
+          <Property Name="idasistencia" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="horainicio" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="horasalida" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="idtrabajador" Type="Int32" Nullable="false" />
+          <Property Name="empresa" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="fecregistro" Type="DateTime" Precision="3" />
+          <Property Name="fecmodificacion" Type="DateTime" Precision="3" />
+          <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+          <Property Type="String" Name="userRegistro" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="userModificacion" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="cita">
+          <Key>
+            <PropertyRef Name="idcita" />
+          </Key>
+          <Property Name="idcita" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="hora" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="dni" Type="Int32" Nullable="false" />
+          <Property Name="destino" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="encargada" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="empresa_proveniente" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="observacion" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="idcitador" Type="Int32" Nullable="false" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+          <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+          <Property Name="fechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Type="String" Name="userRegistro" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="mostrar" Nullable="false" />
+          <Property Type="Int32" Name="atendida" Nullable="false" />
+        </EntityType>
+        <EntityType Name="empresa">
+          <Key>
+            <PropertyRef Name="idempresa" />
+          </Key>
+          <Property Name="idempresa" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="descripcion" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="usucreacion" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="feccreacion" Type="DateTime" Precision="0" />
+          <Property Name="usumodificacion" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="fecmodificacion" Type="DateTime" Precision="0" />
+          <Property Name="conSeguro" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="false" />
+          <Property Name="ruc" Type="String" MaxLength="13" Unicode="false" FixedLength="false" />
+          <Property Name="codsuc" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="indeseado">
+          <Key>
+            <PropertyRef Name="idindeseado" />
+            <PropertyRef Name="nombre" />
+            <PropertyRef Name="apellido" />
+            <PropertyRef Name="dni" />
+            <PropertyRef Name="fechaRegistro" />
+            <PropertyRef Name="observacion" />
+            <PropertyRef Name="userRegistro" />
+          </Key>
+          <Property Name="idindeseado" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="apellido" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="dni" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="cargo" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="empresa" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="fechaRegistro" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="observacion" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Type="String" Name="userRegistro" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="modulo">
+          <Key>
+            <PropertyRef Name="idmodulo" />
+            <PropertyRef Name="descripcion" />
+          </Key>
+          <Property Name="idmodulo" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="perfil">
+          <Key>
+            <PropertyRef Name="idperfil" />
+            <PropertyRef Name="descripcion" />
+          </Key>
+          <Property Name="idperfil" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="true" />
+        </EntityType>
+        <EntityType Name="seguro">
+          <Key>
+            <PropertyRef Name="idseguro" />
+          </Key>
+          <Property Name="idseguro" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="nrosalud" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="nropoliza" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="fechainicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="fechafin" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="idempresa" Type="Int32" Nullable="false" />
+          <Property Name="flagactivo" Type="Int32" Nullable="false" />
+          <Property Name="usucreacion" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="feccreacion" Type="DateTime" Precision="3" />
+          <Property Name="usumodificacion" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="fecmodificacion" Type="DateTime" Precision="3" />
+          <Property Name="codsuc" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="sucursal">
+          <Key>
+            <PropertyRef Name="codsuc" />
+            <PropertyRef Name="descripcion" />
+            <PropertyRef Name="estado" />
+          </Key>
+          <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="direccion" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="estado" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbprueba">
+          <Key>
+            <PropertyRef Name="idprueba" />
+          </Key>
+          <Property Name="idprueba" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="fecd" Type="DateTime" Precision="0" />
+          <Property Name="fecdt" Type="DateTime" Precision="3" />
+          <Property Name="nomusu" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="trabajador">
+          <Key>
+            <PropertyRef Name="idtrabajador" />
+          </Key>
+          <Property Name="idtrabajador" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="dni" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="cargo" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="area" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="habilitado" Type="Int32" Nullable="false" />
+          <Property Name="idempresa" Type="Int32" Nullable="false" />
+          <Property Name="usuregistro" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="fecregistro" Type="DateTime" Precision="3" />
+          <Property Name="usumodificacion" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="fecmodificacion" Type="DateTime" Precision="3" />
+          <Property Name="fecretiro" Type="DateTime" Precision="0" />
+          <Property Name="fecingreso" Type="DateTime" Precision="0" />
+          <Property Name="conSeguro" Type="String" MaxLength="2" Unicode="false" FixedLength="false" />
+          <Property Name="rutaimage" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="trabajadorAuditoria">
+          <Key>
+            <PropertyRef Name="idtrabaud" />
+          </Key>
+          <Property Name="idtrabaud" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="dni" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="cargo" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="area" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="idempresa" Type="Int32" Nullable="false" />
+          <Property Name="idtrabajador" Type="Int32" Nullable="false" />
+          <Property Name="feccreacion" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="idusuario" />
+            <PropertyRef Name="cuenta" />
+            <PropertyRef Name="clave" />
+            <PropertyRef Name="tipocuenta" />
+            <PropertyRef Name="activo" />
+            <PropertyRef Name="idperfil" />
+            <PropertyRef Name="codsuc" />
+          </Key>
+          <Property Name="idusuario" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="cuenta" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="clave" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="tipocuenta" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="activo" Type="Int32" Nullable="false" />
+          <Property Name="fecregistro" Type="DateTime" Precision="3" />
+          <Property Name="nombreusuario" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="idperfil" Type="Int32" Nullable="false" />
+          <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="visitante">
+          <Key>
+            <PropertyRef Name="idvisitante" />
+            <PropertyRef Name="fecha" />
+            <PropertyRef Name="horaentrada" />
+            <PropertyRef Name="nombre" />
+            <PropertyRef Name="destino" />
+            <PropertyRef Name="encargado" />
+            <PropertyRef Name="empresa_proveniente" />
+            <PropertyRef Name="codsuc" />
+            <PropertyRef Name="userRegistro" />
+          </Key>
+          <Property Name="idvisitante" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="horaentrada" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="horasalida" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="dni" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="destino" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="encargado" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="empresa_proveniente" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="observacion" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="nroasignado" Type="Int32" />
+          <Property Name="fechaRegistro" Type="DateTime" Precision="3" />
+          <Property Name="codsuc" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="false" />
+          <Property Type="String" Name="userRegistro" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="cargaVehicular">
+          <Key>
+            <PropertyRef Name="idcargavehiculo" />
+          </Key>
+          <Property Type="Int32" Name="idcargavehiculo" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="fecha" Precision="0" />
+          <Property Type="String" Name="horaentrada" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="horasalida" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="empresa_proveniente" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="idcliente" />
+          <Property Type="String" Name="nomConductor" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="docCondutor" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="licConductor" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="placaVehiculo" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="bunidad" />
+          <Property Type="Int32" Name="bcarreta" />
+          <Property Type="String" Name="codcarreta" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="numContenedor" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="tipoContenedor" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="estadContenedor" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="guiainf" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="estado" />
+          <Property Type="String" Name="codsuc" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="fecRegistro" Precision="3" />
+          <Property Type="String" Name="userRegistro" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ImudesaGaritaModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="acceso">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.acceso">
+              <MappingFragment StoreEntitySet="acceso">
+                <ScalarProperty Name="idacceso" ColumnName="idacceso" />
+                <ScalarProperty Name="idusuario" ColumnName="idusuario" />
+                <ScalarProperty Name="idmodulo" ColumnName="idmodulo" />
+                <ScalarProperty Name="codopcion" ColumnName="codopcion" />
+                <ScalarProperty Name="ver" ColumnName="ver" />
+                <ScalarProperty Name="grabar" ColumnName="grabar" />
+                <ScalarProperty Name="anular" ColumnName="anular" />
+                <ScalarProperty Name="fecregistro" ColumnName="fecregistro" />
+                <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="asistencia">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.asistencia">
+              <MappingFragment StoreEntitySet="asistencia">
+                <ScalarProperty Name="userModificacion" ColumnName="userModificacion" />
+                <ScalarProperty Name="userRegistro" ColumnName="userRegistro" />
+                <ScalarProperty Name="idasistencia" ColumnName="idasistencia" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="horainicio" ColumnName="horainicio" />
+                <ScalarProperty Name="horasalida" ColumnName="horasalida" />
+                <ScalarProperty Name="idtrabajador" ColumnName="idtrabajador" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="fecregistro" ColumnName="fecregistro" />
+                <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+                <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cita">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.cita">
+              <MappingFragment StoreEntitySet="cita">
+                <ScalarProperty Name="atendida" ColumnName="atendida" />
+                <ScalarProperty Name="mostrar" ColumnName="mostrar" />
+                <ScalarProperty Name="userRegistro" ColumnName="userRegistro" />
+                <ScalarProperty Name="idcita" ColumnName="idcita" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="hora" ColumnName="hora" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="destino" ColumnName="destino" />
+                <ScalarProperty Name="encargada" ColumnName="encargada" />
+                <ScalarProperty Name="empresa_proveniente" ColumnName="empresa_proveniente" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="idcitador" ColumnName="idcitador" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="empresa">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.empresa">
+              <MappingFragment StoreEntitySet="empresa">
+                <ScalarProperty Name="idempresa" ColumnName="idempresa" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="usucreacion" ColumnName="usucreacion" />
+                <ScalarProperty Name="feccreacion" ColumnName="feccreacion" />
+                <ScalarProperty Name="usumodificacion" ColumnName="usumodificacion" />
+                <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+                <ScalarProperty Name="conSeguro" ColumnName="conSeguro" />
+                <ScalarProperty Name="ruc" ColumnName="ruc" />
+                <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="indeseado">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.indeseado">
+              <MappingFragment StoreEntitySet="indeseado">
+                <ScalarProperty Name="userRegistro" ColumnName="userRegistro" />
+                <ScalarProperty Name="idindeseado" ColumnName="idindeseado" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="cargo" ColumnName="cargo" />
+                <ScalarProperty Name="empresa" ColumnName="empresa" />
+                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="modulo">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.modulo">
+              <MappingFragment StoreEntitySet="modulo">
+                <ScalarProperty Name="idmodulo" ColumnName="idmodulo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="perfil">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.perfil">
+              <MappingFragment StoreEntitySet="perfil">
+                <ScalarProperty Name="idperfil" ColumnName="idperfil" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="seguro">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.seguro">
+              <MappingFragment StoreEntitySet="seguro">
+                <ScalarProperty Name="idseguro" ColumnName="idseguro" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="nrosalud" ColumnName="nrosalud" />
+                <ScalarProperty Name="nropoliza" ColumnName="nropoliza" />
+                <ScalarProperty Name="fechainicio" ColumnName="fechainicio" />
+                <ScalarProperty Name="fechafin" ColumnName="fechafin" />
+                <ScalarProperty Name="idempresa" ColumnName="idempresa" />
+                <ScalarProperty Name="flagactivo" ColumnName="flagactivo" />
+                <ScalarProperty Name="usucreacion" ColumnName="usucreacion" />
+                <ScalarProperty Name="feccreacion" ColumnName="feccreacion" />
+                <ScalarProperty Name="usumodificacion" ColumnName="usumodificacion" />
+                <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+                <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sucursal">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.sucursal">
+              <MappingFragment StoreEntitySet="sucursal">
+                <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbprueba">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.tbprueba">
+              <MappingFragment StoreEntitySet="tbprueba">
+                <ScalarProperty Name="idprueba" ColumnName="idprueba" />
+                <ScalarProperty Name="fecd" ColumnName="fecd" />
+                <ScalarProperty Name="fecdt" ColumnName="fecdt" />
+                <ScalarProperty Name="nomusu" ColumnName="nomusu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trabajador">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.trabajador">
+              <MappingFragment StoreEntitySet="trabajador">
+                <ScalarProperty Name="idtrabajador" ColumnName="idtrabajador" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="cargo" ColumnName="cargo" />
+                <ScalarProperty Name="area" ColumnName="area" />
+                <ScalarProperty Name="habilitado" ColumnName="habilitado" />
+                <ScalarProperty Name="idempresa" ColumnName="idempresa" />
+                <ScalarProperty Name="usuregistro" ColumnName="usuregistro" />
+                <ScalarProperty Name="fecregistro" ColumnName="fecregistro" />
+                <ScalarProperty Name="usumodificacion" ColumnName="usumodificacion" />
+                <ScalarProperty Name="fecmodificacion" ColumnName="fecmodificacion" />
+                <ScalarProperty Name="fecretiro" ColumnName="fecretiro" />
+                <ScalarProperty Name="fecingreso" ColumnName="fecingreso" />
+                <ScalarProperty Name="conSeguro" ColumnName="conSeguro" />
+                <ScalarProperty Name="rutaimage" ColumnName="rutaimage" />
+                <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trabajadorAuditoria">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.trabajadorAuditoria">
+              <MappingFragment StoreEntitySet="trabajadorAuditoria">
+                <ScalarProperty Name="idtrabaud" ColumnName="idtrabaud" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="cargo" ColumnName="cargo" />
+                <ScalarProperty Name="area" ColumnName="area" />
+                <ScalarProperty Name="idempresa" ColumnName="idempresa" />
+                <ScalarProperty Name="idtrabajador" ColumnName="idtrabajador" />
+                <ScalarProperty Name="feccreacion" ColumnName="feccreacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="idusuario" ColumnName="idusuario" />
+                <ScalarProperty Name="cuenta" ColumnName="cuenta" />
+                <ScalarProperty Name="clave" ColumnName="clave" />
+                <ScalarProperty Name="tipocuenta" ColumnName="tipocuenta" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="fecregistro" ColumnName="fecregistro" />
+                <ScalarProperty Name="nombreusuario" ColumnName="nombreusuario" />
+                <ScalarProperty Name="idperfil" ColumnName="idperfil" />
+                <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="visitante">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.visitante">
+              <MappingFragment StoreEntitySet="visitante">
+                <ScalarProperty Name="userRegistro" ColumnName="userRegistro" />
+                <ScalarProperty Name="idvisitante" ColumnName="idvisitante" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="horaentrada" ColumnName="horaentrada" />
+                <ScalarProperty Name="horasalida" ColumnName="horasalida" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="destino" ColumnName="destino" />
+                <ScalarProperty Name="encargado" ColumnName="encargado" />
+                <ScalarProperty Name="empresa_proveniente" ColumnName="empresa_proveniente" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="nroasignado" ColumnName="nroasignado" />
+                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+                <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cargaVehicular">
+            <EntityTypeMapping TypeName="ImudesaGaritaModel.cargaVehicular">
+              <MappingFragment StoreEntitySet="cargaVehicular">
+                <ScalarProperty Name="userRegistro" ColumnName="userRegistro" />
+                <ScalarProperty Name="fecRegistro" ColumnName="fecRegistro" />
+                <ScalarProperty Name="codsuc" ColumnName="codsuc" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="guiainf" ColumnName="guiainf" />
+                <ScalarProperty Name="estadContenedor" ColumnName="estadContenedor" />
+                <ScalarProperty Name="tipoContenedor" ColumnName="tipoContenedor" />
+                <ScalarProperty Name="numContenedor" ColumnName="numContenedor" />
+                <ScalarProperty Name="codcarreta" ColumnName="codcarreta" />
+                <ScalarProperty Name="bcarreta" ColumnName="bcarreta" />
+                <ScalarProperty Name="bunidad" ColumnName="bunidad" />
+                <ScalarProperty Name="placaVehiculo" ColumnName="placaVehiculo" />
+                <ScalarProperty Name="licConductor" ColumnName="licConductor" />
+                <ScalarProperty Name="docCondutor" ColumnName="docCondutor" />
+                <ScalarProperty Name="nomConductor" ColumnName="nomConductor" />
+                <ScalarProperty Name="idcliente" ColumnName="idcliente" />
+                <ScalarProperty Name="empresa_proveniente" ColumnName="empresa_proveniente" />
+                <ScalarProperty Name="horasalida" ColumnName="horasalida" />
+                <ScalarProperty Name="horaentrada" ColumnName="horaentrada" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="idcargavehiculo" ColumnName="idcargavehiculo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

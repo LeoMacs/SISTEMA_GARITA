@@ -1,0 +1,2972 @@
+
+
+
+
+alter view vw_TrabajadoresEmpresa as
+  select t.idtrabajador,t.cCargo as cargo,FORMAT(t.dFecIngreso,'dd/MM/yyyy') as fecIngreso,FORMAT(t.dFecRetiro,'dd/MM/yyyy') as fecRetiro ,t.bActivo ,
+  p.idPersona, p.cNombres as nombre, p.cApPaterno as apPaterno, p.cApMaterno as apMaterno, (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno) as nomCompleto, p.cDocPer as dni,
+  e.idEmpresa, e.cNombre as nomEmpresa,a.idArea, a.cNombre as nomArea, st.idsegtrab,
+  s.idseguro, s.cNombre as nomSeguro, s.cNroPoliza as nroPoliza, s.CNroSalud as nroSalud, s.bActivo as bActivoSeguro ,
+  suc.idSucursal as nSucursal , suc.cNombre as nomSucursal
+  from trabajador t
+  inner join persona p on p.idPersona=t.idPersona
+  inner join empresa e on e.idEmpresa=t.idempresa
+  inner join area a on a.idArea=t.idArea
+  inner join seguroTrabajador st on st.idtrabajador= t.idtrabajador
+  inner join seguro s on s.idseguro = st.idseguro
+  inner join sucursal suc on suc.idSucursal= t.nSucursal
+  where e.nSucursal = t.nSucursal and s.nSucursal=t.nSucursal  
+  and t.bEstado=1 and p.bEstado=1 and e.bEstado=1 and a.bEstado=1 and
+  st.bEstado=1 and s.bEstado=1 and s.bEstado=1 and st.bEstado=1 and suc.bEstado=1
+-------------------------------------------
+-------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_PersonalxEmpresa]
+@idempresa int  
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+select t.idtrabajador, (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno) as nombre, p.cDocPer as dni,t.cCargo as cargo,t.idArea, a.cNombre as area,
+t.bActivo as bActivo,t.idempresa, e.cNombre empresa 
+from trabajador t
+inner join persona p on p.idPersona=t.idPersona
+inner join empresa e on e.idEmpresa= t.idempresa
+inner join area a on a.idArea =t.idArea
+where t.idempresa=@idempresa and t.bActivo=1 and t.bEstado=1
+order by 2 asc;
+
+END
+-------------------------------------------
+-------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_PersonalSinSeguro]
+@idseguro int  
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+select t.idtrabajador, (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno) as nombre, p.cDocPer as dni,t.cCargo as cargo,a.cNombre as area,
+t.bActivo as bActivo,t.idempresa, e.cNombre empresa 
+from trabajador t
+inner join area a on a.idArea = t.idArea
+inner join persona p on p.idPersona=t.idPersona
+inner join empresa e on e.idEmpresa= t.idempresa
+where t.idempresa = (select idempresa from seguro where idseguro=@idseguro)
+and t.idtrabajador not in (select idtrabajador from seguroTrabajador where idseguro = @idseguro)
+and  t.bEstado=1 and t.bActivo=1 and p.bEstado=1 and e.bEstado=1 
+order by 4 asc;
+
+END
+-------------------------------------------
+-------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_PersonalxSeguro]
+@idseguro int  
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+select s.idsegtrab,s.idseguro ,t.idtrabajador, (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno) as nombre, p.cDocPer as dni,t.cCargo as cargo,a.cNombre as area,
+t.bActivo as bActivo,t.idempresa, e.cNombre empresa 
+from trabajador t
+inner join area a on a.idArea = t.idArea
+inner join persona p on p.idPersona=t.idPersona
+inner join empresa e on e.idEmpresa= t.idempresa
+inner join seguroTrabajador s on t.idtrabajador= s.idtrabajador
+where s.idseguro=@idseguro and s.bEstado=1  and t.bEstado=1 and t.bActivo=1 and e.bEstado=1 and p.bEstado=1 
+order by 4 asc;
+
+END
+
+
+-------------------------------------------
+-------------------------------------------
+
+ALTER PROCEDURE [dbo].[sp_del_seguro]
+@idseguro int=0,
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+
+select @nResultado=0;
+BEGIN TRANSACTION
+
+		update seguro set bEstado=0,dFecMod=getdate(),
+		cUsuMod=@user where idseguro=@idseguro;
+
+		delete seguroTrabajador where idseguro=@idseguro;
+		select @nResultado=1;
+	
+COMMIT TRANSACTION	
+-------------------------------------------
+-------------------------------------------
+ALTER PROCEDURE [dbo].[sp_ins_seguroTrabajador]
+@idseguro int=0,
+@idtrabajador int=0,
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ SET NOCOUNT OFF; 
+BEGIN 
+select  @nResultado=0
+BEGIN TRANSACTION
+		
+		insert into seguroTrabajador(idseguro,idtrabajador,cUsuReg,dFecReg) 
+		values (@idseguro,@idtrabajador,@user,getdate() );
+		
+	select @nResultado=1
+COMMIT TRANSACTION	
+	
+END
+-------------------------------------
+-------------------------------------
+USE [IMUDESA]
+GO
+/****** Object:  Table [dbo].[seguroTrabajador]    Script Date: 28/11/2022 05:33:37 p.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[seguroTrabajador](
+	[idsegtrab] [int] IDENTITY(1,1) NOT NULL,
+	[idseguro] [int]  NOT NULL,
+	[idtrabajador] [int] NOT NULL,
+	[bEstado] [int] NOT NULL,
+	[dFecReg] [datetime] NULL,
+	[cUsuReg] [varchar](20) NULL,
+ CONSTRAINT [PK_seguroTrabajador] PRIMARY KEY CLUSTERED 
+(
+	[idsegtrab] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+ALTER TABLE [dbo].[seguroTrabajador] ADD  CONSTRAINT [DF_seguroTrabajador_bEstado]  DEFAULT ((1)) FOR [bEstado]
+GO
+
+-------------------------------------
+-------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_segurobyid]
+@idseguro int 
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+		if @idseguro =0 
+			begin
+				SELECT  0 as idseguro,
+				'' as  nombre,
+				'' as nropoliza,
+				'' as nrosalud,
+				0 as idempresa,
+				''  empresa,
+				FORMAT(getdate(),'dd/MM/yyyy') as  fechainicio,
+				 FORMAT(getdate(),'dd/MM/yyyy')as  fechafin
+			end
+		else
+			begin
+				SELECT  s.idseguro,
+				s.cNombre as nombre, 
+				s.cNroPoliza as nropoliza, 
+				s.CNroSalud as nrosalud,
+				s.idempresa, 
+				e.cNombre as empresa, 
+				FORMAT(dFecInicio,'dd/MM/yyyy') as  fechainicio,
+				FORMAT(dFecFin,'dd/MM/yyyy') as  fechafin
+				from seguro s
+				inner join empresa e on s.idempresa=e.idempresa
+				where  s.idseguro=@idseguro ;
+			end
+END
+
+
+
+-------------------------------------------
+-------------------------------------------
+
+ALTER PROCEDURE [dbo].[sp_del_seguro]
+@idseguro int=0,
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+
+select @nResultado=0;
+BEGIN TRANSACTION
+
+		update seguro set bEstado=0,dFecMod=getdate(),
+		cUsuMod=@user where idseguro=@idseguro;
+
+		select @nResultado=1;
+	
+COMMIT TRANSACTION	
+-------------------------------------------
+-------------------------------------------
+ALTER PROCEDURE [dbo].[sp_upd_seguro]
+@idseguro int,
+@nombre varchar(50),
+@nrosalud varchar(20),
+@nropoliza varchar(20),
+@idempresa int=0,
+@fechainicio varchar(10),
+@fechafin varchar(10),
+@user varchar(50)='',
+@nResultado int OUTPUT
+AS
+ SET NOCOUNT OFF; 
+BEGIN 
+select  @nResultado=0
+
+BEGIN TRANSACTION
+
+	
+			update seguro set cNombre=@nombre,CNroSalud=@nrosalud,
+			cNroPoliza=@nropoliza,idempresa=@idempresa,dFecInicio=@fechainicio,dFecFin=@fechafin,
+			dFecMod=GETDATE(),cUsuMod=@user
+			where idseguro=@idseguro ;
+	
+
+	select @nResultado=1
+COMMIT TRANSACTION
+
+	
+END
+
+-------------------------------------------
+-------------------------------------------
+ALTER PROCEDURE [dbo].[sp_ins_seguro]
+@codsuc int=1,
+@nombre varchar(50),
+@nrosalud varchar(20),
+@nropoliza varchar(20),
+@idempresa int=0,
+@fechainicio varchar(10),
+@fechafin varchar(10),
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ SET NOCOUNT OFF; 
+BEGIN 
+select  @nResultado=0
+BEGIN TRANSACTION
+		
+		insert into seguro(nSucursal, cNombre,CNroSalud,cNroPoliza,idempresa,dFecInicio,dFecFin,cUsuReg,dFecReg,cUsuMod,dFecMod) 
+		values (@codsuc,@nombre,@nrosalud,@nropoliza,@idempresa,@fechainicio,@fechafin,@user,getdate(),@user,getdate() );
+		
+	select @nResultado=1
+COMMIT TRANSACTION	
+	
+END
+-------------------------------------------
+-------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_seguros]
+@idusuario int,
+@codsuc int=0	
+AS
+SET NOCOUNT ON;
+declare
+@idacceso int 
+
+
+
+ select @idacceso=ua.idAcceso from usuario u
+ inner join usuariosAccesos ua on ua.idUsuario=u.idUsuario
+ inner join menuSistema m on m.idMenu=ua.idMenu
+ where m.cCodMenu='V04' and m.cCodOpcion='02' and u.idUsuario=@idusuario;
+
+ begin
+	SELECT  s.idseguro,s.cNombre as nombre, s.cNroPoliza as nropoliza, s.CNroSalud as nrosalud,
+	s.idempresa, e.cNombre as empresa, 
+	FORMAT(dFecInicio,'dd/MM/yyyy') as  fechainicio,
+	FORMAT(dFecFin,'dd/MM/yyyy') as  fechafin,
+	(case 
+		when (s.bActivo=1) then 'ACTIVO'
+		else  'NO ACTIVO'
+	end) estado,
+	(case 
+		when (s.bActivo=1) then 'GREEN'
+		else  'RED'
+	end) colorEstado,
+	(case 
+		when (s.bActivo=1) then 'checked'
+		else  ''
+	end) opcionsi,
+	(case 
+		when (s.bActivo=0) then 'checked'
+		else  ''
+	end) opcionno,
+	----------------------------------
+	(case 
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as noedit, 
+	----------------------------------
+	(case 
+			when (select bEliminar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as nodelete,
+			----------------------------------
+	s.cUsuReg as creador,
+	s.cUsuMod as modificador
+	---------------------------------- 
+	FROM seguro s
+	INNER JOIN empresa e   ON s.idempresa = e.idempresa 
+	where s.bEstado=1;
+
+
+ end	
+-------------------------------------------
+-------------------------------------------
+USE [IMUDESA]
+GO
+/****** Object:  Table [dbo].[seguro]    Script Date: 28/11/2022 05:33:37 p.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[seguro](
+	[idseguro] [int] IDENTITY(1,1) NOT NULL,
+	[nSucursal] [int] NOT NULL,
+	[cNombre] [varchar](100) NOT NULL,
+	[CNroSalud] [varchar](20) NOT NULL,
+	[cNroPoliza] [varchar](20) NOT NULL,
+	[idempresa] [int] NOT NULL,
+	[bActivo] [int] NOT NULL,
+	[dFecInicio] [date] NOT NULL,
+	[dFecFin] [date] NOT NULL,
+	[bEstado] [int] NOT NULL,
+	[dFecReg] [datetime] NULL,
+	[cUsuReg] [varchar](20) NULL,
+	[dFecMod] [datetime] NULL,
+	[cUsuMod] [varchar](20) NULL,
+ CONSTRAINT [PK_seguro] PRIMARY KEY CLUSTERED 
+(
+	[idseguro] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+ALTER TABLE [dbo].[seguro] ADD  CONSTRAINT [DF_seguro_bActivo]  DEFAULT ((1)) FOR [bActivo]
+GO
+ALTER TABLE [dbo].[seguro] ADD  CONSTRAINT [DF_seguro_bEstado]  DEFAULT ((1)) FOR [bEstado]
+GO
+
+-------------------------------------
+-------------------------------------
+CREATE PROCEDURE [dbo].[sp_del_trabajador]
+@idtrabajador int=0,
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+declare @idpersona int
+
+	select  @nResultado=0;
+
+	select @idpersona=idPersona from trabajador where idtrabajador= @idtrabajador
+
+BEGIN TRANSACTION
+
+		update trabajador set bEstado=0,dFecMod=getdate(),
+		cUsuMod=@user where idtrabajador=@idtrabajador;
+
+		update persona set bTrabajador=0 where idPersona=@idpersona;
+
+		select @nResultado=1
+	
+COMMIT TRANSACTION	
+--------------------------------------------------
+--------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_trabajadorbyid]
+@idtrabajador int	
+AS
+SET NOCOUNT ON;
+ 
+begin
+
+	if @idtrabajador =0 
+		begin
+			SELECT  0 as idtrabajador,
+		 '' as  nombre,
+		'' as nombres,
+		 '' as apPaterno,
+		 '' as apMaterno,
+		  '' as dni,
+		  'NINGUNO'  as cargo,
+		  0 as idarea,
+		  '' as  area,
+			1 as bActivo,
+		  FORMAT(getdate(),'dd/MM/yyyy') as  fecingreso,
+		  FORMAT(getdate(),'dd/MM/yyyy')as  fecretiro,
+			''  empresa,
+			0 as idempresa,
+		'ACTIVO' as estado,
+		'GREEN' as colorEstado,
+		'checked' as opcionsi,
+		'' as opcionno 
+
+		end
+	else
+		begin
+			SELECT  t.idtrabajador,
+		 (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno ) as  nombre,
+		 p.cNombres as nombres,
+		 p.cApPaterno as apPaterno,
+		 p.cApMaterno as apMaterno,
+		  p.cDocPer as dni,
+		  t.cCargo  as cargo,
+		  t.idarea,
+		  a.cNombre as  area,
+			t.bActivo,
+		 ISNULL(FORMAT(t.dFecIngreso,'dd/MM/yyyy'),'')  as  fecingreso,
+			ISNULL(FORMAT(t.dFecRetiro,'dd/MM/yyyy'),FORMAT(getdate(),'dd/MM/yyyy'))   as  fecretiro,
+			e.cNombre  empresa,
+			e.idempresa,
+		(case 
+			when (t.bActivo=1) then 'ACTIVO'
+			else  'NO ACTIVO'
+		end) estado,
+		(case 
+			when (t.bActivo=1) then 'GREEN'
+			else  'RED'
+		end) colorEstado,
+		(case 
+			when (t.bActivo=1) then 'checked'
+			else  ''
+		end) opcionsi,
+		(case 
+			when (t.bActivo=0) then 'checked'
+			else  ''
+		end) opcionno 
+		FROM trabajador t
+		inner join empresa e on e.idEmpresa=t.idempresa
+		inner join persona p on p.idPersona=t.idPersona
+		inner join area a on a.idArea=t.idarea
+		where 
+		t.idtrabajador=@idtrabajador;
+
+		end
+
+	
+end
+
+--------------------------------------------------
+--------------------------------------------------
+
+alter PROCEDURE [dbo].[sp_get_AreasconSeleccion] 
+@idarea int
+AS
+
+BEGIN 
+
+SELECT a.idArea,a.cNombre as nombre ,a.dFecReg as fecReg,
+'true' as estado
+ from area a where a.bEstado=1
+ and a.idArea=@idarea
+
+ union
+
+ SELECT a.idArea,a.cNombre as nombre ,a.dFecReg as fecReg,
+'false' as estado
+ from area a where a.bEstado=1
+ and a.idArea<>@idarea
+
+ end
+END
+
+-----------------------------------------------------
+-----------------------------------------------------
+CREATE PROCEDURE [dbo].[sp_get_Areas] 
+AS
+
+BEGIN 
+
+SELECT a.idArea,a.cNombre as nombre ,a.dFecReg as fecReg, '' as estado
+ from area a where a.bEstado=1
+ order by nombre asc;
+
+END
+-----------------------------------------------------
+-----------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_segurobyid]
+@idseguro int 
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+select s.idseguro,s.cNombre as nombre,s.CNroSalud as  nrosalud,
+s.cNroPoliza as nropoliza,FORMAT(s.dFecInicio,'dd/MM/yyyy') fechainicio,
+FORMAT(s.dFecFin,'dd/MM/yyyy') fechafin,e.cNombre as empresa,e.idempresa 
+from seguro s
+inner join empresa e on s.idempresa=e.idempresa
+where  s.idseguro=@idseguro ;
+
+END
+
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_EmpresasconSeleccion]
+@idempresa int, 
+@codsuc int
+AS
+ 
+BEGIN 
+
+SELECT e.idEmpresa,e.cRuc as ruc ,e.cNombre as nombre,
+e.cDescripcion as descripcion, 'true' as estado,
+dFecReg as fecReg,
+cUsuReg as usuReg,
+dFecMod as fecMod,
+cUsuMod as usuMod
+ from empresa e where e.bEstado=1 and e.idempresa=@idempresa
+ and e.nSucursal=@codsuc
+
+ union
+
+ SELECT e.idEmpresa,e.cRuc as ruc ,e.cNombre as nombre,
+e.cDescripcion as descripcion, 'false' as estado,
+dFecReg as fecReg,
+cUsuReg as usuReg,
+dFecMod as fecMod,
+cUsuMod as usuMod
+ from empresa e where e.bEstado=1 and e.idempresa<>@idempresa
+ and e.nSucursal=@codsuc
+ --order by nombre asc;
+
+END
+-----------------------------------------------------
+-----------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_upd_trabajador]
+@idtrabajador int ,
+@cargo varchar(50)='',
+@idarea int=0,
+@idempresa int=0,
+@fecIngreso varchar(10)='',
+@fecRetiro varchar(10)='',
+@rutaImage varchar(2000)='',
+@bactivo int=0,
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+BEGIN 
+	select  @nResultado=0
+
+	BEGIN TRANSACTION
+       if @bactivo=1 
+		begin
+			update trabajador set idempresa=@idempresa, cCargo=@cargo,
+			idArea=@idarea, dFecIngreso=@fecIngreso, dFecRetiro=null,
+			cRutaImage=@rutaImage, bActivo=@bactivo ,dFecMod=getdate(),
+			cUsuMod=@user where idtrabajador=@idtrabajador and bEstado=1
+
+		end
+	   else
+		begin
+			update trabajador set idempresa=@idempresa, cCargo=@cargo,
+			idArea=@idarea, dFecIngreso=@fecIngreso, dFecRetiro=@fecRetiro,
+			cRutaImage=@rutaImage, bActivo=@bactivo ,dFecMod=getdate(),
+			cUsuMod=@user where idtrabajador=@idtrabajador and bEstado=1
+		end
+		
+		select @nResultado=1
+	COMMIT TRANSACTION
+	
+END
+-----------------------------------------------------
+-----------------------------------------------------
+USE [IMUDESA]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ins_trabajador]    Script Date: 15/11/2022 06:52:38 p.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+---------------------------------------
+create PROCEDURE [dbo].[sp_ins_trabajador]
+@codsuc int=1,
+@dni varchar(10)='',
+@nombres varchar(50)='',
+@apPaterno varchar(50)='',
+@apMaterno varchar(50)='',
+@cargo varchar(50)='',
+@idarea int=0,
+@idempresa int=0,
+@fecIngreso varchar(10)='',
+@rutaImage varchar(2000)='',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+
+declare @idPersona int,
+@siExiste int,
+@siUsadoPer int
+
+	select @siExiste=count(*) from persona where cDocPer=@dni and bEstado=1
+	select  @nResultado=0
+
+BEGIN TRANSACTION
+if @siExiste=0
+  begin 
+	insert into persona(cDocPer,cNombres,cApPaterno,cApMaterno,bTrabajador,
+	dFecReg,cUsuReg,dFecMod,cUsuMod) 
+	values (@dni,@nombres,@apPaterno,@apMaterno,1,
+	getdate(),@user,getdate(),@user) 
+
+	SELECT @idPersona = @@IDENTITY  
+  end
+else
+ begin
+	select @idPersona=idPersona from persona where cDocPer=@dni and bEstado=1
+ end
+--------------------------------------------------------------------
+--Verificar si no se ha ingresado otro trabajador con los mismos datos	en trabajador
+select @siUsadoPer=count(*) from Trabajador where idPersona=@idPersona
+and bestado=1 and bactivo=1
+if  @siUsadoPer=0
+begin
+	insert into trabajador (nSucursal,idPersona,cCargo,idArea,
+	idempresa,dFecIngreso,cRutaImage,dFecReg,cUsuReg,dFecMod,cUsuMod) 
+	values(@codsuc,@idPersona,@cargo,@idarea,
+	@idempresa,@fecIngreso, @rutaImage,getdate(),@user,getdate(),@user) 
+
+	select @nResultado=1
+end	
+COMMIT TRANSACTION	
+
+-----------------------------------------------------
+-----------------------------------------------------
+
+ALTER PROCEDURE [dbo].[sp_get_Trabajadores]
+@idusuario int,
+@codsuc int=0	
+AS
+SET NOCOUNT ON;
+declare
+@perfil varchar(50),
+@idacceso int 
+
+select @perfil=a.cNombre 
+ from usuario u 
+ inner join  area a on u.idArea=a.idArea
+ where u.idUsuario=@idusuario;
+
+ select @idacceso=ua.idAcceso from usuario u
+ inner join usuariosAccesos ua on ua.idUsuario=u.idUsuario
+ inner join menuSistema m on m.idMenu=ua.idMenu
+ where m.cCodMenu='V04' and m.cCodOpcion='02' and u.idUsuario=@idusuario;
+
+ 
+begin
+	SELECT  t.idtrabajador,
+	 (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno ) as  nombre,
+	 p.cNombres as nombres,
+	 p.cApPaterno as apPaterno,
+	 p.cApMaterno as apMaterno,
+	  p.cDocPer as dni,
+	   t.cCargo  as cargo,
+	   t.idarea,
+	    a.cNombre as  area,
+		t.bActivo,
+	    FORMAT(t.dFecIngreso,'dd/MM/yyyy') as  fecingreso,
+		FORMAT(t.dFecRetiro,'dd/MM/yyyy') as  fecretiro,
+		e.cNombre  empresa,
+		e.idempresa,
+	(case 
+		when (t.bActivo=1) then 'ACTIVO'
+		else  'NO ACTIVO'
+	end) estado,
+	(case 
+		when (t.bActivo=1) then 'GREEN'
+		else  'RED'
+	end) colorEstado,
+	(case 
+		when (t.bActivo=1) then 'checked'
+		else  ''
+	end) opcionsi,
+	(case 
+		when (t.bActivo=0) then 'checked'
+		else  ''
+	end) opcionno,
+	----------------------------------
+	(case 
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as noedit, 
+	----------------------------------
+	(case 
+			when (select bEliminar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as nodelete,
+			----------------------------------
+	t.cUsuReg as creador,
+	t.cUsuMod as modificador
+	---------------------------------- 
+	FROM trabajador t
+	inner join empresa e on e.idEmpresa=t.idempresa
+	inner join persona p on p.idPersona=t.idPersona
+	inner join area a on a.idArea=t.idarea
+	where e.nSucursal=  @codsuc
+	and t.nSucursal=@codsuc
+	and t.bEstado=1 and e.bEstado=1
+	order by empresa,nombre desc;	
+end
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_SCTRxEmpresa]
+@idempresa int , 
+@nSucursal int=0
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+select s.idseguro,
+s.nSucursal,
+s.cNombre as nombre, 
+s.CNroSalud as nrosalud,
+s.cNroPoliza as nropoliza,
+FORMAT(s.dFecInicio,'dd/MM/yyyy') fechainicio,
+FORMAT(s.dFecFin,'dd/MM/yyyy') fechafin,
+e.cNombre empresa,
+s.idempresa  from seguro s
+inner join empresa e on e.idempresa=s.idempresa
+where s.idempresa=@idempresa and
+s.nSucursal=@nSucursal;
+
+END
+
+
+-----------------------------------------------------
+-----------------------------------------------------
+USE [IMUDESA]
+GO
+/****** Object:  Table [dbo].[seguro]    Script Date: 14/11/2022 01:07:21 p.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[seguro](
+	[idseguro] [int] IDENTITY(1,1) NOT NULL,
+	[nSucursal] [int] NOT NULL,
+	[cNombre] [varchar](100) NOT NULL,
+	[CNroSalud] [varchar](20) NOT NULL,
+	[cNroPoliza] [varchar](20) NOT NULL,
+	[dFecInicio] [date] NOT NULL,
+	[dFecFin] [date] NOT NULL,
+	[idempresa] [int] NOT NULL,
+	[bEstado] [int] NOT NULL,
+	[dFecReg] [varchar](20) NULL,
+	[cUsuReg] [datetime] NULL,
+	[dFecMod] [varchar](20) NULL,
+	[cUsuMod] [datetime] NULL,
+ CONSTRAINT [PK_seguro] PRIMARY KEY CLUSTERED 
+(
+	[idseguro] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+ALTER TABLE [dbo].[seguro] ADD  DEFAULT ((1)) FOR [bEstado]
+GO
+-----------------------------------------------------
+-----------------------------------------------------
+USE [IMUDESA]
+GO
+/****** Object:  Table [dbo].[trabajador]    Script Date: 12/11/2022 09:53:11 p.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[trabajador](
+	[idtrabajador] [int] IDENTITY(1,1) NOT NULL,
+	[nSucursal] [int] NOT NULL,
+	[idPersona] [int] NOT NULL,
+	[cCargo] [varchar](100) NULL,
+	[idArea] [int] NOT NULL,
+	[idempresa] [int] NOT NULL,
+	[bActivo] [int] NOT NULL,
+	[dFecIngreso] [datetime] NULL,
+	[dFecRetiro] [datetime] NULL,
+	[cRutaImage] [varchar](2000) NULL,		
+	[bEstado] [int] NOT NULL,
+	[dFecReg] [datetime] NULL,
+	[cUsuReg] [varchar](20) NULL,
+	[dFecMod] [datetime] NULL,
+	[cUsuMod] [varchar](20) NULL
+
+
+ CONSTRAINT [PK_trabajador] PRIMARY KEY CLUSTERED 
+(
+	[idtrabajador] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+ALTER TABLE [dbo].[trabajador] ADD  DEFAULT ((1)) FOR [bActivo]
+GO
+ALTER TABLE [dbo].[trabajador] ADD  CONSTRAINT [DF_trabajador_bestado]  DEFAULT ((1)) FOR [bEstado]
+GO
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_PersonalxEmpresa]
+@idempresa int  
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+select t.idtrabajador, (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno) as nombre, p.cDocPer as dni,t.cCargo as cargo,t.cArea as area,
+t.bActivo as bActivo,t.idempresa, e.cNombre empresa 
+from trabajador t
+inner join persona p on p.idPersona=t.idPersona
+inner join empresa e on e.idEmpresa= t.idempresa
+where t.idempresa=@idempresa and t.bActivo=1 and t.bEstado=1
+order by 2 asc;
+
+END
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_upd_empresa]
+@idempresa int=0,
+@nombre varchar(50)='',
+@descripcion varchar(200)='',
+@user varchar(50)='',
+@nResultado int OUTPUT
+AS
+ --SET NOCOUNT OFF;
+BEGIN
+	
+		update empresa set cNombre=@nombre,cDescripcion=@descripcion,
+		dFecMod=getdate(),cUsuMod=@user where idempresa=@idempresa;
+		
+		select  @nResultado=1;
+ 
+END
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_ins_empresa]
+@codsuc int,
+@ruc varchar(15),
+@nombre varchar(50),
+@descripcion varchar(200),
+@user varchar(50)='',
+@nResultado int OUTPUT
+AS
+ --SET NOCOUNT OFF;
+ declare
+  @exis_emp int;
+  
+BEGIN
+	select @exis_emp=count(*) from empresa e where ltrim(rtrim(e.cRuc))=ltrim(rtrim(@ruc)) and e.bEstado=1;
+	select  @nResultado=0;
+	if @exis_emp=0
+	begin
+			INSERT INTO empresa(nSucursal,cRuc,cNombre,cDescripcion,
+			dFecReg,cUsuReg,dFecMod,cUsuMod) 
+			values (@codsuc,@ruc,@nombre,@descripcion,
+			GETDATE(),@user,GETDATE(),@user);
+			select  @nResultado=1;
+	end
+ 
+
+END
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_upd_movimiento]
+@idmovimiento int ,
+@numAsignado varchar(10)='',
+@destino varchar(200)='',
+@encargado varchar(200)='',
+@empresapvnte varchar(200)='',
+@observacion varchar(200)='',
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+BEGIN 
+declare @idPersona int,
+@siUsadoNum int
+
+	select @idPersona=idPersona  from movimientoPersona m
+	where M.idMovimiento=@idmovimiento 
+
+	select @siUsadoNum=count(*) from movimientoPersona 
+	where nNumAsignado=@numAsignado and ltrim(rtrim(nNumAsignado))<>''
+	and bEstado=1 and FORMAT(dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and dHoraSalida='' and idPersona<>@idPersona
+
+	select  @nResultado=0
+
+	if @siUsadoNum=0  
+	BEGIN TRANSACTION
+
+		update movimientoPersona set nNumAsignado=@numAsignado,
+		cDestino=@destino, cEncargado=@encargado, cEmpresaPvnte=@empresapvnte,
+		cObservacion=@observacion, dFecMod=dbo.fn_get_fechaCorregida(@codPais),
+		cUsuMod=@user where idMovimiento=@idmovimiento and bEstado=1
+		
+		select @nResultado=1
+	COMMIT TRANSACTION
+	
+END
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER FUNCTION [dbo].[fn_get_verificarIndeseado]
+(
+	@dni varchar(10)
+)
+RETURNS  bit
+AS
+BEGIN
+
+	Declare @isIndeseado bit=0,
+		@siExiste int
+	
+		select @siExiste=count(*) from indeseado i
+		inner join persona p on p.idpersona=i.idpersona
+		where p.cDocPer=@dni and i.bEstado=1 and p.bEstado=1 and p.bIndeseado=1
+		
+		if @siExiste>0
+		BEGIN
+			set @isIndeseado=1
+		END 
+
+	RETURN @isIndeseado
+
+END
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_indeseadobyIdDni]
+@id integer=0,
+@dni varchar(10)='0000000000',
+@modo varchar(3)='I'
+AS
+	if @modo='I'
+	  BEGIN
+		if @id= 0
+			select idindeseado=0,idPersona=0,dni='',
+			nombre='',apPaterno='',apMaterno='',
+			persona='' , cargo='', empresaPvnte='',
+			observacion='',motAnular='',fechaRegistro=FORMAT(GETDATE(),'dd/MM/yyyy'),
+			usuario='' 
+			
+		else
+			select i.idindeseado,p.idPersona,p.cDocPer as dni,
+			p.cNombres as nombre, p.cApPaterno as apPaterno,
+			p.cApMaterno as apMaterno,
+			(p.cApPaterno+' '+p.cApMaterno+' '+p.cNombres) as persona,  
+			i.cCargo as cargo, i.cEmpresaPvnte as empresaPvnte, i.cObservacion as observacion,
+			i.motAnular,FORMAT(i.dFecReg,'dd/MM/yyyy') as fechaRegistro,
+			i.cUsuReg as usuario from indeseado i
+			inner join persona p on p.idPersona=i.idPersona
+			where i.idIndeseado=@id
+			
+	  END
+	else --@modo='D'
+		begin
+			select i.idindeseado,p.idPersona,p.cDocPer as dni,
+			p.cNombres as nombre, p.cApPaterno as apPaterno,
+			p.cApMaterno as apMaterno,
+			(p.cApPaterno+' '+p.cApMaterno+' '+p.cNombres) as persona,  
+			i.cCargo as cargo, i.cEmpresaPvnte as empresaPvnte, i.cObservacion as observacion,
+			i.motAnular,FORMAT(i.dFecReg,'dd/MM/yyyy') as fechaRegistro,
+			i.cUsuReg as usuario from indeseado i
+			inner join persona p on p.idPersona=i.idPersona
+			where i.idIndeseado=@id		
+		end
+	
+RETURN 0
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+USE [IMUDESA]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_indeseados]    Script Date: 26/09/2022 11:49:24 p.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[sp_get_indeseados]
+@idusuario int,
+@nSucursal int=0
+AS
+ declare
+ @idacceso int=0
+
+ select @idacceso=ua.idAcceso from usuario u
+ inner join usuariosAccesos ua on ua.idUsuario=u.idUsuario
+ inner join menuSistema m on m.idMenu=ua.idMenu
+ where m.cCodMenu='V01' and m.cCodOpcion='02' and u.idUsuario=@idusuario
+
+		begin
+			select i.idindeseado,
+			p.idPersona,
+			p.cDocPer as dni,
+			(p.cApPaterno+' '+p.cApMaterno+' '+p.cNombres) as persona,  
+			i.cCargo as cargo, 
+			i.cEmpresaPvnte as empresaPvnte,
+			 i.cObservacion as observacion,
+			 i.motAnular,
+			----------------------------------
+			(case (select bGuardar from usuariosAccesos where idAcceso=@idacceso)
+			when 0 then 'true'
+			else 'false'
+			end) as noedit, 
+			----------------------------------
+			(case (select bEliminar from usuariosAccesos where idAcceso=@idacceso)
+			when 0 then 'true'
+			else 'false'
+			end) as nodelete, 
+			----------------------------------
+			FORMAT(i.dFecReg,'dd/MM/yyyy') as fechaRegistro,
+			i.cUsuReg as usuario 
+			from indeseado i
+			inner join persona p on p.idPersona=i.idPersona
+			where i.bEstado=1
+			order by fechaRegistro desc
+		
+		end
+	
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+create PROCEDURE [dbo].[sp_del_indeseado]
+@idindeseado int=0,
+@motAnular varchar(200)='',
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+declare @idpersona int
+
+	select  @nResultado=0;
+
+	select @idpersona=idPersona from indeseado where idIndeseado= @idindeseado
+
+BEGIN TRANSACTION
+
+		update indeseado set bEstado=0,dFecMod=dbo.fn_get_fechaCorregida(@codPais),
+		cUsuMod=@user,motAnular=@motAnular where idIndeseado=@idindeseado;
+
+		update persona set bIndeseado=0 where idPersona=@idpersona;
+
+		select @nResultado=1
+	
+COMMIT TRANSACTION	
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_cargaVehicularbyid]
+@id int=0,
+@codPais varchar(5)
+AS
+begin
+	if @id=0
+		
+			select  idCargaVehicular=0,idPersona=0, nombres='', apPaterno='' ,apMaterno='' ,
+			dni='',fecha=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy'),
+			horaentrada=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'HH:mm'),horasalida='',
+			licencia='',empresaPvnte='',idDestino=4,placa='', numContenedor='',bUnidad=1,
+			bCarreta=0, codcarreta='', tipo='20',estcarga='V',precinto=''
+		
+	else
+		
+				select v.idCargaVehicular,v.idPersona,p.cNombres as  nombres,p.cApPaterno as apPaterno,
+				p.cApMaterno as apMaterno,p.cDocPer as dni, FORMAT(v.dFecha,'dd/MM/yyyy') as fecha,
+				v.dHoraEntrada as horaentrada,v.dHoraSalida as horasalida,
+				v.cLicencia as licencia,v.cEmpresaPvnte as empresaPvnte,v.idEmpresaDestino as idDestino,
+				v.cPlaca as placa,v.cNumContenedor as numContenedor,v.bUnidad,
+				v.bCarreta, v.cCodCarreta as codcarreta,v.cTipo as tipo,v.cEstadoCarga as estcarga, 
+				v.cPrecintoGuia as precinto
+				from cargavehicular v
+				inner join persona p on p.idPersona=v.idPersona
+				where v.idCargaVehicular=@id
+		
+	
+end
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+ALTER PROCEDURE [dbo].[sp_get_cargaVehicularHoy]
+@idusuario int,
+@nSucursal int=0,
+@codPais varchar(3)	
+AS
+ declare
+ @idacceso int=0
+
+ select @idacceso=ua.idAcceso from usuario u
+ inner join usuariosAccesos ua on ua.idUsuario=u.idUsuario
+ inner join menuSistema m on m.idMenu=ua.idMenu
+ where m.cCodMenu='V01' and m.cCodOpcion='01' and u.idUsuario=@idusuario
+ BEGIN
+	select v.idCargaVehicular as ID, v.nSucursal, v.idPersona,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni, 
+	FORMAT(v.dFecha,'dd/MM/yyyy') as fecha,
+	v.dHoraEntrada as horaentrada,
+	v.dHoraSalida as horasalida,
+	----------------------------------
+	(case 
+			when ltrim(rtrim(v.dHoraSalida))<>'' then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as noedit, 
+	----------------------------------
+	(case 
+			when ltrim(rtrim(v.dHoraSalida))<>'' then 'true'
+			when (select bEliminar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as nodelete, 
+	----------------------------------
+	(case 
+			when ltrim(rtrim(v.dHoraSalida))<>'' then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as hasalido, 
+	----------------------------------
+	v.cLicencia as licencia,
+	v.cEmpresaPvnte as origen,
+	v.idEmpresaDestino as iddestino,
+	e.cNombre as destino,
+	v.cPlaca as placa,
+	v.cNumContenedor as numContenedor,
+	v.bUnidad,
+	v.bCarreta,
+	v.cCodCarreta as codCarreta,
+	v.cTipo as tipo,
+	v.cEstadoCarga as estcarga,
+	v.cPrecintoGuia as precinto,
+	v.bEstado,
+	v.dFecReg as fecReg,
+	v.cUsuReg as usuReg
+	 from cargaVehicular v 
+	inner join persona p on p.idPersona=v.idPersona
+	inner join empresa e on e.idempresa=v.idEmpresaDestino
+	where v.nSucursal=@nSucursal
+	and FORMAT(v.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	
+END
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_citasHoy]
+@idusuario int,
+@nSucursal int=0,
+@codPais varchar(3)	
+
+AS
+ SET NOCOUNT ON;
+declare
+@perfil varchar(50),
+@idacceso int 
+
+select @perfil=a.cNombre 
+ from usuario u 
+ inner join  area a on u.idArea=a.idArea
+ where u.idUsuario=@idusuario;
+
+ select @idacceso=ua.idAcceso from usuario u
+ inner join usuariosAccesos ua on ua.idUsuario=u.idUsuario
+ inner join menuSistema m on m.idMenu=ua.idMenu
+ where m.cCodMenu='V02' and m.cCodOpcion='01' and u.idUsuario=@idusuario;
+
+BEGIN
+ 
+ if(@perfil='SEGURIDAD' or @perfil='SISTEMAS')
+	select c.idcita,
+	FORMAT(c.dFecha,'dd-MM-yyyy') as fecha,
+	c.cHora as hora,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni,
+	(select e.cNombre from empresa e where e.idEmpresa=c.idDestino) as destino,
+	c.idDestino,
+	c.cEncargado as encargado,
+	c.cEmpresaPvnte as empresaPvnte,c.cObservacion as observacion,
+	idcitador,
+	----------------------------------
+	(case 
+			when c.bAtendido=1  then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as haatendido, 
+	----------------------------------
+	(case 
+			when c.bAtendido=1  then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as noedit, 
+	----------------------------------
+	(case 
+			when c.bAtendido=1  then 'true'
+			when (select bEliminar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as nodelete, 
+	----------------------------------
+	(case 
+			when c.bAtendido=1  then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as noconfirm, 
+	----------------------------------
+	c.cUsuReg as creador,
+	c.cUsuMod as modificador
+	from cita c inner join persona p on c.idPersona=p.idPersona
+	where FORMAT(c.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and c.bEstado=1 and p.bEstado=1
+	and c.nSucursal=@nSucursal
+	order by c.cHora desc;
+
+ else
+	select c.idcita,
+	FORMAT(c.dFecha,'dd-MM-yyyy') as fecha,
+	c.cHora as hora,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni,
+	(select e.cNombre from empresa e where e.idEmpresa=c.idDestino) as destino,
+	c.idDestino,
+	c.cEncargado as encargado,
+	c.cEmpresaPvnte as empresaPvnte,c.cObservacion as observacion,
+	idcitador,
+	----------------------------------
+	(case 
+			when c.bAtendido=1  then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as haatendido, 
+	----------------------------------
+	(case 
+			when c.bAtendido=1  then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as noedit, 
+	----------------------------------
+	(case 
+			when c.bAtendido=1  then 'true'
+			when (select bEliminar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as nodelete, 
+	----------------------------------
+	 'true' as noconfirm, 
+	----------------------------------
+	c.cUsuReg as creador,
+	c.cUsuMod as modificador
+	from cita c inner join persona p on c.idPersona=p.idPersona
+	where FORMAT(c.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and c.bEstado=1 and c.bOculto=0
+	and c.idcitador=@idusuario
+	and p.bEstado=1
+	and c.nSucursal=@nSucursal
+	order by c.cHora desc;
+
+END
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_movimientosHoy]
+@modoMov Varchar(5)='v',
+@idusuario int,
+@nSucursal int=0,
+@codPais varchar(3)	
+AS
+ declare
+ @idacceso int=0
+
+ select @idacceso=ua.idAcceso from usuario u
+ inner join usuariosAccesos ua on ua.idUsuario=u.idUsuario
+ inner join menuSistema m on m.idMenu=ua.idMenu
+ where m.cCodMenu='V01' and m.cCodOpcion='01' and u.idUsuario=@idusuario
+
+ begin
+
+		
+			select m.idMovimiento,m.nSucursal,m.idPersona,
+			(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+			p.cDocPer as dni, 
+			FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+			m.dHoraEntrada as horaentrada,
+			m.dHoraSalida as horasalida,
+			----------------------------------
+			(case 
+			when m.cModoMov='i' then 'true'
+			when ltrim(rtrim(m.dHoraSalida))<>'' then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as hasalido, 
+			----------------------------------
+			(case 
+			when m.cModoMov='i' then 'true'
+			when ltrim(rtrim(m.dHoraSalida))<>'' then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as noedit, 
+			----------------------------------
+			(case 
+			when m.cModoMov='i' then 'true'
+			when ltrim(rtrim(m.dHoraSalida))<>'' then 'true'
+			when (select bEliminar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as nodelete, 
+			----------------------------------
+			(case 
+			when m.cModoMov='i' then 'true'
+			when ltrim(rtrim(m.dHoraSalida))<>'' then 'true'
+			when (select bGuardar from usuariosAccesos where idAcceso=@idacceso)=0 then 'true'
+			else ''
+			end) as sisalida, 
+			----------------------------------
+			m.nNumAsignado as numAsignado,
+			m.cDestino as destino,
+			m.cEncargado as encargado,
+			m.cEmpresaPvnte as empresaPvnte,
+			m.cObservacion as observacion,
+			m.cModoMov as modo,
+			m.dFecMod as fecMod,
+			m.cUsuMod as usuMod
+			from movimientoPersona m 
+			inner join persona p on p.idPersona=m.idPersona
+			where 
+			(m.cModoMov='v' or m.cModoMov='c' or m.cModoMov='i')
+			and nSucursal=@nSucursal
+			and FORMAT(m.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+			and m.bEstado=1
+			
+		
+	
+end
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_indeseados]
+@idusuario int,
+@nSucursal int=0
+AS
+ declare
+ @idacceso int=0
+
+ select @idacceso=ua.idAcceso from usuario u
+ inner join usuariosAccesos ua on ua.idUsuario=u.idUsuario
+ inner join menuSistema m on m.idMenu=ua.idMenu
+ where m.cCodMenu='V01' and m.cCodOpcion='02' and u.idUsuario=@idusuario
+
+		begin
+			select i.idindeseado,
+			p.idPersona,
+			p.cDocPer as dni,
+			(p.cApPaterno+' '+p.cApMaterno+' '+p.cNombres) as persona,  
+			i.cCargo as cargo, 
+			i.cEmpresaPvnte as empresaPvnte,
+			 i.cObservacion as observacion,
+			----------------------------------
+			(case (select bGuardar from usuariosAccesos where idAcceso=@idacceso)
+			when 0 then 'true'
+			else 'false'
+			end) as noedit, 
+			----------------------------------
+			(case (select bEliminar from usuariosAccesos where idAcceso=@idacceso)
+			when 0 then 'true'
+			else 'false'
+			end) as nodelete, 
+			----------------------------------
+			FORMAT(i.dFecReg,'dd/MM/yyyy') as fechaRegistro,
+			i.cUsuReg as usuario 
+			from indeseado i
+			inner join persona p on p.idPersona=i.idPersona
+			order by fechaRegistro desc
+		
+		end
+	
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_iniciarSesion] 
+@cuenta varchar(50)='',
+@clave varchar(50)='',
+@codsuc int=0
+AS
+ SET NOCOUNT ON; 
+declare
+@ID int=0
+
+select @ID=ISNULL(u.idUsuario,0) from usuario u
+inner join usuariosucursal us on us.idusuario=u.idusuario
+where rtrim(cUsuNombre)=RTRIM(@cuenta)
+and rtrim(cUsuCtseña)=RTRIM(@clave) 
+and us.idSucursal=@codsuc
+begin
+if @ID<>0 
+
+	SELECT u.idusuario,us.idsucursal,s.cNombre,u.cUsuNombre,
+	u.idArea, a.cNombre as area
+	from usuario u 
+	inner join usuariosucursal us on us.idusuario=u.idusuario
+	inner join sucursal s on s.idSucursal=us.idSucursal
+	inner join area a on a.idArea=u.idArea
+	where u.idusuario=@ID
+	and us.idSucursal=@codsuc
+else
+
+	select 0 as idusuario, 0 as  idsucursal , '' as cNombre ,'' as cUsuNombre,
+	0 as idArea, '' as area
+end
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+alter PROCEDURE [dbo].[sp_get_AccesosMenuxUsuario] 
+@idusuario INT=0,
+@codMenu varchar(5)='',
+@codOpcion  varchar(5)=''
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+SELECT 
+u.idusuario,
+s.idSucursal,
+s.cNombre,
+u.cUsuNombre,
+u.idArea, 
+a.cNombre as area,
+m.idMenu,
+m.cCodMenu,
+m.cCodOpcion,
+m.cDescripcion,
+(case ua.bAbrir when 1 then 'false' else 'true' end) AS noabrir,
+(case ua.bGuardar when 1 then 'false' else 'true' end) AS noguardar,
+(case ua.bCerrar when 1 then 'false' else 'true' end) AS nocerrar,
+(case ua.bExportar when 1 then 'false' else 'true' end) AS noexportar,
+(case ua.bEliminar when 1 then 'false' else 'true' end) AS noeliminar
+from usuario u 
+inner join usuariosucursal us on u.idusuario=us.idusuario
+inner join sucursal s on s.idSucursal=us.idSucursal
+inner join area a on a.idArea=u.idArea
+inner join  usuariosAccesos ua on ua.idUsuario = u.idUsuario 
+inner join menuSistema m on m.idMenu=ua.idMenu
+where u.idusuario=@idusuario
+and m.cCodMenu= @codMenu 
+and m.cCodOpcion= @codOpcion 
+
+END
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+CREATE PROCEDURE [dbo].[sp_del_movimiento]
+@idmovimiento int=0,
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+
+	select  @nResultado=0
+
+BEGIN TRANSACTION
+
+		update movimientoPersona set bEstado=0,dFecMod=dbo.fn_get_fechaCorregida(@codPais),
+		cUsuMod=@user where idmovimiento=@idmovimiento
+		select @nResultado=1
+	
+COMMIT TRANSACTION	
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_movimientosHoy]
+@modoMov Varchar(5)='v',
+@idusuario int,
+@nSucursal int=0,
+@codPais varchar(3)	
+AS
+ SET NOCOUNT ON;
+ declare
+ @perfil varchar(50)  
+
+ select @perfil=a.cNombre 
+ from usuario u 
+ inner join  area a on u.idArea=a.idArea
+ where u.idUsuario=@idusuario
+
+ begin
+
+	 if(@perfil='SEGURIDAD' or @perfil='SISTEMAS')
+		
+			select m.idMovimiento,m.nSucursal,m.idPersona,
+			(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+			p.cDocPer as dni, 
+			FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+			m.dHoraEntrada as horaentrada,
+			m.dHoraSalida as horasalida,
+			----------------------------------
+			(case ltrim(rtrim(m.dHoraSalida))
+			when '' then ''
+			else 'true'
+			end) as hasalido, 
+			----------------------------------
+			(case ltrim(rtrim(m.dHoraSalida))
+			when '' then ''
+			else 'true'
+			end) as noedit, 
+			----------------------------------
+			(case ltrim(rtrim(m.dHoraSalida))
+			when '' then ''
+			else 'true'
+			end) as nodelete, 
+			----------------------------------
+			(case ltrim(rtrim(m.dHoraSalida))
+			when '' then ''
+			else 'true'
+			end) as sisalida, 
+			----------------------------------
+			m.nNumAsignado as numAsignado,
+			m.cDestino as destino,
+			m.cEncargado as encargado,
+			m.cEmpresaPvnte as empresaPvnte,
+			m.cObservacion as observacion,
+			m.cModoMov as modo,
+			m.dFecMod as fecMod,
+			m.cUsuMod as usuMod
+			from movimientoPersona m 
+			inner join persona p on p.idPersona=m.idPersona
+			where 
+			(m.cModoMov='v' or m.cModoMov='c')
+			and nSucursal=@nSucursal
+			and FORMAT(m.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+			and m.bEstado=1
+
+		else
+
+			select m.idMovimiento,m.nSucursal,m.idPersona,
+			(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+			p.cDocPer as dni, 
+			FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+			m.dHoraEntrada as horaentrada,
+			m.dHoraSalida as horasalida,
+			----------------------------------
+			'true' as hasalido, 
+			----------------------------------
+			'true' as noedit, 
+			----------------------------------
+			'true' as nodelete, 
+			----------------------------------
+			'true' as sisalida, 
+			----------------------------------
+			m.nNumAsignado as numAsignado,
+			m.cDestino as destino,
+			m.cEncargado as encargado,
+			m.cEmpresaPvnte as empresaPvnte,
+			m.cObservacion as observacion,
+			m.cModoMov as modo,
+			m.dFecMod as fecMod,
+			m.cUsuMod as usuMod
+			from movimientoPersona m 
+			inner join persona p on p.idPersona=m.idPersona
+			where 
+			(m.cModoMov='v' or m.cModoMov='c')
+			and nSucursal=@nSucursal
+			and FORMAT(m.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+			and m.bEstado=1
+		
+	
+end
+	
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+create PROCEDURE [dbo].[sp_get_citasHoy]
+@idusuario int,
+@nSucursal int=0,
+@codPais varchar(3)	
+
+AS
+ SET NOCOUNT ON;
+declare
+@perfil varchar(50)  
+
+select @perfil=a.cNombre 
+ from usuario u 
+ inner join  area a on u.idArea=a.idArea
+ where u.idUsuario=@idusuario
+
+BEGIN
+ 
+ if(@perfil='SEGURIDAD' or @perfil='SISTEMAS')
+	select c.idcita,
+	FORMAT(c.dFecha,'dd-MM-yyyy') as fecha,
+	c.cHora as hora,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni,
+	(select e.cNombre from empresa e where e.idEmpresa=c.idDestino) as destino,
+	c.idDestino,
+	c.cEncargado as encargado,
+	c.cEmpresaPvnte as empresaPvnte,c.cObservacion as observacion,idcitador,
+	(case c.bAtendido when 1 then 'true' else '' end) as haatendido,
+	(select cUsuNombre from usuario where idusuario=c.idCitador) as usuario,
+	(case c.bAtendido when 1 then 'true' else '' end) as noedit,
+	(case c.bAtendido when 1 then 'true' else '' end) as nodelete,
+	(case c.bAtendido when 1 then 'true' else '' end) as noconfirm
+	from cita c inner join persona p on c.idPersona=p.idPersona
+	where FORMAT(c.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and c.bEstado=1 and p.bEstado=1
+	order by c.cHora desc;
+
+ else
+	select c.idcita,
+	FORMAT(c.dFecha,'dd-MM-yyyy') as fecha,
+	c.cHora as hora,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni,
+	(select e.cNombre from empresa e where e.idEmpresa=c.idDestino) as destino,
+	c.idDestino,
+	c.cEncargado as encargado,
+	c.cEmpresaPvnte as empresaPvnte,c.cObservacion as observacion,idcitador,
+	(case c.bAtendido when 1 then 'true' else '' end) as haatendido,
+	(select cUsuNombre from usuario where idusuario=c.idCitador) as usuario,
+	'true' as noedit,
+	'true' as nodelete,
+	'true' as noconfirm
+	from cita c inner join persona p on c.idPersona=p.idPersona
+	where FORMAT(c.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and c.bEstado=1 and c.bOculto=0
+	and c.idcitador=@idusuario
+	and p.bEstado=1
+	order by c.cHora desc;
+
+END
+----------------------------------------
+CREATE PROCEDURE [dbo].[sp_get_citas]
+@fechai Varchar(10)='01/01/1990',
+@fechaf Varchar(10)='01/01/1990',
+@nombre Varchar(50)='',
+@dni Varchar(10)='',
+@destino Varchar(50)='',
+@encargado Varchar(50)='',
+@empresa_proveniente Varchar(50)='',
+@nSucursal int=0,
+@idusuario int
+
+AS
+ SET NOCOUNT ON;
+declare
+@perfil varchar(50)  
+
+select @perfil=a.cNombre 
+ from usuario u 
+ inner join  area a on u.idArea=a.idArea
+ where u.idUsuario=@idusuario
+
+BEGIN
+ 
+ if(@perfil='SEGURIDAD' or @perfil='SISTEMAS')
+	select c.idcita,
+	FORMAT(c.dFecha,'dd-MM-yyyy') as fecha,
+	c.cHora as hora,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni,
+	e.cNombre as destino,
+	c.idDestino,
+	c.cEncargado as encargado,
+	c.cEmpresaPvnte as empresaPvnte,c.cObservacion as observacion,idcitador,
+	(case c.bAtendido when 1 then 'true' else '' end) as haatendido,
+	(case c.bAtendido when 1 then 'SE PRESENTÓ' else 'SE PRESENTÓ' end) as estado,
+	(case c.bAtendido when 1 then 'green' else 'red' end) as colorEstado,
+	(select cUsuNombre from usuario where idusuario=c.idCitador) as usuario
+	from cita c inner join persona p on c.idPersona=p.idPersona
+	inner join empresa e on e.idEmpresa=c.idDestino
+	where (c.dFecha between  @fechai and @fechaf)
+	and p.cDocPer  like '%'+@dni+'%'
+	and (p.cApPaterno + ' '+p.cApMaterno + ' '+p.cNombres) like '%'+@nombre+'%'
+	and e.cNombre like '%'+@destino+'%'
+	and c.cEncargado like '%'+@encargado+'%'
+	and c.bEstado=1 and p.bEstado=1
+	order by dFecha desc, cHora desc
+ else
+	select c.idcita,
+	FORMAT(c.dFecha,'dd-MM-yyyy') as fecha,
+	c.cHora as hora,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni,
+	e.cNombre as destino,
+	c.idDestino,
+	c.cEncargado as encargado,
+	c.cEmpresaPvnte as empresaPvnte,c.cObservacion as observacion,idcitador,
+	(case c.bAtendido when 1 then 'true' else '' end) as haatendido,
+	(case c.bAtendido when 1 then 'SE PRESENTÓ' else 'SE PRESENTÓ' end) as estado,
+	(case c.bAtendido when 1 then 'green' else 'red' end) as colorEstado,
+	(select cUsuNombre from usuario where idusuario=c.idCitador) as usuario
+	from cita c inner join persona p on c.idPersona=p.idPersona
+	inner join empresa e on e.idEmpresa=c.idDestino
+	where (c.dFecha between  @fechai and @fechaf)
+	and p.cDocPer  like '%'+@dni+'%'
+	and (p.cApPaterno + ' '+p.cApMaterno + ' '+p.cNombres) like '%'+@nombre+'%'
+	and e.cNombre like '%'+@destino+'%'
+	and c.cEncargado like '%'+@encargado+'%'
+	AND C.idcitador=@idusuario
+	and c.bEstado=1 and p.bEstado=1
+	order by dFecha desc, cHora desc
+END
+
+----------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_movimientos]
+@fechai Varchar(10)='01/01/1990',
+@fechaf Varchar(10)='01/01/1990',
+@nombre Varchar(50)='',
+@dni Varchar(10)='',
+@destino Varchar(50)='',
+@encargado Varchar(50)='',
+@empresa_proveniente Varchar(50)='',
+@nSucursal int=0,
+@modoMov Varchar(5)='v'
+AS
+
+	if @modoMov='v'
+	begin
+		select m.idMovimiento,m.nSucursal,m.idPersona,
+		(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+		p.cDocPer as dni, 
+		FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+		m.dFecha,
+		m.dHoraEntrada as horaentrada,
+		m.dHoraSalida as horasalida,
+		----------------------------------
+		m.nNumAsignado as numAsignado,
+		m.cDestino as destino,
+		m.cEncargado as encargado,
+		m.cEmpresaPvnte as empresaPvnte,
+		m.cObservacion as observacion,
+		m.cModoMov as modo
+		 from movimientoPersona m 
+		inner join persona p on p.idPersona=m.idPersona
+		where (m.cModoMov='v' or m.cModoMov='c')
+		and m.bEstado=1
+		and m.nSucursal=@nSucursal
+		--and FORMAT(m.dFecha,'dd/MM/yyyy') between @fechai and @fechaf
+		and m.dFecha between @fechai and @fechaf
+		and p.cDocPer  like '%'+@dni+'%'
+		and (p.cApPaterno + ' '+p.cApMaterno + ' '+p.cNombres) like '%'+@nombre+'%'
+		and cDestino like '%'+@destino+'%'
+		and cEncargado like '%'+@encargado+'%'
+		and cEmpresaPvnte like '%'+@empresa_proveniente+'%'
+		order by dFecha desc, horaentrada desc
+	end
+	
+	
+RETURN 0
+---------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_movimientosHoy]
+@modoMov Varchar(5)='v',
+@nSucursal int=0,
+@codPais varchar(3)	
+AS
+
+	if @modoMov='v'
+		begin
+			select m.idMovimiento,m.nSucursal,m.idPersona,
+			(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+			p.cDocPer as dni, 
+			FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+			m.dHoraEntrada as horaentrada,
+			m.dHoraSalida as horasalida,
+			----------------------------------
+			(case ltrim(rtrim(m.dHoraSalida))
+			when '' then ''
+			else 'true'
+			end) as hasalido, 
+			----------------------------------
+			m.nNumAsignado as numAsignado,
+			m.cDestino as destino,
+			m.cEncargado as encargado,
+			m.cEmpresaPvnte as empresaPvnte,
+			m.cObservacion as observacion,
+			m.cModoMov as modo,
+			m.dFecMod as fecMod,
+			m.cUsuMod as usuMod
+			from movimientoPersona m 
+			inner join persona p on p.idPersona=m.idPersona
+			where 
+			(m.cModoMov='v' or m.cModoMov='c')
+			and nSucursal=@nSucursal
+			and FORMAT(m.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+		end
+	else
+		begin
+			select m.idMovimiento,m.nSucursal,m.idPersona,
+			(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+			p.cDocPer as dni, 
+			FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+			m.dHoraEntrada as horaentrada,
+			m.dHoraSalida as horasalida,
+			----------------------------------
+			(case ltrim(rtrim(m.dHoraSalida))
+			when '' then ''
+			else 'true'
+			end) as hasalido, 
+			----------------------------------
+			m.nNumAsignado as numAsignado,
+			m.cDestino as destino,
+			m.cEncargado as encargado,
+			m.cEmpresaPvnte as empresaPvnte,
+			m.cObservacion as observacion,
+			m.cModoMov as modo,
+			m.dFecMod as fecMod,
+			m.cUsuMod as usuMod
+			from movimientoPersona m 
+			inner join persona p on p.idPersona=m.idPersona
+			where m.cModoMov=@modoMov
+			and nSucursal=@nSucursal
+			and FORMAT(m.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+			
+		end
+	
+RETURN 0
+---------------------------------------------
+ALTER PROCEDURE [dbo].[sp_ins_citaAsistencia]
+@sucursal int=1,
+@idcita int=0,
+@dni varchar(10)='',
+@numAsignado varchar(10)='',
+@destino varchar(200)='',
+@encargado varchar(200)='',
+@empresapvnte varchar(200)='',
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+declare @idPersona int,
+@siUsadoNum int
+	
+	select @idPersona=idpersona from persona where cDocPer=@dni and bEstado=1
+
+	select @siUsadoNum=count(*) from movimientoPersona 
+	where nNumAsignado=@numAsignado and ltrim(rtrim(nNumAsignado))<>'' 
+	and bEstado=1 and FORMAT(dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and dHoraSalida=''
+
+	select  @nResultado=0
+
+if @siUsadoNum=0
+begin  
+BEGIN TRANSACTION
+		
+		update cita set bAtendido=1 where idcita=@idcita
+
+		insert into movimientoPersona (nSucursal,idPersona,dFecha,dHoraEntrada,dHoraSalida,
+		nNumAsignado,cDestino,cEncargado,cEmpresaPvnte,cObservacion,cModoMov,
+		dFecReg,cUsuReg,dFecMod,cUsuMod) 
+		values(@sucursal,@idPersona,FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy'),FORMAT(dbo.fn_get_fechaCorregida(@codPais),'HH:mm'),'',
+		@numAsignado,@destino,@encargado,@empresapvnte,'CITA PROGRAMADA','c',
+		dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+		select @nResultado=1
+	
+
+COMMIT TRANSACTION
+end
+
+---------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_citabyid]
+@id int=0,
+@codPais varchar(5)
+AS
+	if @id=0
+		begin
+			select idcita=0,idPersona=0, nombres='', apPaterno='' ,apMaterno='' ,
+			persona='',
+			dni='',fecha=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy'),
+			hora=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'HH:mm'),
+			'' as destino,
+			encargado='',empresaPvnte='',idDestino=4,observacion='' 
+			
+		end
+	else
+		begin
+				select c.idcita,c.idPersona,p.cNombres as  nombres,p.cApPaterno as apPaterno,
+				(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+				p.cApMaterno as apMaterno,p.cDocPer as dni, FORMAT(c.dFecha,'dd/MM/yyyy') as fecha,
+				c.cHora as hora,
+				c.cEncargado as encargado,c.cEmpresaPvnte as empresaPvnte,c.idDestino,
+				(select e.cNombre from empresa e where e.idEmpresa=c.idDestino) as destino,
+				c.cObservacion as observacion
+				from cita c
+				inner join persona p on p.idPersona=c.idPersona
+				where c.idcita=@id
+		end
+	
+RETURN 0
+
+-----------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_citasHoy]
+@idusuario int,
+@nSucursal int=0,
+@codPais varchar(3)	
+
+AS
+ SET NOCOUNT ON;
+declare
+@perfil varchar(50)  
+
+select @perfil=a.cNombre 
+ from usuario u 
+ inner join  area a on u.idArea=a.idArea
+ where u.idUsuario=@idusuario
+
+BEGIN
+ 
+ if(@perfil='SEGURIDAD' or @perfil='SISTEMAS')
+	select c.idcita,
+	FORMAT(c.dFecha,'dd-MM-yyyy') as fecha,
+	c.cHora as hora,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni,
+	(select e.cNombre from empresa e where e.idEmpresa=c.idDestino) as destino,
+	c.idDestino,
+	c.cEncargado as encargado,
+	c.cEmpresaPvnte as empresaPvnte,c.cObservacion as observacion,idcitador,
+	(case c.bAtendido when 1 then 'true' else '' end) as haatendido,
+	(select cUsuNombre from usuario where idusuario=c.idCitador) as usuario,
+	'true' as noedit,
+	'true' as nodelete,
+	(case c.bAtendido when 1 then 'true' else '' end) as noconfirm
+	from cita c inner join persona p on c.idPersona=p.idPersona
+	where FORMAT(c.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and c.bEstado=1 and p.bEstado=1
+	order by c.cHora desc;
+
+ else
+	select c.idcita,
+	FORMAT(c.dFecha,'dd-MM-yyyy') as fecha,
+	c.cHora as hora,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni,
+	(select e.cNombre from empresa e where e.idEmpresa=c.idDestino) as destino,
+	c.idDestino,
+	c.cEncargado as encargado,
+	c.cEmpresaPvnte as empresaPvnte,c.cObservacion as observacion,idcitador,
+	(case c.bAtendido when 1 then 'true' else '' end) as haatendido,
+	(select cUsuNombre from usuario where idusuario=c.idCitador) as usuario,
+	(case c.bAtendido when 1 then 'true' else '' end) as noedit,
+	(case c.bAtendido when 1 then 'true' else '' end) as nodelete,
+	'true' as noconfirm
+	from cita c inner join persona p on c.idPersona=p.idPersona
+	where FORMAT(c.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and c.bEstado=1 and c.bOculto=0
+	and c.idcitador=@idusuario
+	and p.bEstado=1
+	order by c.cHora desc;
+
+END
+
+
+
+-----------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_upd_cita]
+@idcita int=0,
+@fecha varchar(10)='',
+@hora varchar(10)='',
+@dni varchar(10)='',
+@nombres varchar(50)='',
+@apPaterno varchar(50)='',
+@apMaterno varchar(50)='',
+@idDestino varchar(200)='',
+@encargado varchar(200)='',
+@empresapvnte varchar(200)='',
+@observacion varchar(200)='',
+@idcitador int,
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+declare @idPersona int,
+@siExiste int
+
+
+	select @siExiste=count(*) from persona where cDocPer=@dni and bEstado=1
+	select  @nResultado=0
+
+BEGIN TRANSACTION
+if @siExiste=0
+  begin 
+	insert into persona(cDocPer,cNombres,cApPaterno,cApMaterno,
+	dFecReg,cUsuReg,dFecMod,cUsuMod) 
+	values (@dni,@nombres,@apPaterno,@apMaterno,
+	dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+	SELECT @idPersona = @@IDENTITY  
+  end
+else
+ begin
+	select @idPersona=idPersona from persona where cDocPer=@dni and bEstado=1
+ end
+
+		update cita set dFecha=@fecha,cHora=@hora,idPersona=@idPersona,
+		idDestino=@idDestino,cEncargado=@encargado,cEmpresaPvnte=@empresapvnte,
+		cObservacion=@observacion,dFecMod=dbo.fn_get_fechaCorregida(@codPais),
+		cUsuMod=@user where idcita=@idcita
+		
+		select @nResultado=1
+	
+COMMIT TRANSACTION	
+-------------------------------------------------------
+ALTER PROCEDURE [dbo].[sp_ins_cita]
+@sucursal int=1,
+@fecha varchar(10)='',
+@hora varchar(10)='',
+@dni varchar(10)='',
+@nombres varchar(50)='',
+@apPaterno varchar(50)='',
+@apMaterno varchar(50)='',
+@idDestino int=0,
+@encargado varchar(200)='',
+@empresapvnte varchar(200)='',
+@observacion varchar(200)='',
+@idcitador int,
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+declare @idPersona int,
+@siExiste int
+
+	select @siExiste=count(*) from persona where cDocPer=@dni and bEstado=1
+	select  @nResultado=0
+
+BEGIN TRANSACTION
+if @siExiste=0
+  begin 
+	insert into persona(cDocPer,cNombres,cApPaterno,cApMaterno,
+	dFecReg,cUsuReg,dFecMod,cUsuMod) 
+	values (@dni,@nombres,@apPaterno,@apMaterno,
+	dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+	SELECT @idPersona = @@IDENTITY  
+  end
+else
+ begin
+	select @idPersona=idPersona from persona where cDocPer=@dni and bEstado=1
+ end
+
+	
+		insert into cita (nSucursal,dFecha,cHora,idPersona,
+		idDestino,cEncargado,cEmpresaPvnte,cObservacion,idcitador,
+		dFecReg,cUsuReg,dFecMod,cUsuMod) 
+		values(@sucursal,@fecha,@hora,@idPersona,
+		@idDestino,@encargado,@empresapvnte,@observacion,@idcitador,
+		dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+		select @nResultado=1
+	
+
+COMMIT TRANSACTION	
+---------------------------------------------------
+alter table cita add  nSucursal int not null default 1
+alter table cita add  bAtendido int not null default 0
+alter table cita add  idDestino int not null 
+---------------------------------------------------
+
+alter PROCEDURE [dbo].[sp_get_cargaVehicular]
+@fechai Varchar(10)='01/01/1990',
+@fechaf Varchar(10)='01/01/1990',
+@dni Varchar(10)='',
+@nombre Varchar(50)='',
+@licencia Varchar(15)='',
+@placa Varchar(15)='',
+@proveniente Varchar(50)='',
+@destino Varchar(50)='',
+@nSucursal int=0
+AS
+
+	select v.idCargaVehicular as ID, v.nSucursal, v.idPersona,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni, 
+	FORMAT(v.dFecha,'dd/MM/yyyy') as fecha,
+	v.dHoraEntrada as horaentrada,
+	v.dHoraSalida as horasalida,
+	----------------------------------
+	(case ltrim(rtrim(v.dHoraSalida))
+	when '' then ''
+	else 'true'
+	end) as hasalido, 
+	----------------------------------
+	v.cLicencia as licencia,
+	v.cEmpresaPvnte as origen,
+	v.idEmpresaDestino as iddestino,
+	e.cNombre as destino,
+	v.cPlaca as placa,
+	v.cNumContenedor as numContenedor,
+	v.bUnidad,
+	v.bCarreta,
+	v.cCodCarreta as codCarreta,
+	v.cTipo as tipo,
+	v.cEstadoCarga as estcarga,
+	v.cPrecintoGuia as precinto,
+	v.dFecReg as fecReg,
+	v.cUsuReg as usuReg
+	 from cargaVehicular v 
+	inner join persona p on p.idPersona=v.idPersona
+	inner join empresa e on e.idempresa=v.idEmpresaDestino
+	where v.nSucursal=@nSucursal
+	and v.bEstado=1
+	and FORMAT(v.dFecha,'dd/MM/yyyy') between @fechai and @fechaf
+		and p.cDocPer  like '%'+@dni+'%'
+		and (p.cApPaterno + ' '+p.cApMaterno + ' '+p.cNombres) like '%'+@nombre+'%'
+		and v.cLicencia like '%'+@licencia+'%'
+		and v.cPlaca like '%'+@placa+'%'
+		and v.cEmpresaPvnte like '%'+@proveniente+'%'
+		and e.cNombre like '%'+@destino+'%'
+		order by fecha desc, horaentrada desc
+
+RETURN 0
+---------------------------------------
+---------------------------------------
+create PROCEDURE [dbo].[sp_upd_cargaVehicularSalida]
+@idcarga int,
+@codPais varchar(5)='PER',
+@user varchar(50)=''
+AS
+ SET NOCOUNT OFF; --cuenta registros afectados cuando está en off
+BEGIN 
+
+	update cargaVehicular set dHoraSalida=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'HH:mm'),
+	dFecMod=dbo.fn_get_fechaCorregida(@codPais),
+	cUsuMod=@user WHERE idcargavehicular=@idcarga
+	
+END
+	
+---------------------------------------
+---------------------------------------
+create PROCEDURE [dbo].[sp_upd_cargaVehicular]
+@idcarga int=0,
+@licencia varchar(15)='',
+@empresa_pvnte varchar(50)='',
+@iddestino varchar(200)='',
+@placa varchar(15)='',
+@numContenedor varchar(15)='',
+@bUnidad int=0,
+@bCarreta int=0,
+@codCarreta varchar(15)='',
+@tipo varchar(5)='20',
+@estado varchar(5)='V',
+@precinto varchar(50)='',
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+BEGIN 
+
+
+	select  @nResultado=0
+
+ 
+	begin
+		update cargavehicular set cLicencia=@licencia,cEmpresaPvnte=@empresa_pvnte, 
+		idEmpresaDestino=@iddestino, cPlaca=@placa,
+		cNumContenedor=@numContenedor, bUnidad=@bUnidad, bCarreta=@bCarreta,
+		 cCodCarreta=@codcarreta, cTipo=@tipo, 
+		cEstadoCarga=@estado, cPrecintoGuia=@precinto, 
+		 dFecMod=dbo.fn_get_fechaCorregida(@codPais), cUsuMod=@user
+		 where idcargavehicular=@idcarga
+		
+		select @nResultado=1
+	end
+end
+	
+---------------------------------------
+---------------------------------------
+alter PROCEDURE [dbo].[sp_ins_cargaVehicular]
+@sucursal int=1,
+@fecha varchar(10)='',
+@horaEntrada varchar(10)='',
+@horaSalida varchar(10)='',
+@dni varchar(10)='',
+@nombres varchar(50)='',
+@apPaterno varchar(50)='',
+@apMaterno varchar(50)='',
+@licencia varchar(15)='',
+@empresa_pvnte varchar(50)='',
+@iddestino varchar(200)='',
+@placa varchar(15)='',
+@numContenedor varchar(15)='',
+@bUnidad int=0,
+@bCarreta int=0,
+@codCarreta varchar(15)='',
+@tipo varchar(5)='20',
+@estado varchar(5)='V',
+@precinto varchar(50)='',
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+BEGIN 
+declare @idPersona int,
+@siExiste int,
+@siUsadoPer int
+
+	select @siExiste=count(*) from persona where cDocPer=@dni and bEstado=1
+
+	select @siUsadoPer=count(*) from cargavehicular c
+	inner join persona p on p.idPersona =c.idPersona 
+	where p.cDocPer=@dni and c.bEstado=1 and FORMAT(c.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and dHoraSalida=''
+
+	select  @nResultado=0
+
+if @siExiste=0
+  begin 
+	insert into persona(cDocPer,cNombres,cApPaterno,cApMaterno,
+	dFecReg,cUsuReg,dFecMod,cUsuMod) 
+	values (@dni,@nombres,@apPaterno,@apMaterno,
+	dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+	SELECT @idPersona = @@IDENTITY  
+  end
+else
+ begin
+	select @idPersona=idPersona from persona where cDocPer=@dni and bEstado=1
+ end
+
+	if  @siUsadoPer=0
+	begin
+		insert into cargavehicular(nSucursal,dFecha,dHoraEntrada,dHoraSalida,
+		idPersona, cLicencia, cEmpresaPvnte, idEmpresaDestino, cPlaca,
+		cNumContenedor, bUnidad, bCarreta, cCodCarreta, cTipo,
+		cEstadoCarga, cPrecintoGuia, 
+		dFecReg, cUsuReg, dFecMod, cUsuMod) 
+		values(@sucursal,@fecha,@horaEntrada,@horaSalida,
+		@idPersona,@licencia,@empresa_pvnte,@iddestino,@placa,
+		@numContenedor,@bUnidad,@bCarreta,@codCarreta,@tipo,
+		@estado,@precinto,
+		dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+		select @nResultado=1
+	end
+	
+END
+
+---------------------------------------
+---------------------------------------
+alter PROCEDURE [dbo].[sp_get_cargaVehicularbyid]
+@id int=0,
+@codPais varchar(5)
+AS
+	if @id=0
+		begin
+			select  idCargaVehicular=0,idPersona=0, nombres='', apPaterno='' ,apMaterno='' ,
+			dni='',fecha=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy'),
+			horaentrada=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'HH:mm'),horasalida='',
+			licencia='',empresaPvnte='',idDestino=4,placa='', numContenedor='',bUnidad=0,
+			bCarreta=0, codcarreta='', tipo='20',estcarga='V',precinto=''
+		end
+	else
+		begin
+				select v.idCargaVehicular,v.idPersona,p.cNombres as  nombres,p.cApPaterno as apPaterno,
+				p.cApMaterno as apMaterno,p.cDocPer as dni, FORMAT(v.dFecha,'dd/MM/yyyy') as fecha,
+				v.dHoraEntrada as horaentrada,v.dHoraSalida as horasalida,
+				v.cLicencia as licencia,v.cEmpresaPvnte as empresaPvnte,v.idEmpresaDestino as idDestino,
+				v.cPlaca as placa,v.cNumContenedor as numContenedor,v.bUnidad,
+				v.bCarreta, v.cCodCarreta as codcarreta,v.cTipo as tipo,v.cEstadoCarga as estcarga, 
+				v.cPrecintoGuia as precinto
+				from cargavehicular v
+				inner join persona p on p.idPersona=v.idPersona
+				where v.idCargaVehicular=@id
+		end
+	
+RETURN 0
+---------------------------------------
+---------------------------------------
+alter PROCEDURE [dbo].[sp_get_cargaVehicularHoy]
+@nSucursal int=0,
+@codPais varchar(3)	
+AS
+
+	select v.idCargaVehicular as ID, v.nSucursal, v.idPersona,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni, 
+	FORMAT(v.dFecha,'dd/MM/yyyy') as fecha,
+	v.dHoraEntrada as horaentrada,
+	v.dHoraSalida as horasalida,
+	----------------------------------
+	(case ltrim(rtrim(v.dHoraSalida))
+	when '' then ''
+	else 'true'
+	end) as hasalido, 
+	----------------------------------
+	v.cLicencia as licencia,
+	v.cEmpresaPvnte as origen,
+	v.idEmpresaDestino as iddestino,
+	e.cNombre as destino,
+	v.cPlaca as placa,
+	v.cNumContenedor as numContenedor,
+	v.bUnidad,
+	v.bCarreta,
+	v.cCodCarreta as codCarreta,
+	v.cTipo as tipo,
+	v.cEstadoCarga as estcarga,
+	v.cPrecintoGuia as precinto,
+	v.bEstado,
+	v.dFecReg as fecReg,
+	v.cUsuReg as usuReg
+	 from cargaVehicular v 
+	inner join persona p on p.idPersona=v.idPersona
+	inner join empresa e on e.idempresa=v.idEmpresaDestino
+	where v.nSucursal=@nSucursal
+	and FORMAT(v.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	
+RETURN 0
+---------------------------------------
+---------------------------------------
+
+ALTER PROCEDURE [dbo].[sp_get_Empresabyid]
+@idempresa int  
+AS
+
+BEGIN 
+
+SELECT e.idEmpresa,e.cRuc as ruc ,e.cNombre as nombre,
+e.cDescripcion as descripcion, dFecReg as fecReg,
+cUsuReg as usuReg
+from empresa e
+where e.idempresa=@idempresa;
+
+END
+---------------------------------------
+---------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_EmpresasconSeleccion]
+@idempresa int, 
+@sucursal int
+AS
+ 
+BEGIN 
+SELECT e.idEmpresa,e.cRuc as ruc ,e.cNombre as nombre,
+e.cDescripcion as descripcion, 
+(case 
+ when e.idempresa=@idempresa then 'selected'
+	ELSE ''
+END	) estado,
+dFecReg as fecReg,
+cUsuReg as usuReg
+ from empresa e where e.bEstado=1
+ and e.nSucursal=@sucursal
+ order by nombre asc;
+END
+---------------------------------------
+---------------------------------------
+ALTER PROCEDURE [dbo].[sp_get_Empresas] 
+@codsuc int
+AS
+
+BEGIN 
+
+SELECT e.idEmpresa,e.cRuc as ruc ,e.cNombre as nombre,
+e.cDescripcion as descripcion, dFecReg as fecReg,
+cUsuReg as usuReg, dFecMod as fecMod, cUsuMod as usuMod
+ from empresa e where e.bEstado=1
+ and e.nSucursal=@codsuc
+ order by nombre asc;
+
+END
+
+---------------------------------------
+---------------------------------------
+ALTER PROCEDURE [dbo].[sp_upd_empresa]
+@idempresa int,
+@nombre varchar(100),
+@descripcion varchar(200),
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+AS
+ 
+select  @nResultado=0;
+BEGIN 
+update empresa 
+set cNombre=@nombre,cDescripcion=@descripcion,
+dFecMod=dbo.fn_get_fechaCorregida(@codPais),cUsuMod=@user
+ where idempresa=@idempresa;
+select  @nResultado=1;
+END 
+
+---------------------------------------
+---------------------------------------
+alter PROCEDURE [dbo].[sp_ins_empresa]
+@sucursal int,
+@nombre varchar(50),
+@ruc varchar(15),
+@descripcion varchar(200),
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+AS
+ --SET NOCOUNT OFF;
+ declare
+  @exis_emp int;
+  
+BEGIN
+	select @exis_emp=count(*) from empresa e where ltrim(rtrim(e.cRuc))=ltrim(rtrim(@ruc));
+	select  @nResultado=0;
+	if @exis_emp=0
+	begin
+			INSERT INTO empresa(nSucursal,cRuc,cNombre,cDescripcion,
+			dFecReg,cUsuReg,dFecMod,cUsuMod) 
+			values (@sucursal,@ruc,@nombre,@descripcion,
+			dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user);
+			select  @nResultado=1;
+	end
+END
+---------------------------------------
+---------------------------------------
+create FUNCTION [dbo].[fn_get_verificarIndeseado]
+(
+	@dni varchar(10)
+)
+RETURNS  bit
+AS
+BEGIN
+
+	Declare @isIndeseado bit=0,
+		@siExiste int
+	
+		select @siExiste=count(*) from indeseado i
+		inner join persona p on p.idpersona=i.idpersona
+		where p.cDocPer=@dni
+		
+		if @siExiste>0
+		BEGIN
+			set @isIndeseado=1
+		END 
+
+	RETURN @isIndeseado
+
+END
+
+---------------------------------------
+---------------------------------------
+create PROCEDURE [dbo].[sp_upd_indeseado]
+@idindeseado int ,
+@cargo varchar(50)='',
+@empresapvnte varchar(200)='',
+@observacion varchar(200)='',
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+BEGIN 
+		update indeseado set cCargo=@cargo,
+		 cEmpresaPvnte=@empresapvnte,cObservacion=@observacion,
+		 dFecMod=dbo.fn_get_fechaCorregida(@codPais),
+		cUsuMod=@user where idindeseado=@idindeseado
+		
+		select @nResultado=1
+			
+END
+---------------------------------------
+---------------------------------------
+create PROCEDURE [dbo].[sp_ins_indeseado]
+@sucursal int=1,
+@dni varchar(10)='',
+@nombres varchar(50)='',
+@apPaterno varchar(50)='',
+@apMaterno varchar(50)='',
+@cargo varchar(50)='',
+@empresapvnte varchar(200)='',
+@observacion varchar(200)='',
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+BEGIN 
+declare @idPersona int,
+@siExiste int,
+@siUsadoPer int
+
+	select @siExiste=count(*) from persona where cDocPer=@dni and bEstado=1
+	select  @nResultado=0
+
+if @siExiste=0
+  begin 
+	insert into persona(cDocPer,cNombres,cApPaterno,cApMaterno,bIndeseado,
+	dFecReg,cUsuReg,dFecMod,cUsuMod) 
+	values (@dni,@nombres,@apPaterno,@apMaterno,1,
+	dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+	SELECT @idPersona = @@IDENTITY  
+  end
+else
+ begin
+	select @idPersona=idPersona from persona where cDocPer=@dni and bEstado=1
+ end
+	
+	select @siUsadoPer=count(*) from indeseado where idPersona=@idPersona
+	if  @siUsadoPer=0
+	begin
+		insert into indeseado (nSucursal,idPersona,cCargo,cEmpresaPvnte,
+		cObservacion,dFecReg,cUsuReg,dFecMod,cUsuMod) 
+		values(@sucursal,@idPersona,@cargo,@empresapvnte,
+		@observacion,dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+		select @nResultado=1
+	end	
+END
+
+---------------------------------------
+---------------------------------------
+alter PROCEDURE [dbo].[sp_get_indeseadobyIdDni]
+@id integer=0,
+@dni varchar(10)='0000000000',
+@modo varchar(3)='I'
+AS
+	if @modo='I'
+	  BEGIN
+		if @id= 0
+			select idindeseado=0,idPersona=0,dni='',
+			nombre='',apPaterno='',apMaterno='',
+			persona='' , cargo='', empresaPvnte='',
+			observacion='',fechaRegistro=FORMAT(GETDATE(),'dd/MM/yyyy'),
+			usuario='' 
+			
+		else
+			select i.idindeseado,p.idPersona,p.cDocPer as dni,
+			p.cNombres as nombre, p.cApPaterno as apPaterno,
+			p.cApMaterno as apMaterno,
+			(p.cApPaterno+' '+p.cApMaterno+' '+p.cNombres) as persona,  
+			i.cCargo as cargo, i.cEmpresaPvnte as empresaPvnte, i.cObservacion as observacion,
+			FORMAT(i.dFecReg,'dd/MM/yyyy') as fechaRegistro,
+			i.cUsuReg as usuario from indeseado i
+			inner join persona p on p.idPersona=i.idPersona
+			where i.idIndeseado=@id
+			
+	  END
+	else --@modo='D'
+		begin
+			select i.idindeseado,p.idPersona,p.cDocPer as dni,
+			p.cNombres as nombre, p.cApPaterno as apPaterno,
+			p.cApMaterno as apMaterno,
+			(p.cApPaterno+' '+p.cApMaterno+' '+p.cNombres) as persona,  
+			i.cCargo as cargo, i.cEmpresaPvnte as empresaPvnte, i.cObservacion as observacion,
+			FORMAT(i.dFecReg,'dd/MM/yyyy') as fechaRegistro,
+			i.cUsuReg as usuario from indeseado i
+			inner join persona p on p.idPersona=i.idPersona
+			where i.idIndeseado=@id		
+		end
+	
+RETURN 0
+---------------------------------------
+---------------------------------------
+alter PROCEDURE [dbo].[sp_get_indeseados]
+AS
+		begin
+			select i.idindeseado,p.idPersona,p.cDocPer as dni,
+			(p.cApPaterno+' '+p.cApMaterno+' '+p.cNombres) as persona,  
+			i.cCargo as cargo, i.cEmpresaPvnte as empresaPvnte, i.cObservacion as observacion,
+			FORMAT(i.dFecReg,'dd/MM/yyyy') as fechaRegistro,
+			i.cUsuReg as usuario from indeseado i
+			inner join persona p on p.idPersona=i.idPersona
+			order by fechaRegistro desc
+		
+		end
+	
+RETURN 0
+---------------------------------------
+---------------------------------------
+alter PROCEDURE [dbo].[sp_get_persona]
+@dni varchar(10)='',--modo 1
+@idPersona int,--modo 2
+@modo int
+AS
+declare @siExistePer int=0
+	if @modo=1
+		begin
+		    select @siExistePer=COUNT(*) from persona where cDocPer=@dni;
+			if @siExistePer<>0
+				select idPersona, cDocPer as dni,cNombres as nombres,
+				cApPaterno as apPaterno,cApMaterno as apMaterno
+				from persona where cDocPer=@dni;
+			else
+				select idPersona=0, dni='',nombres='',apPaterno='',
+				apMaterno=''
+		end
+	--else
+	--	begin
+	--			select m.idMovimiento,m.nSucursal,m.idPersona,
+	--			p.cApPaterno as apPaterno,  p.cApMaterno as apMaterno,
+	--			p.cNombres as  nombres,p.cDocPer as dni, 
+	--			FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+	--			m.dHoraEntrada as horaentrada,
+	--			m.dHoraSalida as horasalida,
+	--			m.cDestino as destino,
+	--			m.cEncargado as encargado,
+	--			m.cEmpresaPvnte as empresaPvnte,
+	--			m.nNumAsignado as numAsignado,
+	--			m.cObservacion as observacion
+	--			 from movimientoPersona m 
+	--			inner join persona p on p.idPersona=m.idPersona
+	--			where m.idMovimiento=@idMovimiento
+	--	end
+	
+RETURN 0
+--------------------------------------
+--------------------------------------
+alter PROCEDURE [dbo].[sp_get_movimientos]
+@fechai Varchar(10)='01/01/1990',
+@fechaf Varchar(10)='01/01/1990',
+@nombre Varchar(50)='',
+@dni Varchar(10)='',
+@destino Varchar(50)='',
+@encargado Varchar(50)='',
+@empresa_proveniente Varchar(50)='v',
+@nSucursal int=0,
+@modoMov Varchar(5)='v'
+AS
+
+	if @modoMov='v'
+	begin
+		select m.idMovimiento,m.nSucursal,m.idPersona,
+		(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+		p.cDocPer as dni, 
+		FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+		m.dHoraEntrada as horaentrada,
+		m.dHoraSalida as horasalida,
+		----------------------------------
+		m.nNumAsignado as numAsignado,
+		m.cDestino as destino,
+		m.cEncargado as encargado,
+		m.cEmpresaPvnte as empresaPvnte,
+		m.cObservacion as observacion,
+		m.cModoMov as modo
+		 from movimientoPersona m 
+		inner join persona p on p.idPersona=m.idPersona
+		where m.cModoMov=@modoMov
+		and m.bEstado=1
+		and m.nSucursal=@nSucursal
+		and FORMAT(m.dFecha,'dd/MM/yyyy') between @fechai and @fechaf
+		and p.cDocPer  like '%'+@dni+'%'
+		and (p.cApPaterno + ' '+p.cApMaterno + ' '+p.cNombres) like '%'+@nombre+'%'
+		and cDestino like '%'+@destino+'%'
+		and cEncargado like '%'+@encargado+'%'
+		and cEmpresaPvnte like '%'+@empresa_proveniente+'%'
+		order by fecha desc, horaentrada desc
+	end
+	
+	
+RETURN 0
+--------------------------------------
+--------------------------------------
+create PROCEDURE [dbo].[sp_upd_movimiento]
+@idmovimiento int ,
+@numAsignado varchar(10)='',
+@destino varchar(200)='',
+@encargado varchar(200)='',
+@empresapvnte varchar(200)='',
+@observacion varchar(200)='',
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+BEGIN 
+declare @idPersona int,
+@siUsadoNum int
+
+	select @idPersona=idPersona  from movimientoPersona m
+	where M.idMovimiento=@idmovimiento 
+
+	select @siUsadoNum=count(*) from movimientoPersona 
+	where nNumAsignado=@numAsignado and ltrim(rtrim(nNumAsignado))<>''
+	and bEstado=1 and FORMAT(dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and dHoraSalida='' and idPersona<>@idPersona
+
+	select  @nResultado=0
+
+	if @siUsadoNum=0  
+	begin
+
+		update movimientoPersona set nNumAsignado=@numAsignado,
+		cDestino=@destino, cEncargado=@encargado, cEmpresaPvnte=@empresapvnte,
+		cObservacion=@observacion, dFecMod=dbo.fn_get_fechaCorregida(@codPais),
+		cUsuMod=@user where idMovimiento=@idmovimiento
+		
+		select @nResultado=1
+	end
+	
+END
+--------------------------------------
+--------------------------------------
+
+
+create PROCEDURE [dbo].sp_upd_movimientoSalida
+@idmovimiento int,
+@codPais varchar(5)='PER',
+@user varchar(50)=''
+AS
+ SET NOCOUNT OFF; --cuenta registros afectados cuando está en off
+BEGIN 
+
+	update movimientoPersona set dHoraSalida=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'HH:mm'),
+	dFecMod=dbo.fn_get_fechaCorregida(@codPais),
+	cUsuMod=@user WHERE idMovimiento=@idmovimiento
+	
+END
+--------------------------------------
+--------------------------------------
+ALTER PROCEDURE [dbo].[sp_ins_movimiento]
+@sucursal int=1,
+@fecha varchar(10)='',
+@horaEntrada varchar(10)='',
+@horaSalida varchar(10)='',
+@dni varchar(10)='',
+@nombres varchar(50)='',
+@apPaterno varchar(50)='',
+@apMaterno varchar(50)='',
+@numAsignado varchar(10)='',
+@destino varchar(200)='',
+@encargado varchar(200)='',
+@empresapvnte varchar(200)='',
+@observacion varchar(200)='',
+@modo varchar(3)='v',
+@codPais varchar(5)='PER',
+@user varchar(50)='',
+@nResultado int OUTPUT
+
+AS
+ --SET NOCOUNT ON; --cuenta registros afectados cuando está en off
+BEGIN 
+declare @idPersona int,
+@siExiste int,
+@siUsadoNum int,
+@siUsadoPer int
+
+	select @siExiste=count(*) from persona where cDocPer=@dni and bEstado=1
+
+	select @siUsadoNum=count(*) from movimientoPersona 
+	where nNumAsignado=@numAsignado and ltrim(rtrim(nNumAsignado))<>'' 
+	and bEstado=1 and FORMAT(dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and dHoraSalida=''
+
+	select @siUsadoPer=count(*) from movimientoPersona m
+	inner join persona p on p.idPersona =m.idPersona 
+	where p.cDocPer=@dni and m.bEstado=1 and FORMAT(dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	and dHoraSalida=''
+
+	select  @nResultado=0
+
+if @siExiste=0
+  begin 
+	insert into persona(cDocPer,cNombres,cApPaterno,cApMaterno,
+	dFecReg,cUsuReg,dFecMod,cUsuMod) 
+	values (@dni,@nombres,@apPaterno,@apMaterno,
+	dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+	SELECT @idPersona = @@IDENTITY  
+  end
+else
+ begin
+	select @idPersona=idPersona from persona where cDocPer=@dni and bEstado=1
+ end
+
+	if @siUsadoNum=0  and @siUsadoPer=0
+	begin
+		insert into movimientoPersona (nSucursal,idPersona,dFecha,dHoraEntrada,dHoraSalida,
+		nNumAsignado,cDestino,cEncargado,cEmpresaPvnte,cObservacion,cModoMov,
+		dFecReg,cUsuReg,dFecMod,cUsuMod) 
+		values(@sucursal,@idPersona,@fecha,@horaEntrada,@horaSalida,
+		@numAsignado,@destino,@encargado,@empresapvnte,@observacion,@modo,
+		dbo.fn_get_fechaCorregida(@codPais),@user,dbo.fn_get_fechaCorregida(@codPais),@user) 
+
+		select @nResultado=1
+	end
+	
+END
+--------------------------------------
+--------------------------------------
+ALTER PROCEDURE [dbo].sp_get_movimientobyid
+@idMovimiento int=0,
+@codPais varchar(5)
+AS
+	if @idMovimiento=0
+		begin
+			select  idMovimiento=0,idPersona=0, nombres='', apPaterno='' ,apMaterno='' ,
+			dni='',fecha=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy'),
+			horaentrada=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'HH:mm'),
+			horasalida='',destino='',encargado='',empresaPvnte='',
+			numAsignado='',observacion=''
+		end
+	else
+		begin
+				select m.idMovimiento,m.nSucursal,m.idPersona,
+				p.cApPaterno as apPaterno,  p.cApMaterno as apMaterno,
+				p.cNombres as  nombres,p.cDocPer as dni, 
+				FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+				m.dHoraEntrada as horaentrada,
+				m.dHoraSalida as horasalida,
+				m.cDestino as destino,
+				m.cEncargado as encargado,
+				m.cEmpresaPvnte as empresaPvnte,
+				m.nNumAsignado as numAsignado,
+				m.cObservacion as observacion
+				 from movimientoPersona m 
+				inner join persona p on p.idPersona=m.idPersona
+				where m.idMovimiento=@idMovimiento
+		end
+	
+RETURN 0
+----------------------------------------------
+----------------------------------------------
+alter PROCEDURE [dbo].[sp_get_movimientosHoy]
+@modoMov Varchar(5)='v',
+@nSucursal int=0,
+@codPais varchar(3)	
+AS
+
+	select m.idMovimiento,m.nSucursal,m.idPersona,
+	(p.cApPaterno+' '+ p.cApMaterno+' ' +p.cNombres) as persona,
+	p.cDocPer as dni, 
+	FORMAT(m.dFecha,'dd/MM/yyyy') as fecha,
+	m.dHoraEntrada as horaentrada,
+	m.dHoraSalida as horasalida,
+	----------------------------------
+	(case ltrim(rtrim(m.dHoraSalida))
+	when '' then ''
+	else 'true'
+	end) as hasalido, 
+	----------------------------------
+	m.nNumAsignado as numAsignado,
+	m.cDestino as destino,
+	m.cEncargado as encargado,
+	m.cEmpresaPvnte as empresaPvnte,
+	m.cObservacion as observacion,
+	m.cModoMov as modo,
+	m.dFecMod as fecMod,
+	m.cUsuMod as usuMod
+	 from movimientoPersona m 
+	inner join persona p on p.idPersona=m.idPersona
+	where m.cModoMov=@modoMov
+	and nSucursal=@nSucursal
+	and FORMAT(m.dFecha,'dd/MM/yyyy')=FORMAT(dbo.fn_get_fechaCorregida(@codPais),'dd/MM/yyyy') 
+	
+RETURN 0
+----------------------------------------------
+----------------------------------------------
+alter PROCEDURE [dbo].sp_iniciarSesion 
+@cuenta varchar(50)='',
+@clave varchar(50)=''
+AS
+ SET NOCOUNT ON; 
+declare
+@ID int=0
+
+select @ID=ISNULL(idUsuario,0) from usuario where rtrim(cUsuNombre)=RTRIM(@cuenta)
+and rtrim(cUsuCtseña)=RTRIM(@clave)
+
+if @ID<>0 
+begin
+	SELECT u.idusuario,u.nSucursal,s.cNombre,u.cUsuNombre,
+	u.idArea, a.cNombre as area
+	from usuario u 
+	inner join sucursal s on s.idSucursal=u.nSucursal
+	inner join area a on a.idArea=u.idArea
+	where u.idusuario=@ID
+END
+else
+begin
+	select 0 as idusuario, '' as  nSucursal , '' as cNombre ,'' as cUsuNombre,
+	0 as idArea, '' as area
+end
+
+---------------------------------
+---------------------------------
+CREATE PROCEDURE [dbo].sp_get_UsuarioxID 
+@idusuario INT=0
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+SELECT u.idusuario,u.nSucursal,s.cNombre,u.cUsuNombre,
+u.idArea, a.cNombre 
+from usuario u 
+inner join sucursal s on s.idSucursal=u.nSucursal
+inner join area a on a.idArea=u.idArea
+where u.idusuario=@idusuario
+END
+---------------------------------
+---------------------------------
+CREATE PROCEDURE [dbo].[sp_get_Usuario] 
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+SELECT u.idusuario,u.nSucursal,s.cNombre,u.cUsuNombre, a.cNombre 
+from usuario u 
+inner join sucursal s on s.idSucursal=u.nSucursal
+inner join area a on a.idArea=u.idArea
+order by 3 asc
+
+END
+---------------------------------
+---------------------------------
+CADENA DE CONEXIÓN:
+connectionString="workstation id=BDimudesa.mssql.somee.com;packet size=4096;user id=imudesasystem_SQLLogin_1;pwd=t2qqju5nkj;
+data source=BDimudesa.mssql.somee.com;persist security info=False;initial catalog=BDimudesa"
+ 
+<add name="Modelo" connectionString="Data Source=MACS-SISTEMAS\SQLEXPRESS2012;Initial Catalog=IMUDESA;Integrated 
+Security=True" providerName="System.Data.SqlClient" />
+---------------------------------
+---------------------------------
+insert into sucursal(cNombre,dFecReg)values('IMUDESA',GETDATE())
+--------------------------------
+--------------------------------
+CREATE FUNCTION fn_get_fechaCorregida 
+(
+	@codPais varchar(3)
+)
+RETURNS  datetime
+AS
+BEGIN
+
+Declare @fecha datetime
+	
+	if @codPais='PER'
+	BEGIN
+		set @fecha=DATEADD(HOUR,0,GETDATE())
+	END 
+
+	-- Return the result of the function
+	RETURN @fecha
+
+END
+GO
+

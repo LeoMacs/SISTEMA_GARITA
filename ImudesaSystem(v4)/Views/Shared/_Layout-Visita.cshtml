@@ -1,0 +1,99 @@
+﻿@{
+    if (Session["nombre"] == null)
+    {
+    <script> window.location.href = '@Url.Action("Login", "Home")'; </script>
+    }
+
+                    //var fechaActual = System.DateTime.Now.ToString("dd/MM/yyyy");
+
+                    //DateTime servidorForaneo = DateTime.Now.AddHours(2);
+                    //var horaActual = servidorForaneo.ToString("HH:mm");
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    @*************************REFERENCIAS STYLE************************@
+    <meta name="viewport" content="width=device-width" />
+    @*    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--icono hombre caminando-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="~/Content/general.css" rel="stylesheet" />
+    <link href="~/Content/MisEstilos.css" rel="stylesheet" />
+    @******************************************************************@
+
+</head>
+<body>
+    @*<-------------INICIO MENÚ DE BARRAS------------------------->*@
+    <div class="head table-responsive">
+        <div class="wrapper">
+            <div class="logo">
+                <a title="Agunsa" class="logo" style="margin-top: 5px">
+                    <img class="imgLogo" src="/Imagenes/AgunsaLogo.png" />
+                </a>
+            </div>
+            <nav>
+                <a class="btn btn-lg" href="/Home/Inicio" title="Menú Inicio" style="margin: 4px">
+                    <img src="../../Imagenes/black_hogar.png" style="height: 35px; width: 35px;">
+                </a>
+                <a style="margin-top: 5px; margin-right: 3px; color: white; font-size: 14px;">Usuario: @Session["nombre"]</a>
+                <a style="margin-top: 5px; margin-right: 3px; color: white; font-size: 14px;">Área: @Session["area"]</a>
+                <a class="btn btn-lg" title="Panel de Visitantes" href="/Visitante/PanelVisitantes">
+                    @*<i style="font-size: 40px" class="material-icons">directions_walk</i>*@
+                    <img src="../../Imagenes/black_walk.png" style="height: 35px; width: 35px;">
+                </a>
+                <a class="btn btn-lg" href="/Visitante/RegistroVisitas" title="Registro total de Visitas" style="margin: 5px">
+                    @*                    <i class="glyphicon glyphicon-list-alt "></i>*@
+                    <img src="../../Imagenes/black_list.png" style="height: 35px; width: 35px;">
+                </a>
+                <a class="btn btn-lg" href="/Indeseados/PanelListaNegra" title="Panel Lista Negra" style="margin: 5px">
+                    <img src="../../Imagenes/indeseados.png" style="height: 35px; width: 35px;">
+                </a>
+                <a class="btn btn-lg" onclick="cerrarSesion();" title="Cerrar Sesión" style="margin: 5px">
+                    @*<i class="glyphicon glyphicon-off"></i>*@
+                    <img src="../../Imagenes/black_logout.png" style="height: 35px; width: 35px;">
+                </a>
+            </nav>
+
+        </div>
+    </div>
+    @*<----------------FIN MENÚ DE BARRAS--------------------------------->*@
+
+
+    @*<--------------------INICIO CONTENIDO---------------------->*@
+    <div class="container body-content">
+        @RenderBody()
+
+
+
+        @*<----------------INICIO FOOTER------------------------>*@
+        <hr />
+        <footer style="text-align: center">
+            <p class="letra">&copy; @DateTime.Now.Year - Sistema web creado en IMUDESA</p>
+        </footer>
+        <hr />
+        @*<----------------FIN FOOTER--------------------------->*@
+
+    </div>
+    @*<---------------------FIN CONTENIDO---------------------->*@
+    @* ****************INICIO RECURSOS JS************* *@
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+
+
+    function cerrarSesion() {
+        var opcion = confirm("¿Esta seguro de Cerrar Sesión?");
+        if (opcion) {
+            location.href = "/Home/cerrarSesion";
+        }
+
+    }
+</script>

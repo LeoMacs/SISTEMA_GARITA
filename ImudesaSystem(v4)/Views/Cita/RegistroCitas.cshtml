@@ -1,0 +1,196 @@
+﻿@{
+    Layout = null;
+}
+
+@{
+    ViewBag.Title = "RegistroCitas";
+    Layout = "~/Views/Shared/_Layout-Cita.cshtml";
+
+    string fechaActual = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+    string fechaActualf = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+
+    String espacio = " ";
+
+    //DateTime servidorForaneo = DateTime.Now.AddHours(2);
+    //var horaActual = servidorForaneo.ToString("HH:mm");
+    var horaActual = System.DateTime.Now.ToString("HH:mm");
+    var data = ViewBag.Message; 
+
+
+    
+    
+}
+
+
+
+
+
+
+
+<div ng-app="app">
+
+    @*<title>Registro de Todas las visitas</title>*@
+
+    <div ng-controller="myController">
+
+
+
+        <div class="container formEstilo">
+            @* col-lg-n:toma el tamaño de n columnas// offset-lg-n:desplaza n columnas en la pantalla*@
+            <form >
+                <div class="header">
+                    <h3 style="text-align: center; font-family: sans-serif; color: white; font-weight: bold;">BÚSQUEDA DE CITAS POR FILTROS</h3>
+                    <hr />
+                </div>
+
+
+               
+                <div class="table-responsive-xl  ">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label class=" labelEstilo" for="fechai"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Desde:</label>
+                            <div class="form-inline">
+                                <input type="text" class="form-control inputStyleCal form_datetimefiltro readonlyfec" ng-model="parametros.fechadesde"  placeholder="ingrese fecha" />
+                                <span style="color: white"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labelEstilo" for="fechaf"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Hasta:</label>
+                            <div class="form-inline">
+                                <input type="text" class="form-control inputStyleCal form_datetimefiltro readonlyfec" ng-model="parametros.fechahasta" placeholder="Ingrese fecha" />
+                                <span style="color: white"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label class="labelEstilo" for="dni"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Dni:</label>
+                            <input type="text" class="form-control oscuro" maxlength="8" onkeypress='return validaNumericos(event)' ng-model="parametros.dni" id="dni" placeholder="Ingrese el dni" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class=" labelEstilo" for="nombre"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Nombre:</label>
+                            <input type="text" class="form-control oscuro" ng-model="parametros.nombre"  />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label class=" labelEstilo" for="destino"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Destino:</label>
+                            <input type="text" class="form-control oscuro" ng-model="parametros.destino"  />
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-inline">
+                                <label class="labelEstilo" for="Encargado"><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;Encargado: </label>
+                            </div>
+                            <input type="text" class="form-control oscuro" ng-model="parametros.encargado"  />
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <br />
+                <div class="form-inline contenidoCentrado">
+                    <button class="btn btn-primary" style="width: 200px; height: 40px; font-weight: bold;" id="filtrar" ng-click="filtrarxCampos()"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;BUSCAR</button>
+                </div>
+                <br />
+            </form>
+
+        </div>
+
+
+        @*<--***********************TABLA DE DATOS ************************-->*@
+        <div>
+            <div style="text-align: center">
+                <h2 style="font-weight: bold;">RESULTADO DE BÚSQUEDA</h2>
+            </div>
+
+
+            <div class="container">
+
+                <div class="form-inline letra">
+                    <label>Total de registros:</label>
+                    <input value="{{numcitas}}" readonly="true" style="width: 50px; height: 25px; text-align: center; font-weight: bold; color: blue; font-size: 18px" />
+                    <a ng-click="reporteFiltros()" class="btn btn-primary" style="float: right; margin-right: 0px"><i style="font-size: 20px; color: green; font-weight: bold" class="fa fa-file-excel-o"></i>@espacio Descargar</a>
+
+                </div>
+
+
+
+                <table class="table table-bordered table-responsive-xl" id="tablaDatos">
+                    <thead style="color: white; background-color: red">
+                        <tr>
+                            <th style="text-align: center">Fecha</th>
+                            <th style="text-align: center">Hora </th>
+                            <th style="text-align: center">Nombre</th>
+                            <th style="text-align: center">Dni</th>
+                            <th style="text-align: center">Destino</th>
+                            <th style="text-align: center">Encargado</th>
+                            <th style="text-align: center">Empresa Proveniente</th>
+                            <th style="text-align: center">Observación</th>
+                            <th style="text-align: center">Usuario</th>
+                            <th style="text-align: center">Estado</th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center" id="TablaBody">
+
+                        <tr ng-repeat="c in citasfiltradas">
+
+                            <td style="font-weight: bold">{{c.fecha}}
+                            </td>
+                            <td style="color: green; font-weight: bold; font-size: 18px">{{c.hora}}
+                            </td>
+
+                            <td style="color: blue; font-weight: bold">{{c.persona}}
+                            </td>
+                            <td style="color: blue; font-weight: bold">{{c.dni}}
+                            </td>
+
+                            <td style="color: blue; font-weight: bold">{{c.destino}}
+                            </td>
+                            <td style="font-weight: bold">{{c.encargado}}
+                            </td>
+
+                            <td style="font-weight: bold">{{c.empresa_proveniente}}
+                            </td>
+                            <td style="font-weight: bold">{{c.observacion}}
+                            </td>
+                            <td style="font-weight: bold">{{c.user}}
+                            </td>
+                            <td style="font-weight: bold; font-size: 12px; color:{{ c.colorestado }}">{{c.estadocita}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @*<--***********************FIN DE TABLA  ************************-->*@
+
+
+        @*------jQuery library ------*@
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/angular.min.js"></script>
+        <script src="~/Scripts/moment.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.es.js"></script>
+        @*------Controlador----------*@
+        <script src="~/Scripts/AngularController/citaAngular.js"></script>
+        @*------Extras ------*@
+        <script src="~/Scripts/utilGeneral.js"></script>
+
+
+    </div>
+
+
+
+
+</div>

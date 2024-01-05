@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ImudesaGaritaModel1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ImudesaGaritaModel1StoreContainer">
+    <EntitySet Name="acceso" EntityType="ImudesaGaritaModel1.Store.acceso" store:Type="Tables" store:Schema="dbo" store:Name="acceso">
+      <DefiningQuery>SELECT 
+      [acceso].[idacceso] AS [idacceso], 
+      [acceso].[idusuario] AS [idusuario], 
+      [acceso].[idmodulo] AS [idmodulo], 
+      [acceso].[codopcion] AS [codopcion], 
+      [acceso].[ver] AS [ver], 
+      [acceso].[grabar] AS [grabar], 
+      [acceso].[anular] AS [anular], 
+      [acceso].[fecregistro] AS [fecregistro], 
+      [acceso].[fecmodificacion] AS [fecmodificacion]
+      FROM [dbo].[acceso] AS [acceso]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="apcistcontrol" EntityType="ImudesaGaritaModel1.Store.apcistcontrol" store:Type="Tables" store:Schema="dbo" store:Name="apcistcontrol">
+      <DefiningQuery>SELECT 
+      [apcistcontrol].[idcontrol] AS [idcontrol], 
+      [apcistcontrol].[fechaentrada] AS [fechaentrada], 
+      [apcistcontrol].[horaentrada] AS [horaentrada], 
+      [apcistcontrol].[fechasalida] AS [fechasalida], 
+      [apcistcontrol].[horasalida] AS [horasalida], 
+      [apcistcontrol].[idtrabajador] AS [idtrabajador], 
+      [apcistcontrol].[turno] AS [turno]
+      FROM [dbo].[apcistcontrol] AS [apcistcontrol]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="apcistsedes" EntityType="ImudesaGaritaModel1.Store.apcistsedes" store:Type="Tables" store:Schema="dbo" store:Name="apcistsedes">
+      <DefiningQuery>SELECT 
+      [apcistsedes].[idsede] AS [idsede], 
+      [apcistsedes].[nombre] AS [nombre], 
+      [apcistsedes].[descripcion] AS [descripcion]
+      FROM [dbo].[apcistsedes] AS [apcistsedes]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="apcisttrabajador" EntityType="ImudesaGaritaModel1.Store.apcisttrabajador" store:Type="Tables" store:Schema="dbo" store:Name="apcisttrabajador">
+      <DefiningQuery>SELECT 
+      [apcisttrabajador].[idtrabajador] AS [idtrabajador], 
+      [apcisttrabajador].[nombre] AS [nombre], 
+      [apcisttrabajador].[apellidoPaterno] AS [apellidoPaterno], 
+      [apcisttrabajador].[apellidoMaterno] AS [apellidoMaterno], 
+      [apcisttrabajador].[dni] AS [dni], 
+      [apcisttrabajador].[cargo] AS [cargo], 
+      [apcisttrabajador].[identificador] AS [identificador], 
+      [apcisttrabajador].[sede] AS [sede], 
+      [apcisttrabajador].[activo] AS [activo]
+      FROM [dbo].[apcisttrabajador] AS [apcisttrabajador]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="asistencia" EntityType="ImudesaGaritaModel1.Store.asistencia" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="cita" EntityType="ImudesaGaritaModel1.Store.cita" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="empresa" EntityType="ImudesaGaritaModel1.Store.empresa" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="indeseado" EntityType="ImudesaGaritaModel1.Store.indeseado" store:Type="Tables" store:Schema="dbo" store:Name="indeseado">
+      <DefiningQuery>SELECT 
+      [indeseado].[idindeseado] AS [idindeseado], 
+      [indeseado].[nombre] AS [nombre], 
+      [indeseado].[apellido] AS [apellido], 
+      [indeseado].[dni] AS [dni], 
+      [indeseado].[cargo] AS [cargo], 
+      [indeseado].[empresa] AS [empresa], 
+      [indeseado].[fechaRegistro] AS [fechaRegistro], 
+      [indeseado].[observacion] AS [observacion]
+      FROM [dbo].[indeseado] AS [indeseado]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="modulo" EntityType="ImudesaGaritaModel1.Store.modulo" store:Type="Tables" store:Schema="dbo" store:Name="modulo">
+      <DefiningQuery>SELECT 
+      [modulo].[idmodulo] AS [idmodulo], 
+      [modulo].[descripcion] AS [descripcion]
+      FROM [dbo].[modulo] AS [modulo]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="perfil" EntityType="ImudesaGaritaModel1.Store.perfil" store:Type="Tables" store:Schema="dbo" store:Name="perfil">
+      <DefiningQuery>SELECT 
+      [perfil].[idperfil] AS [idperfil], 
+      [perfil].[descripcion] AS [descripcion]
+      FROM [dbo].[perfil] AS [perfil]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="seguro" EntityType="ImudesaGaritaModel1.Store.seguro" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tbprueba" EntityType="ImudesaGaritaModel1.Store.tbprueba" store:Type="Tables" store:Schema="dbo" store:Name="tbprueba">
+      <DefiningQuery>SELECT 
+      [tbprueba].[idprueba] AS [idprueba], 
+      [tbprueba].[fecd] AS [fecd], 
+      [tbprueba].[fecdt] AS [fecdt], 
+      [tbprueba].[nomusu] AS [nomusu]
+      FROM [dbo].[tbprueba] AS [tbprueba]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="trabajador" EntityType="ImudesaGaritaModel1.Store.trabajador" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="trabajadorAuditoria" EntityType="ImudesaGaritaModel1.Store.trabajadorAuditoria" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="usuario" EntityType="ImudesaGaritaModel1.Store.usuario" store:Type="Tables" store:Schema="dbo" store:Name="usuario">
+      <DefiningQuery>SELECT 
+      [usuario].[idusuario] AS [idusuario], 
+      [usuario].[cuenta] AS [cuenta], 
+      [usuario].[clave] AS [clave], 
+      [usuario].[tipocuenta] AS [tipocuenta], 
+      [usuario].[activo] AS [activo], 
+      [usuario].[fecregistro] AS [fecregistro], 
+      [usuario].[nombreusuario] AS [nombreusuario], 
+      [usuario].[idperfil] AS [idperfil]
+      FROM [dbo].[usuario] AS [usuario]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="visitante" EntityType="ImudesaGaritaModel1.Store.visitante" store:Type="Tables" store:Schema="dbo" store:Name="visitante">
+      <DefiningQuery>SELECT 
+      [visitante].[idvisitante] AS [idvisitante], 
+      [visitante].[fecha] AS [fecha], 
+      [visitante].[horaentrada] AS [horaentrada], 
+      [visitante].[horasalida] AS [horasalida], 
+      [visitante].[nombre] AS [nombre], 
+      [visitante].[dni] AS [dni], 
+      [visitante].[destino] AS [destino], 
+      [visitante].[encargado] AS [encargado], 
+      [visitante].[empresa_proveniente] AS [empresa_proveniente], 
+      [visitante].[observacion] AS [observacion], 
+      [visitante].[nroasignado] AS [nroasignado], 
+      [visitante].[fechaRegistro] AS [fechaRegistro], 
+      [visitante].[codsuc] AS [codsuc]
+      FROM [dbo].[visitante] AS [visitante]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.acceso' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="acceso">
+    <Key>
+      <PropertyRef Name="idusuario" />
+    </Key>
+    <Property Name="idacceso" Type="nchar" MaxLength="10" />
+    <Property Name="idusuario" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="idmodulo" Type="int" />
+    <Property Name="codopcion" Type="varchar" MaxLength="4" />
+    <Property Name="ver" Type="int" />
+    <Property Name="grabar" Type="int" />
+    <Property Name="anular" Type="int" />
+    <Property Name="fecregistro" Type="datetime" />
+    <Property Name="fecmodificacion" Type="datetime" />
+  </EntityType>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.apcistcontrol' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="apcistcontrol">
+    <Key>
+      <PropertyRef Name="idcontrol" />
+      <PropertyRef Name="fechaentrada" />
+      <PropertyRef Name="horaentrada" />
+      <PropertyRef Name="fechasalida" />
+      <PropertyRef Name="idtrabajador" />
+      <PropertyRef Name="turno" />
+    </Key>
+    <Property Name="idcontrol" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="fechaentrada" Type="date" Nullable="false" />
+    <Property Name="horaentrada" Type="varchar" Nullable="false" MaxLength="10" />
+    <Property Name="fechasalida" Type="date" Nullable="false" />
+    <Property Name="horasalida" Type="varchar" MaxLength="10" />
+    <Property Name="idtrabajador" Type="int" Nullable="false" />
+    <Property Name="turno" Type="varchar" Nullable="false" MaxLength="8" />
+  </EntityType>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.apcistsedes' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="apcistsedes">
+    <Key>
+      <PropertyRef Name="idsede" />
+      <PropertyRef Name="nombre" />
+    </Key>
+    <Property Name="idsede" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="descripcion" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.apcisttrabajador' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="apcisttrabajador">
+    <Key>
+      <PropertyRef Name="idtrabajador" />
+      <PropertyRef Name="nombre" />
+      <PropertyRef Name="apellidoPaterno" />
+      <PropertyRef Name="apellidoMaterno" />
+      <PropertyRef Name="dni" />
+      <PropertyRef Name="cargo" />
+      <PropertyRef Name="identificador" />
+      <PropertyRef Name="sede" />
+    </Key>
+    <Property Name="idtrabajador" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="apellidoPaterno" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="apellidoMaterno" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="dni" Type="varchar" Nullable="false" MaxLength="8" />
+    <Property Name="cargo" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="identificador" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="sede" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="activo" Type="int" />
+  </EntityType>
+  <EntityType Name="asistencia">
+    <Key>
+      <PropertyRef Name="idasistencia" />
+    </Key>
+    <Property Name="idasistencia" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="date" Nullable="false" />
+    <Property Name="horainicio" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="horasalida" Type="varchar" MaxLength="20" />
+    <Property Name="idtrabajador" Type="int" Nullable="false" />
+    <Property Name="empresa" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="fecregistro" Type="datetime" />
+    <Property Name="fecmodificacion" Type="datetime" />
+    <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+  </EntityType>
+  <EntityType Name="cita">
+    <Key>
+      <PropertyRef Name="idcita" />
+    </Key>
+    <Property Name="idcita" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="date" Nullable="false" />
+    <Property Name="hora" Type="varchar" MaxLength="20" />
+    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="dni" Type="int" Nullable="false" />
+    <Property Name="destino" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="encargada" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="empresa_proveniente" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="observacion" Type="varchar" MaxLength="200" />
+    <Property Name="idcitador" Type="int" Nullable="false" />
+    <Property Name="estado" Type="int" Nullable="false" />
+    <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+    <Property Name="fechaRegistro" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="empresa">
+    <Key>
+      <PropertyRef Name="idempresa" />
+    </Key>
+    <Property Name="idempresa" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="descripcion" Type="varchar" MaxLength="200" />
+    <Property Name="usucreacion" Type="varchar" MaxLength="50" />
+    <Property Name="feccreacion" Type="date" />
+    <Property Name="usumodificacion" Type="varchar" MaxLength="50" />
+    <Property Name="fecmodificacion" Type="date" />
+    <Property Name="conSeguro" Type="varchar" Nullable="false" MaxLength="2" />
+    <Property Name="ruc" Type="varchar" MaxLength="13" />
+    <Property Name="codsuc" Type="varchar" MaxLength="3" />
+  </EntityType>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.indeseado' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="indeseado">
+    <Key>
+      <PropertyRef Name="idindeseado" />
+      <PropertyRef Name="nombre" />
+      <PropertyRef Name="apellido" />
+      <PropertyRef Name="dni" />
+      <PropertyRef Name="fechaRegistro" />
+      <PropertyRef Name="observacion" />
+    </Key>
+    <Property Name="idindeseado" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="apellido" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="dni" Type="varchar" Nullable="false" MaxLength="10" />
+    <Property Name="cargo" Type="varchar" MaxLength="50" />
+    <Property Name="empresa" Type="varchar" MaxLength="50" />
+    <Property Name="fechaRegistro" Type="date" Nullable="false" />
+    <Property Name="observacion" Type="varchar" Nullable="false" MaxLength="200" />
+  </EntityType>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.modulo' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="modulo">
+    <Key>
+      <PropertyRef Name="idmodulo" />
+      <PropertyRef Name="descripcion" />
+    </Key>
+    <Property Name="idmodulo" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="descripcion" Type="varchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.perfil' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="perfil">
+    <Key>
+      <PropertyRef Name="idperfil" />
+      <PropertyRef Name="descripcion" />
+    </Key>
+    <Property Name="idperfil" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="descripcion" Type="nchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="seguro">
+    <Key>
+      <PropertyRef Name="idseguro" />
+    </Key>
+    <Property Name="idseguro" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="nrosalud" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="nropoliza" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="fechainicio" Type="date" Nullable="false" />
+    <Property Name="fechafin" Type="date" Nullable="false" />
+    <Property Name="idempresa" Type="int" Nullable="false" />
+    <Property Name="flagactivo" Type="int" Nullable="false" />
+    <Property Name="usucreacion" Type="varchar" MaxLength="20" />
+    <Property Name="feccreacion" Type="datetime" />
+    <Property Name="usumodificacion" Type="varchar" MaxLength="20" />
+    <Property Name="fecmodificacion" Type="datetime" />
+    <Property Name="codsuc" Type="varchar" MaxLength="3" />
+  </EntityType>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.tbprueba' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="tbprueba">
+    <Key>
+      <PropertyRef Name="idprueba" />
+    </Key>
+    <Property Name="idprueba" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="fecd" Type="date" />
+    <Property Name="fecdt" Type="datetime" />
+    <Property Name="nomusu" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="trabajador">
+    <Key>
+      <PropertyRef Name="idtrabajador" />
+    </Key>
+    <Property Name="idtrabajador" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="dni" Type="varchar" Nullable="false" MaxLength="10" />
+    <Property Name="cargo" Type="varchar" MaxLength="100" />
+    <Property Name="area" Type="varchar" MaxLength="100" />
+    <Property Name="habilitado" Type="int" Nullable="false" />
+    <Property Name="idempresa" Type="int" Nullable="false" />
+    <Property Name="usuregistro" Type="varchar" MaxLength="20" />
+    <Property Name="fecregistro" Type="datetime" />
+    <Property Name="usumodificacion" Type="varchar" MaxLength="20" />
+    <Property Name="fecmodificacion" Type="datetime" />
+    <Property Name="fecretiro" Type="date" />
+    <Property Name="fecingreso" Type="date" />
+    <Property Name="conSeguro" Type="varchar" MaxLength="2" />
+    <Property Name="rutaimage" Type="varchar" MaxLength="200" />
+    <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+  </EntityType>
+  <EntityType Name="trabajadorAuditoria">
+    <Key>
+      <PropertyRef Name="idtrabaud" />
+    </Key>
+    <Property Name="idtrabaud" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="dni" Type="varchar" Nullable="false" MaxLength="10" />
+    <Property Name="cargo" Type="varchar" MaxLength="100" />
+    <Property Name="area" Type="varchar" MaxLength="100" />
+    <Property Name="idempresa" Type="int" Nullable="false" />
+    <Property Name="idtrabajador" Type="int" Nullable="false" />
+    <Property Name="feccreacion" Type="datetime" />
+  </EntityType>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.usuario' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="idusuario" />
+      <PropertyRef Name="cuenta" />
+      <PropertyRef Name="clave" />
+      <PropertyRef Name="tipocuenta" />
+      <PropertyRef Name="activo" />
+      <PropertyRef Name="idperfil" />
+    </Key>
+    <Property Name="idusuario" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="cuenta" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="clave" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="tipocuenta" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="activo" Type="int" Nullable="false" />
+    <Property Name="fecregistro" Type="datetime" />
+    <Property Name="nombreusuario" Type="varchar" MaxLength="50" />
+    <Property Name="idperfil" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'ImudesaGarita.dbo.visitante' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+  <EntityType Name="visitante">
+    <Key>
+      <PropertyRef Name="idvisitante" />
+      <PropertyRef Name="fecha" />
+      <PropertyRef Name="horaentrada" />
+      <PropertyRef Name="nombre" />
+      <PropertyRef Name="destino" />
+      <PropertyRef Name="encargado" />
+      <PropertyRef Name="empresa_proveniente" />
+      <PropertyRef Name="codsuc" />
+    </Key>
+    <Property Name="idvisitante" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="date" Nullable="false" />
+    <Property Name="horaentrada" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="horasalida" Type="varchar" MaxLength="50" />
+    <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="dni" Type="varchar" MaxLength="10" />
+    <Property Name="destino" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="encargado" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="empresa_proveniente" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="observacion" Type="varchar" MaxLength="200" />
+    <Property Name="nroasignado" Type="int" />
+    <Property Name="fechaRegistro" Type="datetime" />
+    <Property Name="codsuc" Type="varchar" Nullable="false" MaxLength="3" />
+  </EntityType>
+</Schema>
