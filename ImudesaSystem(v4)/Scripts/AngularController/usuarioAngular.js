@@ -3,26 +3,12 @@
 app.controller("myController", function ($scope, $http) {
 
     $scope.usuario =null;
-    /****************EXTRAS MODAL**********************************/
-    /**----------------------------------------------------------**/
-    $scope.pushGuardar = function () {
-        $scope.btntext = "ADD";
-        $scope.usuario = null;
-    };
-
-
-
- 
-
-
-    $scope.cerrarModalEditar = function () {
-        $('#modalEdit').modal('hide');
-    };
+    
 
 
 
     /*------------------------------------------------------------*/
-    /**************Acceso a Base de Datos**********************************/
+    /**************LOGIN ACCESO A USUARIO**********************************/
     /*------------------------------------------------------------*/
     
     $scope.login = function () {
@@ -49,7 +35,20 @@ app.controller("myController", function ($scope, $http) {
 
     };
 
-    
+
+    /****************EXTRAS MODAL**********************************/
+    /**----------------------------------------------------------**/
+    $scope.pushGuardar = function () {
+        $scope.btntext = "ADD";
+        $scope.usuario = null;
+    };
+
+
+
+    $scope.cerrarModalEditar = function () {
+        $('#modalEdit').modal('hide');
+    };
+
 
     $http.get("/Home/Get_sucursales").then(function (d) {
         $scope.sucursales = d.data;
@@ -58,8 +57,9 @@ app.controller("myController", function ($scope, $http) {
     });
 
 
-    //load list user*************************************
-    $scope.loadListusuarios = function (urldata) {
+
+    /**************LISTADO DE USUARIOS**********************************/
+    $scope.loadListUsuarios = function (urldata) {
         $http.get(urldata).
             then(function (d) {
                 $scope.usuarios = d.data;
@@ -68,13 +68,12 @@ app.controller("myController", function ($scope, $http) {
             });
     };
 
-
-    // Add usuario*************************************
+    /**************SALVAR USUARIO**********************************/
     $scope.saveusuario = function () {
 
         if (($scope.usuario != null)) {
             $scope.btntext = "Please Wait..";
-            var url_data = "/User/Get_usuarios";
+            var url_data = "/Usuario/Get_usuarios";
             
             $.ajax({
                 type: "POST",

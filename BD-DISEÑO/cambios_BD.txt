@@ -1,6 +1,169 @@
 
 
 
+/*-------------------------------------------*/
+/*-------------------------------------------*/
+create PROCEDURE [dbo].[sp_upd_usuario]
+@idusuario int=0,
+@usuario varchar(50),
+@clave varchar(50),
+@idtrabajador varchar(50)='',
+@nResultado int OUTPUT
+AS
+declare
+@exis_user int=0,
+@nombre_actual varchar(50)= ''
+
+	select  @nResultado=0;
+
+    select @nombre_actual=u.cUsuNombre from usuario u 
+	where u.idUsuario=@idusuario;
+  
+    if @nombre_actual<>ltrim(rtrim(@usuario))
+	begin
+		select @exis_user=count(*) from usuario u 
+		where u.cUsuNombre=ltrim(rtrim(@usuario))  
+		and u.bActivo=1;
+	end
+	
+	if @exis_user>0
+		begin
+			select  @nResultado=0;
+		end
+	else
+		BEGIN TRANSACTION
+			update usuario set cUsuNombre=@usuario,cUsuCtseña=@clave,
+			idTrabajador=@idtrabajador where idUsuario=@idusuario;
+		
+			select  @nResultado=1;
+		COMMIT TRANSACTION
+	
+/*-------------------------------------------*/
+/*-------------------------------------------*/
+create PROCEDURE [dbo].[sp_ins_usuario]
+@usuario varchar(50),
+@clave varchar(50),
+@idtrabajador varchar(50)='',
+@nResultado int OUTPUT
+AS
+declare
+@exis_user int=0
+  
+BEGIN
+	select @exis_user=count(*) from usuario u where u.cUsuNombre=ltrim(rtrim(@usuario)) and u.bActivo=1;
+	select  @nResultado=0;
+	if @exis_user=0
+	BEGIN TRANSACTION
+			INSERT INTO usuario(cUsuNombre,cUsuCtseña,idTrabajador,idArea,dFecReg) 
+			values (ltrim(rtrim(@usuario)),ltrim(rtrim(@clave)),@idtrabajador,0,GETDATE());
+			select  @nResultado=1;
+	COMMIT TRANSACTION
+ 
+
+END
+/*-------------------------------------------*/
+/*-------------------------------------------*/
+CREATE PROCEDURE [dbo].[sp_get_UsuarioxArea] 
+@idusuario int
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+SELECT u.idusuario,
+u.idArea,
+ (case when u.idArea=0 then 'NINGUNA' else a.cDescripcion end ) as area ,
+u.cUsuNombre as nombreUsuario,
+u.idTrabajador,
+(case when u.idTrabajador =0 then 'NINGUNO' else (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno)  end ) as nombre  
+from usuario u 
+inner join area a on a.idArea=u.idArea
+inner join trabajador t on t.idtrabajador=u.idTrabajador
+inner join persona p on p.idPersona= t.idPersona
+where p.bEstado=1
+and u.idusuario=@idusuario
+order by 3 
+
+END
+
+/*-------------------------------------------*/
+/*-------------------------------------------*/
+CREATE PROCEDURE [dbo].[sp_get_UsuarioxSucursal] 
+@idusuario int
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+SELECT u.idusuario,
+us.idsucursal,
+s.cNombre as sucursal,
+u.cUsuNombre as nombreUsuario,
+u.idTrabajador,
+(case when u.idTrabajador =0 then 'NINGUNO' else (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno)  end ) as nombre  
+from usuario u 
+inner join usuarioSucursal us on us.idusuario=u.idUsuario
+inner join sucursal s on s.idSucursal=us.idsucursal
+inner join trabajador t on t.idtrabajador=u.idTrabajador
+inner join persona p on p.idPersona= t.idPersona
+where p.bEstado=1
+and us.idusuario=@idusuario
+order by 3 
+
+END
+/*-------------------------------------------*/
+/*-------------------------------------------*/
+ALTER PROCEDURE [dbo].[sp_get_UsuarioxID] 
+@idusuario int=0
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+SELECT 
+u.idUsuario,
+u.cUsuNombre as nombreUsuario,
+u.cUsuCtseña as contrasenia,
+u.idTrabajador,
+(case when u.idTrabajador =0 then 'NINGUNO' else (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno)  end ) as nombre ,
+ u.idArea,
+ (case when u.idArea=0 then 'NINGUNA' else a.cDescripcion end ) as area ,
+ u.bActivo,
+ (case when u.bActivo =1 then 'ACTIVO' else 'NO ACTIVO' end ) as estado ,
+ u.dFecReg  
+from usuario u 
+inner join trabajador t on t.idtrabajador=u.idTrabajador
+inner join persona p on p.idPersona= t.idPersona
+inner join area a on a.idArea=u.idArea
+where p.bEstado=1
+and u.idUsuario=@idusuario
+order by 2
+END
+
+/*-------------------------------------------*/
+/*-------------------------------------------*/
+ALTER PROCEDURE [dbo].[sp_get_Usuarios] 
+AS
+ SET NOCOUNT ON; 
+BEGIN 
+
+SELECT 
+u.idUsuario,
+u.cUsuNombre as nombreUsuario,
+u.cUsuCtseña as contrasenia,
+u.idTrabajador,
+(case when u.idTrabajador =0 then 'NINGUNO' else (p.cNombres +' '+p.cApPaterno +' '+p.cApMaterno)  end ) as nombre ,
+ u.idArea,
+ (case when u.idArea=0 then 'NINGUNA' else a.cDescripcion end ) as area ,
+ u.bActivo,
+ (case when u.bActivo =1 then 'ACTIVO' else 'NO ACTIVO' end ) as estado ,
+ u.dFecReg  
+from usuario u 
+inner join trabajador t on t.idtrabajador=u.idTrabajador
+inner join persona p on p.idPersona= t.idPersona
+inner join area a on a.idArea=u.idArea
+where p.bEstado=1
+order by 2
+END
+/*-------------------------------------------*/
+/*-------------------------------------------*/
 
 alter view vw_TrabajadoresEmpresa as
   select t.idtrabajador,t.cCargo as cargo,FORMAT(t.dFecIngreso,'dd/MM/yyyy') as fecIngreso,FORMAT(t.dFecRetiro,'dd/MM/yyyy') as fecRetiro ,t.bActivo ,

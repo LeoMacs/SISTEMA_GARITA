@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImudesaSystem_v4_</RootNamespace>
     <AssemblyName>ImudesaSystem%28v4%29</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -21,6 +21,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -138,6 +140,7 @@
     <Compile Include="Controllers\SeguroController.cs" />
     <Compile Include="Controllers\TrabajadorController.cs" />
     <Compile Include="Controllers\CargaVehicularController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VisitanteController.cs" />
     <Compile Include="Esquemas\Imudesa_DS.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -281,6 +284,7 @@
     <Content Include="Esquemas\Imudesa_DS.xss">
       <DependentUpon>Imudesa_DS.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\imudesaGaritaAPP - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\webGarita.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\angular-mocks.js" />
@@ -294,7 +298,7 @@
     <Content Include="Scripts\AngularController\menuController.js" />
     <Content Include="Scripts\AngularController\seguroController.js" />
     <Content Include="Scripts\AngularController\trabajadorAngular.js" />
-    <Content Include="Scripts\AngularController\usuarioController.js" />
+    <Content Include="Scripts\AngularController\usuarioAngular.js" />
     <Content Include="Scripts\AngularController\visitanteAngular.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.es.js" />
@@ -353,6 +357,8 @@
     <Content Include="Views\Shared\_Layout-Vehiculo.cshtml" />
     <Content Include="Views\CargaVehicular\PanelVehiculos.cshtml" />
     <Content Include="Views\CargaVehicular\HistorialVehiculos.cshtml" />
+    <Content Include="Views\Shared\_Layout-Administrador.cshtml" />
+    <Content Include="Views\Usuario\PanelUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

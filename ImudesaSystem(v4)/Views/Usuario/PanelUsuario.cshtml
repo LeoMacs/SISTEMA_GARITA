@@ -1,0 +1,212 @@
+﻿@using ImudesaSystem_v4_.Models
+@{
+    ViewBag.Title = "PanelUsuario";
+    Layout = "~/Views/Shared/_Layout-Administrador.cshtml";
+
+    string fechaActual = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+    string fechaActualf = " " + System.DateTime.Now.ToString("dd/MM/yyyy");
+
+    String espacio = " ";
+
+    //DateTime servidorForaneo = DateTime.Now.AddHours(2);
+    //var horaActual = servidorForaneo.ToString("HH:mm");
+    var horaActual = System.DateTime.Now.ToString("HH:mm");
+    var data = ViewBag.Message; 
+
+
+    
+    
+}
+
+
+
+<!DOCTYPE html>
+
+<div ng-app="app">
+
+
+    <div ng-controller="myController">
+
+
+        <div  class="wrapper contenidoCentrado">
+            <h1 class="letra">Panel de Usuarios registrados</h1>
+        </div>
+
+        <br />
+
+
+
+        <div class="form-inline container table-responsive">
+            <label class=" col-form-label" style="color: black" for="filtro">Palabra Clave:</label>
+            <input type="text" class=" form-control" name="filtro" id="filtro" value="" style="width: 300px" placeholder="Ingrese una palabra..." />
+            <button id="buttonAdd"  style="float: right; margin-bottom: 0px; margin-left: 0px" class="btn btn-primary btnCircular " ng-click="pushIns()" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-plus"></i>Agregar Usuario</button>
+        </div>
+
+
+        <div class="container ">
+             <div class="form-inline letra">
+                <label >Total de citas:</label>
+                <input  value="{{numUsuarios}}" readonly="true" style="width:50px;height:25px;text-align:center;font-weight:bold;color: blue; font-size: 18px"/>
+            </div>
+            <table class="table table-bordered table-responsive-xl" id="tablaDatos">
+                <thead style="color: white; background-color: red">
+                    <tr>
+                        <th style="text-align: center" hidden>Fecha</th>
+                        <th style="text-align: center">Hora</th>
+                        <th style="text-align: center">Nombre del citado</th>
+                        <th style="text-align: center">Dni</th>
+                        <th class="hidenSeguridad" style="text-align: center">Editar</th>
+                      @*  <th class="hidenSeguridad" style="text-align: center">Ocultar</th>*@
+                        <th class="hidenSeguridad" style="text-align: center">Activar/Desactivar</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align: center">
+
+
+                    <tr ng-repeat="u in usuarios">
+                        
+                        <td style="color: #329415; font-weight: bold">{{u.persona}}</td>
+                        <td style="color: #4800ff; font-weight: bold">{{u.dni}}</td>
+                        <td style="color: #4800ff; font-weight: bold">{{u.encargado}}</td>
+                        <td style="color: #0094ff; font-weight: bold">{{u.destino}} </td>
+ 
+                        <td ><button ng-disabled="{{u.noedit}}" class="btn btn-primary" ng-click="pushUpd(c)" data-toggle="modal" data-target="#modalInsUpd"><i class="glyphicon glyphicon-pencil"></i></button></td>
+@*                        <td ><button ng-disabled="{{u.isdisabledarea}}" class="btn btn-primary" ng-click="pushOcultar(c)" data-toggle="modal" data-target="#modalOcultar"><i class="fa fa-eye-slash" style="color: white"></i></button></td>*@
+                        <td ><button  ng-disabled="{{u.nodelete}}"class="btn btnEliminar" ng-click="pushAnular(c)" data-toggle="modal" data-target="#modalDel"><i class="fa fa-times " style="color: white"></i></button></td>
+                        <td ><button ng-disabled="{{u.noconfirm}}" class="btn btnAceptar" ng-click="pushConfirmar(c)" data-toggle="modal" data-target="#modalConfirmar"><i class="fa fa-check-square-o" style="color: white"></i></button></td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+            <button id="buttonExport" ng-click="reporteDelDia()" class="btn btn-primary" style="float: right; margin-right: 0px"><i style="font-size: 20px; color: green; font-weight: bold" class="fa fa-file-excel-o"></i>@espacio Descargar</button>
+        </div>
+        <br />
+
+
+
+
+        @* ********************************************************************************************** *@
+        @*<--------------------------------Modal INSUPD cita------------------------------------------>*@
+        @*<-- Modal -->*@
+        <div class="modal fade" id="modalInsUpd" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @*<-- Modal Header -->*@
+                    <div class="modal-header btn-primary">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title contenidoCentrado oscuro">FORMULARIO DE USUARIO</h4>
+                    </div>
+                    @*<-- Modal Body -->*@
+                    <div class="modal-body">
+                        <form role="form" novalidate>
+
+
+                             <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="nombreUsuario">NOMBRE DE USUARIO:</label>
+                                    <div class="form-inline">
+                                        <input type="text" class="form-control inputStyleMd" onkeyup="mayusculas(this);" maxlength="50"  ng-model="usuarioTemp.nombre" id="nombreUsuario" placeholder="Ingrese el Nombre del usuario" />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label for="nombre">CONTRASEÑA:</label>
+                                    <input type="password" class="form-control inputStyle" onkeyup="mayusculas(this);" ng-model="usuarioTemp.contrasenia"  placeholder="Ingrese la contraseña" />
+
+                                </div>
+                            </div>
+
+                             <div class="form-group row">
+                                 
+                                 <div class="col-sm-6 form-inline">
+                                     <label for="estadUsuario" class=" control-label text-right">ESTADO:</label>
+                                     <div class="input-group">
+                                         <div class="radioBtn btn-group">
+                                             <a class="btn btn-primary btn-md active letra" id="A" data-toggle="estadUsuario" data-title="A">ACTIVO</a>
+                                             <a class="btn btn-primary btn-md notActive letra" id="I" data-toggle="estadUsuario" data-title="I">INACTIVO</a>
+                                         </div>
+                                         <input type="hidden" name="estadUsuario" id="estadUsuario">
+                                     </div>
+                                 </div>
+
+                             </div>
+
+                        </form>
+                    </div>
+                    @*<-- Modal Footer -->*@
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">CERRAR</button>
+                        <button type="submit" class="btn btn-primary submitBtn btnSize" ng-click="InsUpdUsuario(usuarioTemp)">{{btntext}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+
+
+      
+        @* ************************************************************************************************ *@
+        @*<--------------------------------Modal anular cita------------------------------------------>*@
+
+        <div class="modal fade" id="modalDel" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    @***************Modal Header************@
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 style="text-align: start; color: red" class="modal-title letra">ANULACIÓN DE CITA  </h4>
+                    </div>
+
+                    @*****************Modal Body************@
+                    <div class="modal-body">
+                        <div class="letra">
+                            Estás seguro de anular la cita programada de 
+                            <label style="color: red">{{usuarioTemp.persona}}</label>
+                            con DNI
+                            <label style="color: red">{{usuarioTemp.dni}}</label>?
+
+                        </div>
+                        @*Modal Footer*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger btnSize" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary btnSize" ng-click="deletecita()">Aceptar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</-----------------------------------end modal------------------------------------------------------>*@
+
+        @* ************************************************************************************************ *@
+       
+
+
+        @* *********************************************************************************** *@
+        @* *********************************************************************************** *@
+
+
+
+        @*------jQuery library ------*@
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/angular.min.js"></script>
+        <script src="~/Scripts/moment.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.es.js"></script>
+        @*------Controlador----------*@
+        <script src="~/Scripts/AngularController/usuarioAngular.js"></script>
+        @*------Extras ------*@
+        <script src="~/Scripts/utilGeneral.js"></script>
+
+    </div>
+
+</div>
+

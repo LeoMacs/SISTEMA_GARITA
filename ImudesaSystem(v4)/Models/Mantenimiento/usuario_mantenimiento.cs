@@ -25,27 +25,81 @@ namespace ImudesaSystem_v4_.Models
         }
 
 
-        public DataSet get_usuarios()
+        public DataTable get_usuarios()
         {
             SqlCommand com = new SqlCommand("sp_get_Usuarios", con);
             com.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(com);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            return ds;
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            return dt;
         }
 
        
-        public DataSet get_usuarioxID(int id)
+        public DataTable get_usuarioxID(int id)
         {
             SqlCommand com = new SqlCommand("sp_get_UsuarioxID", con);
             com.CommandType = CommandType.StoredProcedure;
             com.Parameters.AddWithValue("@idusuario", id);
             SqlDataAdapter da = new SqlDataAdapter(com);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            return ds;
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            return dt;
         }
+
+        public int insupd_usuario(usuario u)
+        {
+           
+            SqlCommand com;
+            if (u.idusuario == 0)
+            {
+
+                com = new SqlCommand("sp_ins_usuario", con);
+                com.CommandType = CommandType.StoredProcedure;
+            }
+            else
+            {
+                com = new SqlCommand("sp_upd_usuario", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@idusuario", u.idusuario);
+            }
+
+            com.Parameters.AddWithValue("@usuario", u.nombreusuario);
+            com.Parameters.AddWithValue("@clave", u.clave);
+            com.Parameters.AddWithValue("@idtrabajador", u.idtrabajador);
+            //////////////////////////
+            SqlParameter varOutput = new SqlParameter("@nResultado", SqlDbType.Int);
+            varOutput.Direction = ParameterDirection.Output;
+            com.Parameters.Add(varOutput);
+            //////////////////
+            con.Open();
+            com.ExecuteNonQuery();
+            int resultado = (int)com.Parameters["@nResultado"].Value;
+            con.Close();
+            Debug.WriteLine("valor retornado:" + resultado);
+            return resultado;//si es -1 no realiza la accion, si es 1 si registra
+        }
+
+        public int del_Usuario(int id)
+        {
+            int resultado;
+            SqlCommand com = new SqlCommand("sp_del_usuario", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@idusuario", id);
+            //////////////////////////
+            SqlParameter varOutput = new SqlParameter("@nResultado", SqlDbType.Int);
+            varOutput.Direction = ParameterDirection.Output;
+            com.Parameters.Add(varOutput);
+            //////////////////
+            con.Open();
+            com.ExecuteNonQuery();
+            resultado = (int)com.Parameters["@nResultado"].Value;
+            con.Close();
+            Debug.WriteLine("usuario anulado:" + resultado);
+            return resultado;/*si es -1 no realiza la accion, si es 1 si registra*/
+        }
+
+
 
 
         public DataSet iniciarSesion(usuario u)
